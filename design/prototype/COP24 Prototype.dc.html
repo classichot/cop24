@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="_ds/modernist-0535cbd5-0c64-445a-914d-3cb24acb6cae/styles.css">
+<script src="_ds/modernist-0535cbd5-0c64-445a-914d-3cb24acb6cae/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --color-bg:#f2f4f8; --color-surface:#e8ebf2; --color-text:#101c3a;
+  --color-divider:color-mix(in srgb,#101c3a 38%,transparent);
+  --color-accent:#f5c518;
+  --on-accent:#101c3a;
+  --color-accent-100:color-mix(in srgb,var(--color-accent) 10%,#ffffff);
+  --color-accent-200:color-mix(in srgb,var(--color-accent) 20%,#ffffff);
+  --color-accent-300:color-mix(in srgb,var(--color-accent) 35%,#ffffff);
+  --color-accent-400:color-mix(in srgb,var(--color-accent) 60%,#ffffff);
+  --color-accent-500:var(--color-accent);
+  --color-accent-600:color-mix(in srgb,var(--color-accent) 72%,#000000);
+  --color-accent-700:color-mix(in srgb,var(--color-accent) 42%,#000000);
+  --color-accent-800:color-mix(in srgb,var(--color-accent) 30%,#000000);
+  --color-accent-900:color-mix(in srgb,var(--color-accent) 20%,#000000);
+  --color-accent-2:#10204a;
+  --color-accent-2-100:#e8ecf6; --color-accent-2-800:#2a3558;
+  --color-neutral-100:#f6f7fa; --color-neutral-200:#e9ecf2; --color-neutral-300:#d5dae5;
+  --color-neutral-400:#b7becd; --color-neutral-500:#959eb2; --color-neutral-600:#5c6580;
+  --color-neutral-700:#555e75; --color-neutral-800:#3a4257; --color-neutral-900:#232a3c;
+  --font-heading:"Archivo","Chakra Petch",system-ui,sans-serif;
+  --font-body:"Archivo","Chakra Petch",system-ui,sans-serif;
+  --font-heading-weight:700;
+  --st-ok:#1f6b4c; --st-ok-bg:#e3eee8;
+  --st-warn:#8a5a00; --st-warn-bg:#f5ead4;
+  --st-bad:#9c2b19; --st-bad-bg:#f6e2de;
+  --st-info:#4a5660; --st-info-bg:#e7eaeb;
+}
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-heading)}
+a{color:var(--color-accent-700)} a:hover{color:var(--color-accent-600)}
+.btn-primary,.btn-primary:hover,.btn-primary:active{color:var(--on-accent)}
+.seg-opt:has(input:checked){color:var(--on-accent)}
+.btn-ghost{color:var(--color-accent-700)}
+button{font-family:inherit}
+@keyframes cop-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes cop-sweep{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body)">
+
+  <header style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:12px 20px;border-bottom:2px solid var(--color-divider);background:var(--color-bg);position:sticky;top:0;z-index:20">
+    <div style="display:flex;align-items:baseline;gap:10px;margin-right:auto">
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:20px;letter-spacing:-0.02em">COP24</div>
+      <div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--color-neutral-600)">ERC Compliance &amp; Report Studio</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-600)">บทบาท</span>
+      <div class="seg">
+        <label class="seg-opt"><input type="radio" name="role" checked="{{ roleOwner }}" onChange="{{ setOwner }}">เจ้าของโรงไฟฟ้า</label>
+        <label class="seg-opt"><input type="radio" name="role" checked="{{ roleCons }}" onChange="{{ setCons }}">ที่ปรึกษา</label>
+        <label class="seg-opt"><input type="radio" name="role" checked="{{ roleExec }}" onChange="{{ setExec }}">ผู้บริหาร</label>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding-left:16px;border-left:2px solid var(--color-divider)">
+      <div style="width:30px;height:30px;background:var(--color-accent);color:var(--on-accent);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:12px">ณ</div>
+      <div style="font-size:12px;line-height:1.3">
+        <div style="font-weight:600">ณัฐวุฒิ ส.</div>
+        <div style="color:var(--color-neutral-600);font-size:11px">บจก. ลพบุรี กรีน พาวเวอร์</div>
+      </div>
+    </div>
+  </header>
+
+  <div style="display:flex;flex-wrap:wrap;align-items:stretch">
+
+    <nav style="flex:0 0 232px;min-width:200px;border-right:2px solid var(--color-divider);padding:18px 0 48px;background:var(--color-bg)">
+      <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);padding:0 18px 8px">หลัก</div>
+      <sc-for list="{{ navMain }}" as="it" hint-placeholder-count="3">
+        <button onClick="{{ it.go }}" style="{{ it.style }}">
+          <sc-if value="{{ it.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--color-accent)"></span></sc-if>
+          {{ it.label }}
+        </button>
+      </sc-for>
+      <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);padding:18px 18px 8px">งานของฉัน</div>
+      <sc-for list="{{ navWork }}" as="it" hint-placeholder-count="3">
+        <button onClick="{{ it.go }}" style="{{ it.style }}">
+          <sc-if value="{{ it.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--color-accent)"></span></sc-if>
+          {{ it.label }}
+        </button>
+      </sc-for>
+      <sc-if value="{{ showAdvanced }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);padding:18px 18px 8px">รายงานและการตรวจสอบ</div>
+          <sc-for list="{{ navReport }}" as="it" hint-placeholder-count="4">
+            <button onClick="{{ it.go }}" style="{{ it.style }}">
+              <sc-if value="{{ it.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--color-accent)"></span></sc-if>
+              {{ it.label }}
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ hideAdvanced }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px 18px 0">
+          <button class="btn btn-secondary" onClick="{{ toggleAll }}" style="width:100%;justify-content:flex-start;font-size:12px">ทุกโมดูล ▾</button>
+          <div style="font-size:11px;color:var(--color-neutral-600);margin-top:8px;line-height:1.5">โหมดง่ายซ่อนเครื่องมือระดับผู้เชี่ยวชาญไว้ ฟังก์ชันไม่ได้ถูกตัดออก</div>
+        </div>
+      </sc-if>
+      <div style="margin:22px 18px 0;padding-top:16px;border-top:2px solid var(--color-divider)">
+        <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:8px">โครงการที่เปิดอยู่</div>
+        <div style="font-size:13px;font-weight:600;line-height:1.35">โซลาร์ฟาร์ม ลพบุรี 1</div>
+        <div style="font-size:11px;color:var(--color-neutral-600);margin-top:2px">48 MW · ติดตั้งบนพื้นดิน · ท่าวุ้ง ลพบุรี</div>
+        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+          <span class="tag" style="background:var(--st-info-bg);color:var(--st-info)">CoP ขั้นต้น</span>
+          <span class="tag" style="background:var(--st-ok-bg);color:var(--st-ok)">กำลังจัดทำ</span>
+        </div>
+      </div>
+    </nav>
+
+    <main style="flex:1 1 620px;min-width:0">
+
+      <!-- ══ HOME / ASK 24 ══ -->
+      <sc-if value="{{ atHome }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:30px 32px 72px;max-width:1180px">
+        <div class="card-kicker" style="color:var(--color-accent-700)">หน้าหลัก / ASK 24</div>
+        <h1 style="font-size:38px;margin:4px 0 8px;letter-spacing:-0.025em">คุณต้องการทำสิ่งใด?</h1>
+        <p class="text-muted" style="max-width:660px;font-size:15px">พิมพ์เป้าหมายเป็นภาษาธรรมดา COP24 จะระบุข้อกำหนดของ กกพ. ที่บังคับใช้ ตรวจว่ามีเอกสารอะไรอยู่แล้ว และวางลำดับงานให้เอง โดยไม่ต้องรู้จักโครงสร้างเมนูของระบบ</p>
+
+        <div style="margin-top:20px;border:2px solid var(--color-divider);background:var(--color-surface);padding:16px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:stretch">
+            <input class="input" onInput="{{ onGoal }}" placeholder="เช่น ผมต้องเตรียมรายงาน CoP ขั้นต้นสำหรับโครงการโซลาร์ที่ลพบุรี" style="flex:1 1 360px;min-height:46px;font-size:15px;background:var(--color-bg)">
+            <button class="btn btn-primary" onClick="{{ goMission }}" style="min-height:46px;padding-inline:20px">ให้ 24 Copilot จัดการ →</button>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+            <button class="btn btn-secondary" onClick="{{ goFactory }}" style="font-size:12px;font-weight:400;background:var(--color-bg)">จัดทำรายงาน CoP ขั้นต้นให้ครบทั้งฉบับ</button>
+            <button class="btn btn-secondary" onClick="{{ goDocs }}" style="font-size:12px;font-weight:400;background:var(--color-bg)">บอกหน่อยว่าผมยังขาดเอกสารอะไร</button>
+            <button class="btn btn-secondary" onClick="{{ goXray }}" style="font-size:12px;font-weight:400;background:var(--color-bg)">ตรวจรายงานที่ที่ปรึกษาทำไว้</button>
+            <button class="btn btn-secondary" onClick="{{ goEasy }}" style="font-size:12px;font-weight:400;background:var(--color-bg)">ผมไม่รู้ว่าต้องเริ่มตรงไหน</button>
+          </div>
+        </div>
+
+        <hr class="hr" style="margin:34px 0 22px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <h3 style="margin:0;font-size:22px">สามสิ่งที่คนส่วนใหญ่มาทำที่ COP24</h3>
+          <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-600)">Section B · Recommended actions</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:0;margin-top:16px;background:transparent;border:2px solid var(--color-divider)">
+          <button onClick="{{ goFactory }}" style="text-align:left;background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);border:0;padding:22px;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:188px" style-hover="background:var(--color-accent-100)">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700)">01 · One-Click</span>
+            <span style="font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1.2">สร้างรายงาน CoP ฉบับเต็ม</span>
+            <span style="font-size:13px;color:var(--color-neutral-700);flex:1;line-height:1.6">AI ประกอบร่างรายงานขั้นต้น ขั้นสุดท้าย หรือรายงานผลการปฏิบัติตาม CoP จากหลักฐานที่มีอยู่ พร้อมรายการสิ่งที่ยังขาด</span>
+            <span style="font-size:13px;font-weight:600;color:var(--color-accent-700)">เริ่มสร้าง →</span>
+          </button>
+          <button onClick="{{ goStudio }}" style="text-align:left;background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);border:0;padding:22px;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:188px" style-hover="background:var(--color-accent-100)">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700)">02 · Studio</span>
+            <span style="font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1.2">เปิดสตูดิโอรายงาน CoP</span>
+            <span style="font-size:13px;color:var(--color-neutral-700);flex:1;line-height:1.6">ร่าง ตรวจ แก้ไข และอนุมัติทีละบท พร้อมเห็นข้อกำหนดและหลักฐานที่อ้างอิงอยู่ข้างกัน</span>
+            <span style="font-size:13px;font-weight:600;color:var(--color-accent-700)">เปิดสตูดิโอ →</span>
+          </button>
+          <button onClick="{{ goXray }}" style="text-align:left;background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);border:0;padding:22px;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:188px" style-hover="background:var(--color-accent-100)">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700)">03 · X-Ray</span>
+            <span style="font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1.2">ตรวจรายงาน CoP ของผม</span>
+            <span style="font-size:13px;color:var(--color-neutral-700);flex:1;line-height:1.6">อัปโหลดรายงานที่มีอยู่ รับผลประเมินช่องว่างรายบท ข้อความที่ไม่มีหลักฐานรองรับ และเอกสารที่ขาด</span>
+            <span style="font-size:13px;font-weight:600;color:var(--color-accent-700)">อัปโหลดและตรวจ →</span>
+          </button>
+        </div>
+
+        <hr class="hr" style="margin:34px 0 22px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <h3 style="margin:0;font-size:22px">ภารกิจของฉัน</h3>
+          <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-600)">Section C · My missions</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(282px,1fr));gap:16px;margin-top:16px">
+          <sc-for list="{{ missions }}" as="m" hint-placeholder-count="3">
+            <div style="border:2px solid var(--color-divider);background:var(--color-surface);padding:18px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+                <div style="font-family:var(--font-heading);font-weight:800;font-size:17px;line-height:1.25">{{ m.title }}</div>
+                <span class="tag" style="{{ m.tagStyle }}">{{ m.status }}</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:0;background:transparent;border:1px solid var(--color-divider)">
+                <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:9px 10px">
+                  <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">AI ทำได้</div>
+                  <div style="font-family:var(--font-heading);font-weight:800;font-size:19px">{{ m.ai }}</div>
+                </div>
+                <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:9px 10px">
+                  <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ความพร้อมข้อมูล</div>
+                  <div style="font-family:var(--font-heading);font-weight:800;font-size:19px">{{ m.data }}</div>
+                </div>
+                <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:9px 10px">
+                  <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">เวลาที่คุณใช้</div>
+                  <div style="font-family:var(--font-heading);font-weight:800;font-size:19px">{{ m.time }}</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <sc-for list="{{ m.req }}" as="r" hint-placeholder-count="3">
+                  <div style="display:flex;gap:7px;font-size:12px;line-height:1.45"><span style="{{ r.markStyle }}">{{ r.mark }}</span><span style="color:var(--color-neutral-700)">{{ r.text }}</span></div>
+                </sc-for>
+              </div>
+              <button class="btn btn-primary btn-block" onClick="{{ m.go }}">{{ m.cta }}</button>
+            </div>
+          </sc-for>
+        </div>
+
+        <hr class="hr" style="margin:34px 0 22px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px">
+          <div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+              <h3 style="margin:0;font-size:22px">ต้องการความสนใจจากคุณ</h3>
+              <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-600)">Section D</span>
+            </div>
+            <p class="text-muted" style="font-size:13px;margin:6px 0 14px">แสดงเฉพาะข้อยกเว้น ความเสี่ยง ข้อมูลที่ขาด และสิ่งที่รออนุมัติ — ไม่ใช่รายการงานทั้งหมด</p>
+            <div style="border-top:2px solid var(--color-divider)">
+              <sc-for list="{{ attention }}" as="a" hint-placeholder-count="4">
+                <div style="display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-divider);align-items:flex-start">
+                  <span class="tag" style="{{ a.tagStyle }}">{{ a.kind }}</span>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:14px;font-weight:600;line-height:1.4">{{ a.title }}</div>
+                    <div style="font-size:12px;color:var(--color-neutral-600);margin-top:2px;line-height:1.5">{{ a.note }}</div>
+                  </div>
+                  <button class="btn btn-ghost" onClick="{{ a.go }}" style="font-size:12px;white-space:nowrap">{{ a.cta }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+              <h3 style="margin:0;font-size:22px">ภาพรวมสำหรับผู้บริหาร</h3>
+              <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-600)">Section E</span>
+            </div>
+            <p class="text-muted" style="font-size:13px;margin:6px 0 14px">ตัวเลขน้อยที่สุดที่ยังตอบได้ว่าเราพร้อมยื่นหรือยัง</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0;background:transparent;border:2px solid var(--color-divider)">
+              <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:16px">
+                <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ความพร้อมเอกสาร</div>
+                <div style="font-family:var(--font-heading);font-weight:800;font-size:34px;line-height:1.1;color:var(--color-accent-700)">72%</div>
+                <div style="font-size:11px;color:var(--color-neutral-600)">+14% จากสัปดาห์ที่แล้ว</div>
+              </div>
+              <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:16px">
+                <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ประเด็นค้าง</div>
+                <div style="font-family:var(--font-heading);font-weight:800;font-size:34px;line-height:1.1">6</div>
+                <div style="font-size:11px;color:var(--st-bad)">2 รายการเป็นสาระสำคัญ</div>
+              </div>
+              <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:16px">
+                <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">รอคุณอนุมัติ</div>
+                <div style="font-family:var(--font-heading);font-weight:800;font-size:34px;line-height:1.1">3</div>
+                <div style="font-size:11px;color:var(--color-neutral-600)">บทที่ 1, 2 และหน้าปก</div>
+              </div>
+              <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:16px">
+                <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">กำหนดยื่นถัดไป</div>
+                <div style="font-family:var(--font-heading);font-weight:800;font-size:34px;line-height:1.1">47</div>
+                <div style="font-size:11px;color:var(--color-neutral-600)">วัน · ก่อนเวทีรับฟังความคิดเห็น</div>
+              </div>
+            </div>
+            <div style="margin-top:16px;border:2px solid var(--color-accent);background:var(--color-accent-100);padding:16px">
+              <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:5px">สิ่งที่ควรทำต่อไป · Next Best Action</div>
+              <div style="font-size:15px;font-weight:600;line-height:1.45">ปิดหลักฐานคุณภาพน้ำใต้ดิน 2 รายการ แล้วรายงานจะผ่านเกณฑ์ “หลักฐานครบ”</div>
+              <div style="font-size:12px;color:var(--color-accent-800);margin-top:5px;line-height:1.55">เป็นสิ่งเดียวที่กั้นไม่ให้ร่างเลื่อนสถานะไปขั้น “พร้อมให้ผู้มีคุณวุฒิรับรอง”</div>
+              <button class="btn btn-primary" onClick="{{ goDocs }}" style="margin-top:12px">ดูรายการหลักฐานที่ขาด →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ══ EASY START ══ -->
+      <sc-if value="{{ atEasy }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 32px 72px;max-width:1000px">
+        <div class="card-kicker" style="color:var(--color-accent-700)">เริ่มต้นใช้งาน / EASY START</div>
+        <h1 style="font-size:34px;margin:4px 0 8px;letter-spacing:-0.025em">เล่าเรื่องโครงการให้ฟัง แล้วเราจะบอกว่าต้องทำอะไร</h1>
+        <p class="text-muted" style="max-width:640px;font-size:15px">คุณไม่ต้องรู้ว่าโครงการเข้าข่าย CoP, IEE, EIA หรือ EHIA — อัปโหลดใบอนุญาตหรือพิมพ์อธิบายสั้น ๆ COP24 จะวินิจฉัยให้และอธิบายเหตุผล</p>
+        <hr class="hr" style="margin:26px 0">
+
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;gap:18px;padding-bottom:22px">
+            <div style="flex:none;width:34px;height:34px;background:var(--color-accent);color:var(--on-accent);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:14px">✓</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-family:var(--font-heading);font-weight:800;font-size:18px">1 · บอกเราเกี่ยวกับโครงการ</div>
+              <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.6">“โรงไฟฟ้าโซลาร์บนพื้นดิน 48 เมกะวัตต์ อ.ท่าวุ้ง จ.ลพบุรี ยังไม่ได้จัดเวทีรับฟังความคิดเห็น” — พร้อมใบอนุญาตผลิตไฟฟ้า 1 ฉบับ</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:18px;padding-bottom:22px">
+            <div style="flex:none;width:34px;height:34px;background:var(--color-accent);color:var(--on-accent);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:14px">✓</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-family:var(--font-heading);font-weight:800;font-size:18px">2 · AI วินิจฉัยระเบียบที่บังคับใช้</div>
+              <div style="border:2px solid var(--color-divider);background:var(--color-surface);padding:18px;margin-top:10px">
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                  <span class="tag" style="background:var(--st-ok-bg);color:var(--st-ok);font-weight:600">เข้าข่าย CoP</span>
+                  <span style="font-size:14px;font-weight:600">ไม่เข้าข่าย IEE / EIA / EHIA</span>
+                </div>
+                <div style="font-size:13px;color:var(--color-neutral-700);margin-top:10px;line-height:1.65">โครงการผลิตไฟฟ้าจากพลังงานแสงอาทิตย์แบบติดตั้งบนพื้นดิน กำลังผลิตติดตั้ง 48 MW ไม่เข้าเงื่อนไขที่ต้องจัดทำรายงานประเมินผลกระทบสิ่งแวดล้อม จึงอยู่ภายใต้ประมวลหลักการปฏิบัติ (Code of Practice) ตามระเบียบ กกพ. พ.ศ. 2565 และที่แก้ไขเพิ่มเติม พ.ศ. 2567</div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0;background:transparent;border:1px solid var(--color-divider);margin-top:14px">
+                  <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:11px 12px">
+                    <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ชุดกฎที่ใช้</div>
+                    <div style="font-size:13px;font-weight:600;margin-top:2px">ERC-CoP-SOLAR-GROUND</div>
+                    <div style="font-size:11px;color:var(--color-neutral-600)">เวอร์ชัน 2024.1 · 61 ข้อผูกพัน</div>
+                  </div>
+                  <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:11px 12px">
+                    <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">รายงานที่ต้องทำก่อน</div>
+                    <div style="font-size:13px;font-weight:600;margin-top:2px">รายงาน CoP ขั้นต้น</div>
+                    <div style="font-size:11px;color:var(--color-neutral-600)">ใช้ก่อนการรับฟังความคิดเห็น</div>
+                  </div>
+                  <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:11px 12px">
+                    <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">รอบติดตามผลในอนาคต</div>
+                    <div style="font-size:13px;font-weight:600;margin-top:2px">ปีละครั้ง (ม.ค.–ธ.ค.)</div>
+                    <div style="font-size:11px;color:var(--color-neutral-600)">ยื่นภายในเดือนมกราคมปีถัดไป</div>
+                  </div>
+                </div>
+                <button class="btn btn-ghost" onClick="{{ toggleWhy }}" style="margin-top:12px;font-size:13px">ทำไม AI จึงสรุปแบบนี้? ▾</button>
+                <sc-if value="{{ why }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:2px solid var(--color-divider);margin-top:12px;padding-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px">
+                    <div>
+                      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:5px">ข้อมูลที่ใช้</div>
+                      <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700)">ใบอนุญาตผลิตไฟฟ้าเลขที่ กกพ.-ผฟ-2567-0412 (หน้า 1–2) · แบบผังบริเวณโครงการ rev.C · หนังสือแจ้งกำลังผลิตติดตั้ง</div>
+                    </div>
+                    <div>
+                      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:5px">ข้อสมมติ</div>
+                      <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700)">พื้นที่โครงการไม่อยู่ในเขตคุ้มครองสิ่งแวดล้อมหรือพื้นที่ชุ่มน้ำที่ประกาศไว้ — ยังไม่ได้ยืนยันด้วยเอกสารราชการ</div>
+                    </div>
+                    <div>
+                      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:5px">ทางเลือกอื่นที่พิจารณา</div>
+                      <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700)">IEE — ตัดออกเพราะไม่เข้าเงื่อนไขประเภทและที่ตั้งโครงการ · ชุดกฎโซลาร์ลอยน้ำ — ตัดออกเพราะไม่มีการติดตั้งบนผิวน้ำ</div>
+                    </div>
+                  </div>
+                  <div style="margin-top:14px;border-left:3px solid var(--st-warn);background:var(--st-warn-bg);padding:11px 14px;font-size:12px;line-height:1.6;color:var(--st-warn)">ข้อสมมติเรื่องเขตคุ้มครองสิ่งแวดล้อมเป็นสาระสำคัญ โปรดยืนยันก่อนรับรองรายงาน COP24 จะไม่ถือว่าเรื่องนี้ได้รับการพิสูจน์แล้ว</div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:18px;padding-bottom:22px">
+            <div style="flex:none;width:34px;height:34px;border:2px solid var(--color-accent-700);color:var(--color-accent-700);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:14px">3</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-family:var(--font-heading);font-weight:800;font-size:18px">3 · ยกเอกสารทั้งกองเข้ามาครั้งเดียว</div>
+              <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.6">ลากโฟลเดอร์โครงการทั้งหมดเข้ามา — PDF, Word, Excel, รูปถ่าย, ไฟล์ ZIP หรือเชื่อม Google Drive / SharePoint ก็ได้ AI จะจัดหมวดหมู่ ตั้งชื่อ และผูกเข้ากับข้อผูกพันเอง</div>
+              <div style="border:2px dashed var(--color-divider);background:var(--color-surface);padding:28px;margin-top:12px;text-align:center">
+                <div style="font-family:var(--font-heading);font-weight:800;font-size:17px">ลากไฟล์มาวางที่นี่</div>
+                <div style="font-size:12px;color:var(--color-neutral-600);margin-top:4px">หรือเลือกช่องทางนำเข้า</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px">
+                  <button class="btn btn-secondary" onClick="{{ goDocs }}" style="background:var(--color-bg)">เลือกไฟล์จากเครื่อง</button>
+                  <button class="btn btn-secondary" onClick="{{ goDocs }}" style="background:var(--color-bg)">เชื่อม Google Drive</button>
+                  <button class="btn btn-secondary" onClick="{{ goDocs }}" style="background:var(--color-bg)">เชื่อม SharePoint</button>
+                  <button class="btn btn-secondary" onClick="{{ goDocs }}" style="background:var(--color-bg)">นำเข้ารายงาน CoP เดิม</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:18px;opacity:.5">
+            <div style="flex:none;width:34px;height:34px;border:2px solid var(--color-divider);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:14px">4</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-family:var(--font-heading);font-weight:800;font-size:18px">4 · ตอบเฉพาะคำถามที่เอกสารตอบไม่ได้</div>
+              <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.6">โดยเฉลี่ยเหลือ 8–12 คำถาม จากข้อมูลที่ต้องใช้ทั้งหมดกว่า 400 รายการ</div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="hr" style="margin:26px 0">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" onClick="{{ goDocs }}">ไปที่ศูนย์ควบคุมเอกสาร →</button>
+          <button class="btn btn-secondary" onClick="{{ goFactory }}">ข้ามไปสร้างร่างเลย</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ══ DOCUMENT CONTROL CENTER ══ -->
+      <sc-if value="{{ atDocs }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 32px 72px;max-width:1240px">
+        <div class="card-kicker" style="color:var(--color-accent-700)">ศูนย์ควบคุมเอกสาร / DOCUMENT CONTROL CENTER</div>
+        <h1 style="font-size:34px;margin:4px 0 8px;letter-spacing:-0.025em">ความพร้อมของหลักฐาน</h1>
+        <p class="text-muted" style="max-width:700px;font-size:15px">การมีไฟล์อยู่ไม่เท่ากับการปฏิบัติตามข้อกำหนด COP24 แยกการประเมินเป็นสามชั้น และจะไม่นับเอกสารที่อัปโหลดเข้ามาว่าเป็นหลักฐานที่ใช้ได้โดยอัตโนมัติ</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;background:transparent;border:2px solid var(--color-divider);margin-top:22px">
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px">
+            <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ความพร้อมโดยรวม</div>
+            <div style="font-family:var(--font-heading);font-weight:800;font-size:46px;line-height:1.05;color:var(--color-accent-700)">72%</div>
+            <div style="height:6px;background:var(--color-neutral-300);margin-top:8px"><div style="height:6px;width:72%;background:var(--color-accent-700)"></div></div>
+          </div>
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px">
+            <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">1 · มีเอกสารหรือไม่</div>
+            <div style="font-family:var(--font-heading);font-weight:800;font-size:28px;line-height:1.15">41 / 52</div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">นับเฉพาะรายการที่ชุดกฎของโครงการนี้บังคับ</div>
+          </div>
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px">
+            <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">2 · ใช้ได้จริงหรือไม่</div>
+            <div style="font-family:var(--font-heading);font-weight:800;font-size:28px;line-height:1.15">34 / 41</div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">ลงนามครบ ยังไม่หมดอายุ ตรงรอบรายงานและตรงโรงไฟฟ้า</div>
+          </div>
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px">
+            <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">3 · พิสูจน์มาตรการได้หรือไม่</div>
+            <div style="font-family:var(--font-heading);font-weight:800;font-size:28px;line-height:1.15">29 / 34</div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">เนื้อหาในเอกสารรองรับข้อผูกพันที่อ้างถึงจริง</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:26px">
+          <div class="seg">
+            <label class="seg-opt"><input type="radio" name="df" checked="{{ dfAll }}" onChange="{{ dfSetAll }}">ทั้งหมด 52</label>
+            <label class="seg-opt"><input type="radio" name="df" checked="{{ dfOk }}" onChange="{{ dfSetOk }}">ยอมรับแล้ว 29</label>
+            <label class="seg-opt"><input type="radio" name="df" checked="{{ dfWarn }}" onChange="{{ dfSetWarn }}">ต้องตรวจ 12</label>
+            <label class="seg-opt"><input type="radio" name="df" checked="{{ dfBad }}" onChange="{{ dfSetBad }}">ขาด 11</label>
+          </div>
+          <button class="btn btn-primary" onClick="{{ noop }}" style="margin-left:auto">ให้ AI ไล่ตามเอกสารที่ขาด →</button>
+        </div>
+
+        <div style="margin-top:16px;border:2px solid var(--color-divider);overflow-x:auto">
+          <table class="table" style="min-width:760px">
+            <thead>
+              <tr>
+                <th style="width:34%">เอกสาร</th>
+                <th>ใช้พิสูจน์อะไร</th>
+                <th style="width:88px">มี</th>
+                <th style="width:88px">ใช้ได้</th>
+                <th style="width:88px">พิสูจน์ได้</th>
+                <th style="width:120px">สถานะ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ docsView }}" as="d" hint-placeholder-count="6">
+                <tr>
+                  <td style="vertical-align:top">
+                    <div style="font-weight:600;line-height:1.4">{{ d.name }}</div>
+                    <div style="font-size:11px;color:var(--color-neutral-600);margin-top:2px">{{ d.meta }}</div>
+                  </td>
+                  <td style="vertical-align:top;font-size:13px;color:var(--color-neutral-700);line-height:1.5">{{ d.purpose }}</td>
+                  <td style="vertical-align:top;text-align:center"><span style="{{ d.s1Style }}">{{ d.s1 }}</span></td>
+                  <td style="vertical-align:top;text-align:center"><span style="{{ d.s2Style }}">{{ d.s2 }}</span></td>
+                  <td style="vertical-align:top;text-align:center"><span style="{{ d.s3Style }}">{{ d.s3 }}</span></td>
+                  <td style="vertical-align:top"><span class="tag" style="{{ d.tagStyle }}">{{ d.status }}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+
+        <hr class="hr" style="margin:30px 0 20px">
+        <h3 style="margin:0 0 4px;font-size:22px">คำขอเอกสารที่ AI ร่างให้</h3>
+        <p class="text-muted" style="font-size:13px;margin:0 0 14px">เขียนเป็นภาษาที่คนหน้างานอ่านแล้วรู้ว่าต้องส่งอะไร ไม่ใช่รหัสเอกสารที่ไม่มีใครเข้าใจ</p>
+        <div style="border:2px solid var(--color-divider);background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px;max-width:760px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--color-neutral-600);border-bottom:1px solid var(--color-divider);padding-bottom:10px">
+            <span>ถึง: หัวหน้าหน่วยสิ่งแวดล้อมประจำไซต์ (คุณพรทิพย์)</span><span>·</span><span>กำหนดส่ง: 22 ต.ค. 2569</span>
+          </div>
+          <div style="font-size:14px;line-height:1.75;margin-top:14px">ขอความอนุเคราะห์ส่งผลตรวจวิเคราะห์คุณภาพน้ำใต้ดินของรอบรายงานนี้ โดยขอให้แนบ <strong>รายงานผลจากห้องปฏิบัติการฉบับเต็ม</strong> ที่ระบุ <strong>วันที่เก็บตัวอย่าง จุดเก็บตัวอย่าง และวิธีวิเคราะห์</strong> รวมถึงหนังสือรับรองห้องปฏิบัติการที่ยังไม่หมดอายุ หากยังไม่ได้เก็บตัวอย่างในรอบนี้ กรุณาแจ้งกลับเพื่อให้เราปรับแผนการติดตามตรวจสอบและบันทึกเหตุผลไว้ในรายงาน</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+            <button class="btn btn-primary" onClick="{{ noop }}">ส่งคำขอ</button>
+            <button class="btn btn-secondary" onClick="{{ noop }}">แก้ข้อความ</button>
+            <button class="btn btn-secondary" onClick="{{ noop }}">ให้ AI ค้นหาในไฟล์ที่เชื่อมไว้ก่อน</button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ══ REPORT FACTORY ══ -->
+      <sc-if value="{{ atFactory }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 32px 72px;max-width:1080px">
+        <div class="card-kicker" style="color:var(--color-accent-700)">สร้างรายงานอัตโนมัติ / ONE-CLICK REPORT FACTORY</div>
+        <h1 style="font-size:34px;margin:4px 0 8px;letter-spacing:-0.025em">กดครั้งเดียว ได้ร่างรายงานทั้งฉบับ</h1>
+        <p class="text-muted" style="max-width:660px;font-size:15px">COP24 อ่านเอกสารทั้งหมดที่มี เทียบกับชุดกฎที่บังคับใช้ เขียนทุกบท แล้วส่งคืนเป็นร่างพร้อมรายการข้อยกเว้นให้คนตรวจ</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;background:transparent;border:2px solid var(--color-divider);margin-top:22px">
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:14px 16px">
+            <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">โครงการ</div>
+            <div style="font-size:14px;font-weight:600;margin-top:3px">โซลาร์ฟาร์ม ลพบุรี 1</div>
+          </div>
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:14px 16px">
+            <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ประเภทรายงาน</div>
+            <div style="font-size:14px;font-weight:600;margin-top:3px">รายงาน CoP ขั้นต้น</div>
+          </div>
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:14px 16px">
+            <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ชุดกฎ</div>
+            <div style="font-size:14px;font-weight:600;margin-top:3px">SOLAR-GROUND 2024.1</div>
+          </div>
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:14px 16px">
+            <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">แหล่งข้อมูล</div>
+            <div style="font-size:14px;font-weight:600;margin-top:3px">128 ไฟล์ · 52 รายการบังคับ</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--color-neutral-600);margin-top:8px">COP24 ตั้งค่าที่แนะนำไว้ให้แล้ว · <a href="#" onClick="{{ noop }}">ตั้งค่าขั้นสูง ▾</a></div>
+
+        <div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-primary" onClick="{{ startFactory }}" style="min-height:46px;padding-inline:22px;font-size:15px">{{ factoryCta }}</button>
+          <span style="font-size:12px;color:var(--color-neutral-600)">ใช้เวลาประมาณ 6–9 นาที · คุณไม่ต้องเฝ้าหน้าจอ</span>
+        </div>
+
+        <hr class="hr" style="margin:28px 0 0">
+        <div>
+          <sc-for list="{{ fSteps }}" as="s" hint-placeholder-count="6">
+            <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--color-divider)">
+              <div style="{{ s.dotStyle }}">{{ s.mark }}</div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:15px;font-weight:600;line-height:1.4">{{ s.title }}</div>
+                <div style="font-size:12px;color:var(--color-neutral-600);margin-top:3px;line-height:1.55">{{ s.detail }}</div>
+                <sc-if value="{{ s.live }}" hint-placeholder-val="{{ false }}">
+                  <div style="height:4px;background:var(--color-neutral-300);margin-top:9px;overflow:hidden"><div style="height:4px;width:30%;background:var(--color-accent);animation:cop-sweep 1.1s linear infinite"></div></div>
+                </sc-if>
+              </div>
+              <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-600);white-space:nowrap;padding-top:3px">{{ s.statusText }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ fDone }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:28px;border:2px solid var(--color-accent);background:var(--color-accent-100);padding:22px">
+          <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700)">ผลลัพธ์ · ต้องผ่านการตรวจโดยมนุษย์</div>
+          <h3 style="margin:6px 0 10px;font-size:24px">ร่างรายงาน CoP ขั้นต้น พร้อมให้ตรวจแล้ว</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0;background:transparent;border:1px solid var(--color-accent-300)">
+            <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-accent-300);padding:12px 14px"><div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">บทที่เขียนแล้ว</div><div style="font-family:var(--font-heading);font-weight:800;font-size:24px">7 / 7</div></div>
+            <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-accent-300);padding:12px 14px"><div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ข้อเท็จจริงที่มีแหล่งอ้างอิง</div><div style="font-family:var(--font-heading);font-weight:800;font-size:24px">412</div></div>
+            <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-accent-300);padding:12px 14px"><div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ตารางและกราฟ</div><div style="font-family:var(--font-heading);font-weight:800;font-size:24px">17</div></div>
+            <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-accent-300);padding:12px 14px"><div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ประเด็นค้าง</div><div style="font-family:var(--font-heading);font-weight:800;font-size:24px;color:var(--st-bad)">6</div></div>
+          </div>
+          <div style="font-size:13px;line-height:1.7;margin-top:14px;color:var(--color-accent-900)">AI ไม่ได้เติมตัวเลขใด ๆ ที่หาแหล่งอ้างอิงไม่ได้ — ช่องที่ยังไม่มีหลักฐานถูกทำเครื่องหมายไว้ว่า “ยังไม่ยุติ” ทั้งหมด 6 จุด และจะไม่หายไปเองจนกว่าจะมีคนปิด</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+            <button class="btn btn-primary" onClick="{{ goStudio }}">เปิดร่างในสตูดิโอ →</button>
+            <button class="btn btn-secondary" onClick="{{ goPreflight }}" style="background:var(--color-bg)">ดูผลตรวจก่อนยื่น</button>
+            <button class="btn btn-secondary" onClick="{{ noop }}" style="background:var(--color-bg)">ดาวน์โหลด Word / PDF</button>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ══ REPORT STUDIO ══ -->
+      <sc-if value="{{ atStudio }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:22px 24px 48px">
+        <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:14px">
+          <div class="card-kicker" style="margin:0;color:var(--color-accent-700)">สตูดิโอรายงาน / AI REPORT STUDIO</div>
+          <span style="font-size:13px;color:var(--color-neutral-600)">โซลาร์ฟาร์ม ลพบุรี 1 · รายงาน CoP ขั้นต้น · ฉบับร่าง v0.4</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:0;background:transparent;border:2px solid var(--color-divider)">
+
+          <div style="flex:1 1 200px;min-width:190px;background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:16px 0">
+            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);padding:0 16px 10px">บทในรายงาน</div>
+            <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="6">
+              <button onClick="{{ c.go }}" style="{{ c.style }}">
+                <span style="display:flex;justify-content:space-between;gap:8px;align-items:center;width:100%">
+                  <span style="font-size:13px;font-weight:600;line-height:1.35;text-align:left">{{ c.num }} {{ c.title }}</span>
+                  <span style="{{ c.dotStyle }}"></span>
+                </span>
+                <span style="font-size:10px;color:var(--color-neutral-600);letter-spacing:.06em;text-transform:uppercase;text-align:left">{{ c.statusText }}</span>
+              </button>
+            </sc-for>
+            <div style="padding:14px 16px 0;margin-top:10px;border-top:2px solid var(--color-divider)">
+              <div style="font-size:11px;color:var(--color-neutral-600);line-height:1.55">อนุมัติแล้ว 2 จาก 7 บท<br>ล็อกบทที่อนุมัติไว้ไม่ให้ AI เขียนทับ</div>
+            </div>
+          </div>
+
+          <div style="flex:3 1 420px;min-width:320px;background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:20px 22px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding-bottom:12px;border-bottom:2px solid var(--color-divider)">
+              <button class="btn btn-secondary" onClick="{{ draft }}" style="font-size:12px">ร่างหัวข้อนี้ด้วย AI</button>
+              <button class="btn btn-secondary" onClick="{{ noop }}" style="font-size:12px">ปรับสำนวน</button>
+              <button class="btn btn-secondary" onClick="{{ goPreflight }}" style="font-size:12px">ตรวจความสอดคล้องกับ กกพ.</button>
+              <button class="btn btn-secondary" onClick="{{ noop }}" style="font-size:12px">สร้างตาราง</button>
+              <button class="btn btn-secondary" onClick="{{ noop }}" style="font-size:12px">หาหลักฐานสนับสนุน</button>
+            </div>
+            <div style="margin-top:18px">
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <span class="tag" style="background:var(--st-info-bg);color:var(--st-info)">หัวข้อบังคับ · แก้ไขชื่อไม่ได้</span>
+                <span style="font-size:11px;color:var(--color-neutral-600)">กำหนดโดยแบบรายงานของ กกพ.</span>
+              </div>
+              <h2 style="margin:10px 0 4px;font-size:26px;font-weight:700">{{ curTitle }}</h2>
+              <div style="font-size:12px;color:var(--color-neutral-600);margin-bottom:16px">{{ curMeta }}</div>
+
+              <sc-if value="{{ curBody }}" hint-placeholder-val="{{ false }}">
+                <div style="border:1px solid var(--color-divider);background:var(--color-surface);padding:20px 22px;line-height:1.9;font-size:15px">
+                  <sc-for list="{{ curParas }}" as="p" hint-placeholder-count="3">
+                    <p style="margin:0 0 14px">{{ p.text }}</p>
+                  </sc-for>
+                  <div style="border-left:3px solid var(--st-bad);background:var(--st-bad-bg);padding:11px 14px;margin-top:4px">
+                    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--st-bad);font-weight:600">ยังไม่ยุติ · ไม่มีหลักฐานรองรับ</div>
+                    <div style="font-size:13px;color:var(--st-bad);margin-top:4px;line-height:1.6">ผลตรวจคุณภาพน้ำใต้ดินรอบนี้ยังไม่เข้าระบบ COP24 จะไม่เขียนค่าใด ๆ ลงในช่องนี้และจะไม่ยอมให้ปิดบทนี้จนกว่าจะมีผลจากห้องปฏิบัติการ</div>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ curEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="border:2px dashed var(--color-divider);background:var(--color-surface);padding:34px;text-align:center">
+                  <div style="font-family:var(--font-heading);font-weight:800;font-size:18px">ยังไม่มีเนื้อหาในบทนี้</div>
+                  <div style="font-size:13px;color:var(--color-neutral-700);margin-top:6px;max-width:420px;margin-inline:auto;line-height:1.6">COP24 มีหลักฐานที่เกี่ยวข้องกับบทนี้แล้ว 11 รายการ และรู้ว่าแบบรายงานของ กกพ. ต้องการอะไรบ้าง</div>
+                  <button class="btn btn-primary" onClick="{{ draft }}" style="margin-top:16px">ร่างหัวข้อนี้ด้วย AI</button>
+                </div>
+              </sc-if>
+
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:2px solid var(--color-divider)">
+                <button class="btn btn-primary" onClick="{{ noop }}">อนุมัติและล็อกบทนี้</button>
+                <button class="btn btn-secondary" onClick="{{ noop }}">ส่งให้ผู้มีคุณวุฒิตรวจ</button>
+                <span style="font-size:12px;color:var(--color-neutral-600);align-self:center">สถานะปล่อยผ่าน: ร่างโดย AI → หลักฐานครบ → พร้อมรับรอง → อนุมัติให้ยื่น</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:1 1 260px;min-width:250px;background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:18px 18px 24px">
+            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:10px">ข้อกำหนดที่บังคับบทนี้</div>
+            <div style="border:1px solid var(--color-divider);background:var(--color-surface);padding:14px">
+              <div style="font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.02em">ERC-CoP-SOLAR-0312</div>
+              <div style="font-size:12px;color:var(--color-neutral-700);margin-top:6px;line-height:1.6">ต้องบรรยายสภาพแวดล้อมปัจจุบันของพื้นที่โครงการและพื้นที่ข้างเคียงในรัศมีที่กำหนด พร้อมข้อมูลคุณภาพอากาศ ระดับเสียง คุณภาพน้ำ และการใช้ประโยชน์ที่ดิน</div>
+              <div style="font-size:11px;color:var(--color-neutral-600);margin-top:8px">ระเบียบ กกพ. พ.ศ. 2565 · แก้ไขเพิ่มเติม พ.ศ. 2567 · มีผล 2024-03-01</div>
+              <button class="btn btn-ghost" onClick="{{ noop }}" style="font-size:12px;margin-top:6px">ⓘ อธิบายข้อกำหนดนี้</button>
+            </div>
+
+            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);margin:18px 0 10px">หลักฐานที่ผูกกับบทนี้</div>
+            <sc-for list="{{ evidence }}" as="e" hint-placeholder-count="4">
+              <div style="border-bottom:1px solid var(--color-divider);padding:9px 0;display:flex;gap:9px;align-items:flex-start">
+                <span style="{{ e.markStyle }}">{{ e.mark }}</span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12px;font-weight:600;line-height:1.4">{{ e.name }}</div>
+                  <div style="font-size:11px;color:var(--color-neutral-600);line-height:1.4">{{ e.loc }}</div>
+                </div>
+              </div>
+            </sc-for>
+
+            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);margin:18px 0 10px">สิ่งที่ยังขาด</div>
+            <div style="border:1px solid var(--st-bad);background:var(--st-bad-bg);padding:12px">
+              <div style="font-size:12px;font-weight:600;color:var(--st-bad);line-height:1.45">ผลวิเคราะห์คุณภาพน้ำใต้ดิน รอบปัจจุบัน</div>
+              <div style="font-size:11px;color:var(--st-bad);margin-top:4px;line-height:1.5">ขอจากหน่วยสิ่งแวดล้อมประจำไซต์แล้ว · รอตอบกลับ 3 วัน</div>
+              <button class="btn btn-ghost" onClick="{{ goDocs }}" style="font-size:12px;color:var(--st-bad);padding-inline:0;margin-top:4px">ติดตามคำขอ →</button>
+            </div>
+
+            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);margin:18px 0 10px">AI ทำอะไรให้ได้บ้าง</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <button class="btn btn-secondary" onClick="{{ noop }}" style="justify-content:flex-start;font-size:12px;font-weight:400">เทียบกับรายงานปีที่แล้ว</button>
+              <button class="btn btn-secondary" onClick="{{ noop }}" style="justify-content:flex-start;font-size:12px;font-weight:400">สรุปข้อสมมติที่ใช้ในบทนี้</button>
+              <button class="btn btn-secondary" onClick="{{ noop }}" style="justify-content:flex-start;font-size:12px;font-weight:400">ขอข้อมูลที่ขาดจากผู้รับผิดชอบ</button>
+              <button class="btn btn-secondary" onClick="{{ goXray }}" style="justify-content:flex-start;font-size:12px;font-weight:400">ให้ผู้ตรวจจำลองท้วงบทนี้</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ══ PREFLIGHT ══ -->
+      <sc-if value="{{ atPreflight }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 32px 72px;max-width:1080px">
+        <div class="card-kicker" style="color:var(--color-accent-700)">ตรวจก่อนยื่น / ERC PREFLIGHT VALIDATOR</div>
+        <h1 style="font-size:34px;margin:4px 0 8px;letter-spacing:-0.025em">ผลตรวจ 9 ชั้น</h1>
+        <p class="text-muted" style="max-width:680px;font-size:15px">ผ่านการตรวจอัตโนมัติไม่เท่ากับได้รับความเห็นชอบจาก กกพ. — ผลนี้บอกได้แค่ว่ารายงานไม่มีข้อบกพร่องที่ตรวจพบได้ด้วยเครื่อง</p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:0;background:transparent;border:2px solid var(--color-divider);margin-top:22px">
+          <div style="flex:1 1 220px;background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px">
+            <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">สถานะร่างปัจจุบัน</div>
+            <div style="font-family:var(--font-heading);font-weight:800;font-size:26px;line-height:1.2;margin-top:4px">หลักฐานยังไม่ครบ</div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:6px;line-height:1.55">ยังยกระดับเป็น “พร้อมให้ผู้มีคุณวุฒิรับรอง” ไม่ได้</div>
+          </div>
+          <div style="flex:2 1 380px;background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px">
+            <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:12px">เกณฑ์การปล่อยผ่าน</div>
+            <div style="display:flex;flex-wrap:wrap;gap:0;align-items:stretch">
+              <div style="flex:1 1 110px;background:var(--color-accent);color:var(--on-accent);padding:10px 12px"><div style="font-size:10px;opacity:.85">ขั้นที่ 1</div><div style="font-size:12px;font-weight:600;line-height:1.3">ร่างโดย AI แล้ว</div></div>
+              <div style="flex:1 1 110px;background:var(--color-neutral-300);padding:10px 12px"><div style="font-size:10px;color:var(--color-neutral-700)">ขั้นที่ 2</div><div style="font-size:12px;font-weight:600;line-height:1.3">หลักฐานครบ</div></div>
+              <div style="flex:1 1 110px;background:var(--color-neutral-200);padding:10px 12px"><div style="font-size:10px;color:var(--color-neutral-600)">ขั้นที่ 3</div><div style="font-size:12px;font-weight:600;line-height:1.3;color:var(--color-neutral-600)">พร้อมรับรอง</div></div>
+              <div style="flex:1 1 110px;background:var(--color-neutral-200);padding:10px 12px"><div style="font-size:10px;color:var(--color-neutral-600)">ขั้นที่ 4</div><div style="font-size:12px;font-weight:600;line-height:1.3;color:var(--color-neutral-600)">อนุมัติให้ยื่น</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;border-top:2px solid var(--color-divider)">
+          <sc-for list="{{ layers }}" as="l" hint-placeholder-count="9">
+            <div style="border-bottom:1px solid var(--color-divider)">
+              <button onClick="{{ l.go }}" style="width:100%;display:flex;gap:14px;align-items:center;background:transparent;border:0;padding:15px 4px;cursor:pointer;text-align:left" style-hover="background:color-mix(in srgb,var(--color-text) 4%,transparent)">
+                <span style="{{ l.markStyle }}">{{ l.mark }}</span>
+                <span style="flex:1;min-width:0">
+                  <span style="display:block;font-size:15px;font-weight:600;line-height:1.35">{{ l.name }}</span>
+                  <span style="display:block;font-size:12px;color:var(--color-neutral-600);margin-top:2px;line-height:1.5">{{ l.what }}</span>
+                </span>
+                <span class="tag" style="{{ l.tagStyle }}">{{ l.status }}</span>
+              </button>
+              <sc-if value="{{ l.open }}" hint-placeholder-val="{{ false }}">
+                <div style="background:var(--color-surface);border-left:3px solid var(--color-accent);padding:16px 18px;margin:0 0 14px">
+                  <div style="font-size:13px;line-height:1.75">{{ l.detail }}</div>
+                  <div style="font-size:11px;color:var(--color-neutral-600);margin-top:8px">อ้างอิง: {{ l.ref }}</div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
+          <button class="btn btn-primary" onClick="{{ goDocs }}">ไปปิดประเด็นที่ค้าง →</button>
+          <button class="btn btn-secondary" onClick="{{ noop }}">ส่งออกชุดเอกสารสำหรับยื่น</button>
+          <button class="btn btn-secondary" onClick="{{ noop }}">พิมพ์รายงานผลตรวจ</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ══ X-RAY ══ -->
+      <sc-if value="{{ atXray }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 32px 72px;max-width:1080px">
+        <div class="card-kicker" style="color:var(--color-accent-700)">เอกซเรย์รายงานเดิม / ERC COMPLIANCE X-RAY</div>
+        <h1 style="font-size:34px;margin:4px 0 8px;letter-spacing:-0.025em">รายงานที่ที่ปรึกษาทำไว้ ใช้ยื่นได้จริงไหม</h1>
+        <p class="text-muted" style="max-width:660px;font-size:15px">อัปโหลดรายงาน CoP ที่มีอยู่ COP24 จะเทียบกับชุดกฎที่บังคับใช้จริง แล้วคืนผลเป็นช่องว่างรายบท ข้อความที่ไม่มีหลักฐานรองรับ และข้อมูลที่ขัดแย้งกันเอง</p>
+
+        <div style="border:2px dashed var(--color-divider);background:var(--color-surface);padding:26px;margin-top:22px;display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+          <div style="flex:1 1 300px;min-width:0">
+            <div style="font-family:var(--font-heading);font-weight:800;font-size:17px">รายงาน CoP ขั้นต้น ลพบุรี 1 (ฉบับที่ปรึกษา).pdf</div>
+            <div style="font-size:12px;color:var(--color-neutral-600);margin-top:4px">184 หน้า · 24.8 MB · อัปโหลดเมื่อ 2 นาทีที่แล้ว</div>
+          </div>
+          <button class="btn btn-primary" onClick="{{ startXray }}" style="min-height:44px;padding-inline:20px">{{ xrayCta }}</button>
+        </div>
+
+        <sc-if value="{{ xrayRunning }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:20px;border:2px solid var(--color-divider);padding:18px">
+            <div style="font-size:14px;font-weight:600;animation:cop-pulse 1.4s ease-in-out infinite">กำลังเทียบ 184 หน้า กับข้อผูกพัน 61 ข้อ…</div>
+            <div style="height:5px;background:var(--color-neutral-300);margin-top:12px;overflow:hidden"><div style="height:5px;width:28%;background:var(--color-accent);animation:cop-sweep 1.1s linear infinite"></div></div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ xrayDone }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;background:transparent;border:2px solid var(--color-divider);margin-top:24px">
+            <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px">
+              <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ความสอดคล้องโดยรวม</div>
+              <div style="font-family:var(--font-heading);font-weight:800;font-size:44px;line-height:1.05;color:var(--st-warn)">63<span style="font-size:20px;color:var(--color-neutral-600)">/100</span></div>
+            </div>
+            <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px"><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">หัวข้อบังคับที่ขาด</div><div style="font-family:var(--font-heading);font-weight:800;font-size:30px;line-height:1.15">4</div><div style="font-size:12px;color:var(--color-neutral-700);margin-top:3px">จากทั้งหมด 7 บท</div></div>
+            <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px"><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ข้อความไร้หลักฐาน</div><div style="font-family:var(--font-heading);font-weight:800;font-size:30px;line-height:1.15;color:var(--st-bad)">19</div><div style="font-size:12px;color:var(--color-neutral-700);margin-top:3px">อ้างผลโดยไม่มีเอกสารแนบ</div></div>
+            <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px"><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ข้อมูลขัดแย้งกันเอง</div><div style="font-family:var(--font-heading);font-weight:800;font-size:30px;line-height:1.15;color:var(--st-bad)">5</div><div style="font-size:12px;color:var(--color-neutral-700);margin-top:3px">ตัวเลขไม่ตรงกันระหว่างบท</div></div>
+          </div>
+
+          <div style="margin-top:20px;border:2px solid var(--color-accent);background:var(--color-accent-100);padding:18px">
+            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:5px">แปลผลให้ฟัง</div>
+            <div style="font-size:15px;font-weight:600;line-height:1.5">63/100 หมายความว่ารายงานฉบับนี้มีโครงสร้างใช้ได้ แต่ยังยื่นไม่ได้</div>
+            <div style="font-size:13px;color:var(--color-accent-900);margin-top:6px;line-height:1.7">ปัญหาหลักไม่ใช่การเขียน แต่เป็นหลักฐาน: ข้อความ 19 จุดอ้างผลการตรวจวัดโดยไม่มีเอกสารแนบ และกำลังผลิตติดตั้งในบทที่ 2 (48 MW) ไม่ตรงกับบทที่ 5 (45 MW) ซึ่งเป็นประเด็นที่ผู้ตรวจของ กกพ. มักท้วงเป็นอันดับแรก</div>
+            <button class="btn btn-primary" onClick="{{ goStudio }}" style="margin-top:12px">ให้ COP24 ซ่อมให้ →</button>
+          </div>
+
+          <h3 style="margin:28px 0 10px;font-size:22px">ช่องว่างรายบท</h3>
+          <div style="border:2px solid var(--color-divider);overflow-x:auto">
+            <table class="table" style="min-width:680px">
+              <thead><tr><th style="width:30%">บท</th><th>สิ่งที่ตรวจพบ</th><th style="width:130px">ความรุนแรง</th></tr></thead>
+              <tbody>
+                <sc-for list="{{ xrayRows }}" as="x" hint-placeholder-count="7">
+                  <tr>
+                    <td style="vertical-align:top;font-weight:600;line-height:1.4">{{ x.ch }}</td>
+                    <td style="vertical-align:top;font-size:13px;color:var(--color-neutral-700);line-height:1.6">{{ x.finding }}</td>
+                    <td style="vertical-align:top"><span class="tag" style="{{ x.tagStyle }}">{{ x.sev }}</span></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ══ MISSION MODE ══ -->
+      <sc-if value="{{ atMission }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 32px 72px;max-width:1080px">
+        <div class="card-kicker" style="color:var(--color-accent-700)">ภารกิจ AGI / AGI MISSION MODE</div>
+        <h1 style="font-size:34px;margin:4px 0 8px;letter-spacing:-0.025em">บอกผลลัพธ์ที่ต้องการ ทีมเอเจนต์จะจัดลำดับงานเอง</h1>
+        <p class="text-muted" style="max-width:660px;font-size:15px">เอเจนต์ร่าง วิเคราะห์ สกัดข้อมูล และขอข้อมูลเพิ่มได้ แต่จะไม่สร้างผลตรวจวัดขึ้นเอง ไม่รับรองผลห้องปฏิบัติการ และไม่ยื่นรายงานแทนคุณ</p>
+
+        <div style="border:2px solid var(--color-divider);background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:20px;margin-top:22px">
+          <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600)">คำสั่งภารกิจ</div>
+          <div style="font-family:var(--font-heading);font-weight:800;font-size:20px;line-height:1.4;margin-top:6px">“เตรียมรายงาน CoP ขั้นต้นของโซลาร์ฟาร์ม ลพบุรี 1 ใช้เอกสารที่มีอยู่ แล้วบอกผมเฉพาะสิ่งที่ยังขาด”</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+            <button class="btn btn-primary" onClick="{{ startMission }}">{{ missionCta }}</button>
+            <button class="btn btn-secondary" onClick="{{ noop }}" style="background:var(--color-bg)">เลือกภารกิจอื่นจากแคตตาล็อก</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0;background:transparent;border:2px solid var(--color-divider);margin-top:22px">
+          <sc-for list="{{ agents }}" as="g" hint-placeholder-count="4">
+            <div style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);padding:18px;display:flex;flex-direction:column;gap:8px;min-height:190px">
+              <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+                <div>
+                  <div style="font-family:var(--font-heading);font-weight:800;font-size:16px;line-height:1.25">{{ g.name }}</div>
+                  <div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-600);margin-top:2px">{{ g.en }}</div>
+                </div>
+                <span class="tag" style="{{ g.tagStyle }}">{{ g.status }}</span>
+              </div>
+              <div style="font-size:12px;color:var(--color-neutral-700);line-height:1.6;flex:1">{{ g.job }}</div>
+              <div style="border-top:1px solid var(--color-divider);padding-top:8px;font-size:11px;color:var(--color-neutral-600);line-height:1.5">{{ g.log }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ mDone }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:24px;border:2px solid var(--color-accent);background:var(--color-accent-100);padding:22px">
+          <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700)">ผลภารกิจ</div>
+          <h3 style="margin:6px 0 12px;font-size:23px">ร่างเสร็จแล้ว เหลือ 6 เรื่องที่ต้องให้คนตัดสิน</h3>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;gap:10px;font-size:14px;line-height:1.55"><span style="color:var(--st-ok);font-weight:800">✓</span><span>ร่างรายงาน 7 บท พร้อมดัชนีหลักฐาน 412 รายการ</span></div>
+            <div style="display:flex;gap:10px;font-size:14px;line-height:1.55"><span style="color:var(--st-ok);font-weight:800">✓</span><span>แบบฟอร์มหน้าปกและหนังสือรับรองกรอกครบตามแบบของ กกพ.</span></div>
+            <div style="display:flex;gap:10px;font-size:14px;line-height:1.55"><span style="color:var(--st-bad);font-weight:800">!</span><span>ผลคุณภาพน้ำใต้ดินและเสียงรอบดึกยังไม่มี — ส่งคำขอไปที่ไซต์แล้ว</span></div>
+            <div style="display:flex;gap:10px;font-size:14px;line-height:1.55"><span style="color:var(--st-warn);font-weight:800">?</span><span>กำลังผลิตติดตั้งระหว่างใบอนุญาตกับแบบผังไม่ตรงกัน ต้องให้วิศวกรโครงการยืนยัน</span></div>
+            <div style="display:flex;gap:10px;font-size:14px;line-height:1.55"><span style="color:var(--color-neutral-600);font-weight:800">→</span><span>รอผู้มีคุณวุฒิลงนามรับรองก่อนเปลี่ยนสถานะเป็น “อนุมัติให้ยื่น”</span></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
+            <button class="btn btn-primary" onClick="{{ goStudio }}">เปิดร่างในสตูดิโอ →</button>
+            <button class="btn btn-secondary" onClick="{{ goDocs }}" style="background:var(--color-bg)">ดูรายการที่ยังขาด</button>
+          </div>
+        </div>
+        </sc-if>
+
+        <hr class="hr" style="margin:30px 0 18px">
+        <h3 style="margin:0 0 12px;font-size:21px">แคตตาล็อกภารกิจ</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(224px,1fr));gap:0;background:transparent;border:2px solid var(--color-divider)">
+          <sc-for list="{{ catalog }}" as="c" hint-placeholder-count="10">
+            <button onClick="{{ c.go }}" style="background:var(--color-bg);box-shadow:0 0 0 1px var(--color-divider);border:0;padding:15px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px" style-hover="background:var(--color-accent-100)">
+              <span style="font-size:14px;font-weight:600;line-height:1.35">{{ c.t }}</span>
+              <span style="font-size:11px;color:var(--color-neutral-600);line-height:1.45">{{ c.d }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ══ MONITORING ══ -->
+      <sc-if value="{{ atMonitor }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 32px 72px;max-width:1180px">
+        <div class="card-kicker" style="color:var(--color-accent-700)">ปฏิทินการติดตาม / MONITORING CONTROL</div>
+        <h1 style="font-size:34px;margin:4px 0 8px;letter-spacing:-0.025em">ทะเบียนมาตรการต่อหลักฐาน</h1>
+        <p class="text-muted" style="max-width:700px;font-size:15px">เมื่อรายงาน CoP ขั้นสุดท้ายได้รับความเห็นชอบ ทุกมาตรการจะกลายเป็นรายการที่มีผู้รับผิดชอบ ความถี่ หลักฐานที่ต้องเก็บ และปลายทางในรายงาน — นี่คือสิ่งที่ทำให้ปีถัดไปเหลือแค่ตรวจทาน</p>
+
+        <div style="margin-top:22px;border:2px solid var(--color-divider);background:var(--color-surface);padding:18px;overflow-x:auto">
+          <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:12px">ปฏิทินรอบรายงาน 2570 · โรงไฟฟ้าแบบไม่มีการเผาไหม้ — รายงานปีละครั้ง</div>
+          <div style="display:flex;gap:2px;min-width:620px">
+            <sc-for list="{{ months }}" as="mo" hint-placeholder-count="12">
+              <div style="{{ mo.style }}">
+                <div style="font-size:11px;font-weight:600">{{ mo.label }}</div>
+                <div style="font-size:9px;letter-spacing:.06em;text-transform:uppercase;margin-top:3px;line-height:1.3">{{ mo.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-size:12px;color:var(--color-neutral-700);margin-top:12px;line-height:1.6">COP24 ตรวจสอบกำหนดเวลานี้กับเงื่อนไขในใบอนุญาตของโรงไฟฟ้าแต่ละแห่งเสมอ ไม่ได้ใช้ปฏิทินมาตรฐานโดยอัตโนมัติ</div>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:baseline;margin-top:30px">
+          <h3 style="margin:0;font-size:22px">ทะเบียนมาตรการต่อหลักฐาน</h3>
+          <span style="font-size:12px;color:var(--color-neutral-600)">38 มาตรการ · เก็บหลักฐานแล้ว 31 · เกินกำหนด 2</span>
+        </div>
+        <div style="margin-top:14px;border:2px solid var(--color-divider);overflow-x:auto">
+          <table class="table" style="min-width:860px">
+            <thead><tr><th style="width:28%">มาตรการตามที่ได้รับความเห็นชอบ</th><th style="width:16%">ผู้รับผิดชอบ</th><th style="width:13%">ความถี่</th><th>หลักฐานที่ต้องมี</th><th style="width:14%">ปลายทางในรายงาน</th><th style="width:110px">สถานะ</th></tr></thead>
+            <tbody>
+              <sc-for list="{{ register }}" as="r" hint-placeholder-count="6">
+                <tr>
+                  <td style="vertical-align:top;font-weight:600;line-height:1.45">{{ r.measure }}</td>
+                  <td style="vertical-align:top;font-size:13px;color:var(--color-neutral-700)">{{ r.owner }}</td>
+                  <td style="vertical-align:top;font-size:13px;color:var(--color-neutral-700)">{{ r.freq }}</td>
+                  <td style="vertical-align:top;font-size:13px;color:var(--color-neutral-700);line-height:1.5">{{ r.evidence }}</td>
+                  <td style="vertical-align:top;font-size:12px;color:var(--color-neutral-600)">{{ r.dest }}</td>
+                  <td style="vertical-align:top"><span class="tag" style="{{ r.tagStyle }}">{{ r.status }}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:22px;border-left:3px solid var(--color-accent);background:var(--color-accent-100);padding:16px 18px;max-width:760px">
+          <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:4px">ยกยอดอัตโนมัติ · Smart Carry Forward</div>
+          <div style="font-size:14px;line-height:1.7">รายงานรอบถัดไปจะดึงข้อมูลที่ได้รับความเห็นชอบแล้วมาตั้งต้นให้เอง และทำเครื่องหมายเฉพาะส่วนที่ข้อเท็จจริงเปลี่ยนไป ผลตรวจวัดสิ่งแวดล้อมจะถูกจัดเป็นตารางและกราฟเทียบย้อนหลังอย่างน้อยสามปีตามที่ระเบียบกำหนด</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ══ PORTFOLIO ══ -->
+      <sc-if value="{{ atPortfolio }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 32px 72px;max-width:1240px">
+        <div class="card-kicker" style="color:var(--color-accent-700)">พอร์ตโฟลิโอ / PORTFOLIO &amp; ADVISOR CENTER</div>
+        <h1 style="font-size:34px;margin:4px 0 8px;letter-spacing:-0.025em">หลายโรงไฟฟ้า หลายลูกค้า หน้าจอเดียว</h1>
+        <p class="text-muted" style="max-width:680px;font-size:15px">สำหรับที่ปรึกษาและเจ้าของพอร์ต: เรียงตามความเสี่ยงที่จะยื่นไม่ทันหรือยื่นแล้วถูกตีกลับ ไม่ใช่เรียงตามตัวอักษร</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0;background:transparent;border:2px solid var(--color-divider);margin-top:22px">
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:18px"><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">โรงไฟฟ้าในพอร์ต</div><div style="font-family:var(--font-heading);font-weight:800;font-size:32px">14</div></div>
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:18px"><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">ครบกำหนดใน 60 วัน</div><div style="font-family:var(--font-heading);font-weight:800;font-size:32px">5</div></div>
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:18px"><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">มีความเสี่ยงถูกตีกลับ</div><div style="font-family:var(--font-heading);font-weight:800;font-size:32px;color:var(--st-bad)">3</div></div>
+          <div style="background:var(--color-surface);box-shadow:0 0 0 1px var(--color-divider);padding:18px"><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-600)">รอคุณรับรอง</div><div style="font-family:var(--font-heading);font-weight:800;font-size:32px">7</div></div>
+        </div>
+
+        <div style="margin-top:20px;border:2px solid var(--color-divider);overflow-x:auto">
+          <table class="table" style="min-width:880px">
+            <thead><tr><th style="width:24%">โรงไฟฟ้า</th><th style="width:13%">เทคโนโลยี</th><th style="width:17%">รายงานที่ต้องยื่น</th><th style="width:18%">ความพร้อม</th><th style="width:13%">กำหนดยื่น</th><th style="width:130px">ความเสี่ยง</th></tr></thead>
+            <tbody>
+              <sc-for list="{{ plants }}" as="p" hint-placeholder-count="7">
+                <tr>
+                  <td style="vertical-align:top">
+                    <div style="font-weight:600;line-height:1.4">{{ p.name }}</div>
+                    <div style="font-size:11px;color:var(--color-neutral-600)">{{ p.client }}</div>
+                  </td>
+                  <td style="vertical-align:top;font-size:13px;color:var(--color-neutral-700)">{{ p.tech }}</td>
+                  <td style="vertical-align:top;font-size:13px;color:var(--color-neutral-700)">{{ p.report }}</td>
+                  <td style="vertical-align:top">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div style="flex:1;height:6px;background:var(--color-neutral-300);min-width:60px"><div style="{{ p.barStyle }}"></div></div>
+                      <span style="font-size:12px;font-weight:600;min-width:34px">{{ p.ready }}</span>
+                    </div>
+                  </td>
+                  <td style="vertical-align:top;font-size:13px;color:var(--color-neutral-700)">{{ p.due }}</td>
+                  <td style="vertical-align:top"><span class="tag" style="{{ p.tagStyle }}">{{ p.risk }}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:22px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" onClick="{{ goFactory }}">สร้างร่างชุดให้ทุกโรงที่ครบกำหนด →</button>
+          <button class="btn btn-secondary" onClick="{{ noop }}">เปิดพอร์ทัลลูกค้า</button>
+          <button class="btn btn-secondary" onClick="{{ noop }}">ส่งออกสรุปสถานะให้ผู้บริหาร</button>
+        </div>
+      </div>
+      </sc-if>
+
+    </main>
+  </div>
+
+  <footer style="border-top:2px solid var(--color-divider);padding:18px 24px;display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+    <span style="font-family:var(--font-heading);font-weight:800;font-size:13px">COP24</span>
+    <span style="font-size:12px;color:var(--color-neutral-600);flex:1;min-width:220px;line-height:1.5">ต้นแบบเชิงแนวคิด · ข้อมูลทั้งหมดเป็นตัวอย่างสมมติ · COP24 เป็นชั้นเตรียมและตรวจสอบก่อนยื่น ไม่ได้ยื่นรายงานเข้าระบบของ กกพ. แทนผู้ประกอบการ</span>
+    <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-600)">24 Series Universal UX Standard</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;easy&quot;,&quot;professional&quot;,&quot;agi&quot;],&quot;default&quot;:&quot;professional&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;โหมดการใช้งาน&quot;},&quot;evidenceGuard&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;โหมดการใช้งาน&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f5c518&quot;,&quot;options&quot;:[&quot;#f5c518&quot;,&quot;#ffd400&quot;,&quot;#e8b008&quot;,&quot;#1b3a8c&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;ธีม&quot;}}">
+class Component extends DCLogic {
+  state = { screen:'home', role:'owner', goal:'', chapter:'env', drafted:false,
+    fRun:false, fStep:0, fDone:false, docFilter:'all', why:false,
+    mRun:false, mStep:0, mDone:false, xray:'idle', openLayer:'struct', showAll:false };
+
+  componentDidMount(){ this.applyAccent(); }
+  componentDidUpdate(prev){ if(prev.accentColor !== this.props.accentColor) this.applyAccent(); }
+  componentWillUnmount(){ clearInterval(this._ft); clearInterval(this._mt); clearTimeout(this._xt); }
+  applyAccent(){
+    const a = this.props.accentColor || '#f5c518';
+    document.documentElement.style.setProperty('--color-accent', a);
+    document.documentElement.style.setProperty('--on-accent', this.inkOn(a));
+  }
+
+  inkOn(hex){
+    const m = String(hex).trim().replace('#','');
+    const n = m.length === 3 ? m.split('').map(c => c + c).join('') : m;
+    const v = [0,2,4].map(i => parseInt(n.slice(i, i + 2), 16) / 255)
+      .map(c => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+    const L = 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+    const ratio = l => (Math.max(L, l) + 0.05) / (Math.min(L, l) + 0.05);
+    // 0.0126 = luminance of #101c3a (navy ink), 0.9456 = luminance of #f7f9fc
+    return ratio(0.0126) >= ratio(0.9456) ? '#101c3a' : '#f7f9fc';
+  }
+
+  go(k){ return () => this.setState({ screen:k }); }
+
+  factorySteps = [
+    { t:'อ่านและจัดหมวดหมู่เอกสารโครงการ', d:'128 ไฟล์ · PDF แบบสแกน 41 ไฟล์ ผ่าน OCR · ไฟล์ซ้ำ 6 ไฟล์ถูกรวม' },
+    { t:'ระบุชุดกฎ กกพ. ที่บังคับใช้กับโครงการนี้', d:'ERC-CoP-SOLAR-GROUND 2024.1 · 61 ข้อผูกพัน · ไม่เข้าข่าย IEE/EIA' },
+    { t:'สกัดข้อเท็จจริงโครงการและผูกกับหน้าต้นฉบับ', d:'412 ข้อเท็จจริง · ทุกค่ามีเลขหน้าและชื่อไฟล์กำกับ' },
+    { t:'สร้างตารางและชุดข้อมูลสิ่งแวดล้อม', d:'17 ตาราง · 4 กราฟเปรียบเทียบ · หน่วยและวิธีวิเคราะห์ถูกตรวจแล้ว' },
+    { t:'เขียนร่างทุกบทของรายงาน CoP ขั้นต้น', d:'7 บท ตามแบบรายงานของ กกพ. · หัวข้อบังคับถูกล็อกไว้' },
+    { t:'ตรวจความครบถ้วนและความขัดแย้ง 9 ชั้น', d:'พบประเด็นค้าง 6 รายการ · ไม่มีการเติมค่าที่ไม่มีแหล่งอ้างอิง' }
+  ];
+
+  startFactory = () => {
+    if(this.state.fRun) return;
+    this.setState({ fRun:true, fStep:0, fDone:false });
+    this._ft = setInterval(() => {
+      this.setState(s => {
+        const n = s.fStep + 1;
+        if(n >= this.factorySteps.length){ clearInterval(this._ft); return { fStep:this.factorySteps.length, fRun:false, fDone:true }; }
+        return { fStep:n };
+      });
+    }, 950);
+  };
+
+  agentDefs = [
+    { name:'เอเจนต์ด้านกฎระเบียบ', en:'Regulation Agent', job:'ตรวจว่าโครงการเข้าข่ายระเบียบใด ดึงข้อผูกพันที่บังคับใช้ และตรึงเวอร์ชันของกฎไว้กับร่างฉบับนี้',
+      logs:['รอคิว','กำลังเทียบประเภทโครงการกับระเบียบ 2565/2567','ตรึงชุดกฎ SOLAR-GROUND 2024.1 · 61 ข้อผูกพัน','ตรึงชุดกฎ SOLAR-GROUND 2024.1 · 61 ข้อผูกพัน'] },
+    { name:'เอเจนต์ด้านเอกสาร', en:'Document Agent', job:'จัดหมวดหมู่ไฟล์ สกัดข้อเท็จจริง ตรวจความสมบูรณ์ของเอกสาร และร่างคำขอเอกสารที่ขาด',
+      logs:['รอคิว','รอชุดกฎจากเอเจนต์กฎระเบียบ','OCR 41 ไฟล์ · ผูกหลักฐาน 29/34 ข้อผูกพัน','ส่งคำขอ 2 ฉบับไปที่หน่วยสิ่งแวดล้อมประจำไซต์'] },
+    { name:'เอเจนต์ด้านรายงาน', en:'Report Agent', job:'เขียนทุกบทตามแบบของ กกพ. สร้างตารางและกราฟ และเว้นช่องที่ไม่มีหลักฐานไว้อย่างชัดเจน',
+      logs:['รอคิว','รอข้อเท็จจริงจากเอเจนต์เอกสาร','กำลังเขียนบทที่ 3–7','ร่างครบ 7 บท · 17 ตาราง · 412 การอ้างอิง'] },
+    { name:'เอเจนต์ตรวจสอบคุณภาพ', en:'QA Agent', job:'ท้วงร่างในมุมของผู้ตรวจ กกพ. จับข้อความที่ไม่มีหลักฐาน และขัดขวางการปล่อยผ่านที่ยังไม่พร้อม',
+      logs:['รอคิว','รอร่างจากเอเจนต์รายงาน','กำลังตรวจ 9 ชั้น','ยับยั้งการปล่อยผ่าน · เหลือ 6 ประเด็นให้คนตัดสิน'] }
+  ];
+
+  startMission = () => {
+    if(this.state.mRun) return;
+    this.setState({ mRun:true, mStep:0, mDone:false });
+    this._mt = setInterval(() => {
+      this.setState(s => {
+        const n = s.mStep + 1;
+        if(n >= 3){ clearInterval(this._mt); return { mStep:3, mRun:false, mDone:true }; }
+        return { mStep:n };
+      });
+    }, 1100);
+  };
+
+  startXray = () => {
+    if(this.state.xray === 'running') return;
+    this.setState({ xray:'running' });
+    this._xt = setTimeout(() => this.setState({ xray:'done' }), 1900);
+  };
+
+  docs = [
+    { name:'ใบอนุญาตผลิตไฟฟ้า', meta:'กกพ.-ผฟ-2567-0412 · PDF 12 หน้า', purpose:'ระบุเงื่อนไขแนบท้ายใบอนุญาตที่กลายเป็นข้อผูกพันในรายงาน', s:[1,1,1], status:'ยอมรับแล้ว', k:'ok' },
+    { name:'แบบผังบริเวณโครงการและแผนที่ที่ตั้ง', meta:'rev.C · DWG + PDF · ขัดแย้งกับ rev.B', purpose:'ยืนยันขอบเขตพื้นที่โครงการ ระยะห่างชุมชน และการวางแผงเซลล์', s:[1,0,-1], status:'ต้องตรวจ', k:'warn' },
+    { name:'รายงานผลวิเคราะห์คุณภาพน้ำใต้ดิน', meta:'ไม่พบในระบบ · ขอไปที่ไซต์แล้ว', purpose:'รองรับมาตรการเฝ้าระวังคุณภาพน้ำตามข้อ ERC-CoP-SOLAR-0317', s:[-1,-1,-1], status:'ขาด', k:'bad' },
+    { name:'ผลตรวจวัดระดับเสียงโดยรอบ', meta:'PDF 8 หน้า · เก็บตัวอย่าง มิ.ย. 2569', purpose:'แสดงระดับเสียงพื้นฐานก่อนเริ่มก่อสร้าง', s:[1,1,0], status:'ต้องตรวจ', k:'warn' },
+    { name:'หนังสือรับรองห้องปฏิบัติการ', meta:'หมดอายุ 31 ส.ค. 2569 · เกินกำหนด', purpose:'ทำให้ผลวิเคราะห์ที่แนบมาใช้อ้างอิงได้ตามระเบียบ', s:[1,-1,-1], status:'ไม่ถูกต้อง', k:'bad' },
+    { name:'บันทึกการรับฟังความคิดเห็นของผู้มีส่วนได้เสีย', meta:'ยังไม่ได้จัดเวที · ตามแผน พ.ย. 2569', purpose:'จำเป็นเมื่อแปลงรายงานขั้นต้นเป็นรายงานขั้นสุดท้าย', s:[-1,0,0], status:'มีเงื่อนไข', k:'cond' },
+    { name:'รายงานการศึกษาธรณีวิทยาและอุทกวิทยา', meta:'PDF 64 หน้า · ลงนามโดยผู้ชำนาญการ', purpose:'ใช้บรรยายสภาพแวดล้อมปัจจุบันในบทที่ 3', s:[1,1,1], status:'ยอมรับแล้ว', k:'ok' },
+    { name:'ภาพถ่ายสภาพพื้นที่ปัจจุบัน', meta:'41 ภาพ · มีพิกัด GPS 38 ภาพ', purpose:'ประกอบการบรรยายพื้นที่และใช้เป็นหลักฐานภาคสนาม', s:[1,0,1], status:'ต้องตรวจ', k:'warn' }
+  ];
+
+  layerDefs = [
+    { id:'elig', name:'ความถูกต้องของระเบียบที่ใช้', what:'โครงการอยู่ภายใต้ CoP จริงหรือควรเป็นระบบรายงานอื่น', k:'ok', status:'ผ่าน',
+      detail:'ยืนยันว่าโครงการผลิตไฟฟ้าพลังงานแสงอาทิตย์แบบติดตั้งบนพื้นดิน 48 MW อยู่ภายใต้ประมวลหลักการปฏิบัติ ไม่เข้าเงื่อนไข IEE/EIA/EHIA ชุดกฎที่ตรึงไว้กับร่างนี้คือ SOLAR-GROUND 2024.1', ref:'ระเบียบ กกพ. พ.ศ. 2565 และที่แก้ไขเพิ่มเติม พ.ศ. 2567' },
+    { id:'struct', name:'โครงสร้างรายงาน', what:'หัวข้อบังคับ แบบฟอร์ม หนังสือรับรอง และเอกสารแนบ', k:'warn', status:'มีข้อสังเกต',
+      detail:'มีครบ 7 บทตามแบบรายงาน แต่แบบฟอร์มหน้าปกยังไม่มีลายมือชื่อผู้มีคุณวุฒิ และเอกสารแนบที่ 4 (สำเนาใบอนุญาตที่รับรองสำเนาถูกต้อง) ยังเป็นไฟล์สแกนที่ไม่มีการรับรอง', ref:'แบบรายงาน CoP ขั้นต้น · ส่วนหน้าปกและหนังสือรับรอง' },
+    { id:'doc', name:'ความครบถ้วนของเอกสาร', what:'หลักฐานบังคับที่ขาดหรือใช้ไม่ได้', k:'bad', status:'ไม่ผ่าน',
+      detail:'ขาดผลวิเคราะห์คุณภาพน้ำใต้ดินของรอบปัจจุบัน และหนังสือรับรองห้องปฏิบัติการหมดอายุตั้งแต่ 31 ส.ค. 2569 ทำให้ผลวิเคราะห์ที่แนบมา 3 ฉบับใช้อ้างอิงไม่ได้', ref:'ERC-CoP-SOLAR-0317 · 0321' },
+    { id:'tech', name:'ความสอดคล้องทางเทคนิค', what:'กำลังผลิต เทคโนโลยี ที่ตั้ง พื้นที่ และข้อกำหนดโรงไฟฟ้า', k:'bad', status:'ไม่ผ่าน',
+      detail:'กำลังผลิตติดตั้งในบทที่ 2 ระบุ 48.0 MW แต่ตารางในบทที่ 5 ระบุ 45.0 MW และใบอนุญาตระบุ 48.0 MW COP24 จะไม่เลือกค่าใดค่าหนึ่งให้เอง ต้องให้วิศวกรโครงการยืนยัน', ref:'ใบอนุญาต หน้า 2 · บทที่ 2 ตาราง 2-1 · บทที่ 5 ตาราง 5-3' },
+    { id:'env', name:'ข้อมูลสิ่งแวดล้อม', what:'ช่วงเวลาตรวจวัด ค่ามาตรฐาน หน่วย วิธีวิเคราะห์ และที่มา', k:'warn', status:'มีข้อสังเกต',
+      detail:'ผลตรวจวัดระดับเสียงใช้ช่วงเวลาเก็บตัวอย่างที่ไม่ครอบคลุมช่วงกลางคืน จึงยังไม่สามารถสรุปเทียบกับค่ามาตรฐานระดับเสียงกลางคืนได้', ref:'ERC-CoP-SOLAR-0309' },
+    { id:'hist', name:'ความสอดคล้องกับข้อมูลเดิม', what:'ความเปลี่ยนแปลงที่ผิดปกติจากรายงานหรือแผนที่เคยเห็นชอบ', k:'ok', status:'ผ่าน',
+      detail:'เป็นรายงานฉบับแรกของโครงการ จึงยังไม่มีข้อมูลย้อนหลังให้เทียบ COP24 บันทึกชุดข้อมูลนี้ไว้เป็นฐานสำหรับรอบถัดไป', ref:'—' },
+    { id:'trace', name:'การสืบย้อนหลักฐาน', what:'ทุกข้อความที่เป็นสาระสำคัญต้องชี้กลับไปยังแหล่งที่มาที่ตรวจแล้ว', k:'warn', status:'มีข้อสังเกต',
+      detail:'ข้อเท็จจริง 406 จาก 412 รายการมีแหล่งอ้างอิงครบ อีก 6 รายการถูกทำเครื่องหมายว่า “ยังไม่ยุติ” และถูกกันไม่ให้ปรากฏเป็นข้อความยืนยันในรายงาน', ref:'ดัชนีหลักฐาน v0.4' },
+    { id:'review', name:'การควบคุมการตรวจและรับรอง', what:'ผู้มีคุณวุฒิที่ต้องตรวจ ลงนาม และอนุมัติ', k:'warn', status:'รอดำเนินการ',
+      detail:'ยังไม่มีผู้มีคุณวุฒิลงนามรับรอง บทที่ 3–7 ยังอยู่ในสถานะร่างโดย AI และยังไม่ถูกล็อก', ref:'แบบหนังสือรับรองของ กกพ.' },
+    { id:'out', name:'การควบคุมไฟล์ผลลัพธ์', what:'PDF ที่ค้นหาข้อความได้ Word ที่แก้ไขได้ แบบฟอร์มและเลขเวอร์ชัน', k:'ok', status:'ผ่าน',
+      detail:'สร้างไฟล์ DOCX และ PDF ที่ฝังชั้นข้อความค้นหาได้ครบ พร้อมตรึงเวอร์ชันชุดกฎและภาพสแนปช็อตของหลักฐานไว้กับรายงานฉบับนี้', ref:'Report v0.4 · rulepack 2024.1' }
+  ];
+
+  chapterDefs = [
+    { id:'profile', num:'1', title:'ข้อมูลทั่วไปของโครงการ', st:'approved', meta:'อนุมัติและล็อกแล้ว · ลงนามโดย ณัฐวุฒิ ส. เมื่อ 2 ต.ค. 2569',
+      paras:['โครงการโรงไฟฟ้าพลังงานแสงอาทิตย์แบบติดตั้งบนพื้นดิน ลพบุรี 1 ดำเนินการโดยบริษัท ลพบุรี กรีน พาวเวอร์ จำกัด ตั้งอยู่ในตำบลบางลี่ อำเภอท่าวุ้ง จังหวัดลพบุรี บนพื้นที่โครงการรวม 412 ไร่ กำลังผลิตติดตั้ง 48.0 เมกะวัตต์ ตามใบอนุญาตผลิตไฟฟ้าเลขที่ กกพ.-ผฟ-2567-0412',
+        'โครงการอยู่ระหว่างขั้นตอนก่อนการก่อสร้าง และจัดทำรายงาน CoP ขั้นต้นเพื่อใช้ประกอบการรับฟังความคิดเห็นของผู้มีส่วนได้เสียตามที่ระเบียบกำหนด'] },
+    { id:'design', num:'2', title:'รายละเอียดการออกแบบโรงไฟฟ้า', st:'approved', meta:'อนุมัติและล็อกแล้ว · มีข้อสังเกตจากการตรวจก่อนยื่น 1 รายการ',
+      paras:['ระบบผลิตไฟฟ้าประกอบด้วยแผงเซลล์แสงอาทิตย์ชนิดผลึกซิลิคอน จำนวน 86,400 แผง ติดตั้งบนโครงสร้างรองรับแบบปรับมุมคงที่ ร่วมกับอินเวอร์เตอร์แบบสตริงรวม 192 ชุด และหม้อแปลงไฟฟ้ากำลัง 4 ชุด',
+        'การเชื่อมโยงระบบไฟฟ้าเข้าสู่สถานีไฟฟ้าย่อยของการไฟฟ้าส่วนภูมิภาคที่ระดับแรงดัน 115 กิโลโวลต์ ผ่านสายส่งระยะทางประมาณ 3.2 กิโลเมตร'] },
+    { id:'env', num:'3', title:'สภาพแวดล้อมปัจจุบันของพื้นที่โครงการ', st:'drafting', meta:'ร่างโดย AI · ยังไม่ได้ตรวจ · อ้างอิง 11 แหล่ง',
+      paras:['พื้นที่โครงการเดิมเป็นพื้นที่เกษตรกรรมประเภทนาข้าวและไร่มันสำปะหลัง สภาพภูมิประเทศเป็นที่ราบ ความลาดชันเฉลี่ยน้อยกว่าร้อยละ 2 ไม่อยู่ในเขตพื้นที่ชุ่มน้ำหรือเขตอนุรักษ์ที่มีการประกาศ ชุมชนที่ใกล้ที่สุดอยู่ห่างจากขอบเขตพื้นที่โครงการประมาณ 680 เมตร ทางทิศตะวันออกเฉียงเหนือ',
+        'ผลตรวจวัดคุณภาพอากาศในบรรยากาศโดยทั่วไป ณ จุดตรวจวัด 3 จุด ระหว่างวันที่ 12–14 มิถุนายน 2569 พบค่าฝุ่นละอองรวมและฝุ่นละอองขนาดไม่เกิน 10 ไมครอน อยู่ในเกณฑ์มาตรฐานทุกจุดตรวจวัด',
+        'ผลตรวจวัดระดับเสียงเฉลี่ย 24 ชั่วโมง ณ จุดตรวจวัด 3 จุด อยู่ระหว่าง 48.2–53.7 เดซิเบลเอ ซึ่งอยู่ในเกณฑ์มาตรฐาน อย่างไรก็ตามช่วงเวลาเก็บตัวอย่างยังไม่ครอบคลุมช่วงกลางคืน จึงยังไม่สามารถสรุปการเปรียบเทียบกับค่ามาตรฐานระดับเสียงกลางคืนได้ในรายงานฉบับนี้'] },
+    { id:'measure', num:'4', title:'มาตรการป้องกันและแก้ไขผลกระทบสิ่งแวดล้อม', st:'todo', meta:'ยังไม่ได้ร่าง · มีหลักฐานที่เกี่ยวข้องรออยู่ 11 รายการ', paras:[] },
+    { id:'monitor', num:'5', title:'มาตรการติดตามตรวจสอบผลกระทบสิ่งแวดล้อม', st:'todo', meta:'ยังไม่ได้ร่าง · มีหลักฐานที่เกี่ยวข้องรออยู่ 8 รายการ', paras:[] },
+    { id:'annex', num:'6', title:'เอกสารแนบและหลักฐานประกอบ', st:'todo', meta:'ประกอบอัตโนมัติเมื่อบทที่ 1–5 ถูกล็อกครบ', paras:[] }
+  ];
+
+  renderVals(){
+    const s = this.state, p = this.props;
+    const mode = p.mode || 'professional';
+    const guard = p.evidenceGuard ?? true;
+    const at = k => s.screen === k;
+
+    const navBtn = active => ({
+      position:'relative', display:'flex', flexDirection:'column', alignItems:'flex-start', gap:'1px',
+      width:'100%', textAlign:'left', background: active ? 'var(--color-accent-100)' : 'transparent',
+      border:0, borderLeft:'0', padding:'9px 18px', cursor:'pointer', fontSize:'13.5px',
+      fontWeight: active ? 700 : 400, color: active ? 'var(--color-accent-700)' : 'var(--color-text)',
+      fontFamily:'var(--font-body)'
+    });
+    const mk = (k, label) => ({ k, label, active: at(k), style: navBtn(at(k)), go: this.go(k) });
+
+    const navMain = [ mk('home','หน้าหลัก · ถาม 24'), mk('mission','ภารกิจของฉัน'), mk('easy','เริ่มต้นใช้งาน') ];
+    const navWork = [ mk('docs','ศูนย์ควบคุมเอกสาร'), mk('factory','สร้างรายงานอัตโนมัติ'), mk('monitor','ปฏิทินการติดตาม') ];
+    const navReport = [ mk('studio','สตูดิโอรายงาน'), mk('preflight','ตรวจก่อนยื่น'), mk('xray','เอกซเรย์รายงานเดิม'), mk('portfolio','พอร์ตโฟลิโอหลายโรงไฟฟ้า') ];
+    const advancedOpen = mode !== 'easy' || s.showAll;
+
+    const tag = k => ({ ok:{background:'var(--st-ok-bg)',color:'var(--st-ok)'},
+      warn:{background:'var(--st-warn-bg)',color:'var(--st-warn)'},
+      bad:{background:'var(--st-bad-bg)',color:'var(--st-bad)'},
+      cond:{background:'var(--st-info-bg)',color:'var(--st-info)'},
+      info:{background:'var(--st-info-bg)',color:'var(--st-info)'} }[k]);
+
+    const missionsByRole = {
+      owner:[
+        { title:'จัดทำรายงาน CoP ขั้นต้น', status:'AI กำลังทำงาน', k:'ok', ai:'87%', data:'72%', time:'10 นาที', cta:'ดำเนินภารกิจต่อ →', go:this.go('factory'),
+          req:[{m:'✓',k:'ok',t:'ใบอนุญาตและแบบผังโครงการ'},{m:'✓',k:'ok',t:'ผลตรวจอากาศและเสียง'},{m:'!',k:'bad',t:'ผลคุณภาพน้ำใต้ดิน ยังไม่มี'}] },
+        { title:'ปิดหลักฐานที่ยังขาด', status:'รอคุณ', k:'warn', ai:'40%', data:'—', time:'15 นาที', cta:'ดูรายการ →', go:this.go('docs'),
+          req:[{m:'!',k:'bad',t:'2 รายการเป็นสาระสำคัญ'},{m:'✓',k:'ok',t:'AI ร่างคำขอไว้ให้แล้ว'},{m:'→',k:'info',t:'ส่งถึงหน่วยสิ่งแวดล้อมประจำไซต์'}] },
+        { title:'เตรียมเวทีรับฟังความคิดเห็น', status:'ยังไม่เริ่ม', k:'cond', ai:'65%', data:'58%', time:'25 นาที', cta:'เริ่มภารกิจ →', go:this.go('mission'),
+          req:[{m:'→',k:'info',t:'ต้องมีรายงานขั้นต้นที่รับรองแล้ว'},{m:'✓',k:'ok',t:'ชุดเอกสารนำเสนอร่างไว้แล้ว'},{m:'→',k:'info',t:'กำหนดการตามแผน พ.ย. 2569'}] }
+      ],
+      consultant:[
+        { title:'ร่าง CoP ขั้นต้น 3 โครงการพร้อมกัน', status:'AI กำลังทำงาน', k:'ok', ai:'82%', data:'69%', time:'35 นาที', cta:'เปิดคิวงาน →', go:this.go('portfolio'),
+          req:[{m:'✓',k:'ok',t:'ใช้เทมเพลตและสำนวนของสำนักงานคุณ'},{m:'!',k:'warn',t:'ลพบุรี 2 ขาดแบบผังล่าสุด'},{m:'✓',k:'ok',t:'ส่งออกแบรนด์ของบริษัทที่ปรึกษา'}] },
+        { title:'ตรวจรายงานที่ลูกค้าส่งมา', status:'พร้อมเริ่ม', k:'cond', ai:'90%', data:'—', time:'8 นาที', cta:'อัปโหลดและตรวจ →', go:this.go('xray'),
+          req:[{m:'✓',k:'ok',t:'เทียบกับชุดกฎที่บังคับใช้จริง'},{m:'✓',k:'ok',t:'ได้รายงานช่องว่างรายบท'},{m:'→',k:'info',t:'ใช้เป็นข้อเสนองานได้ทันที'}] },
+        { title:'รับรองและปล่อยผ่าน 7 รายงาน', status:'รอคุณ', k:'warn', ai:'—', data:'100%', time:'20 นาที', cta:'เปิดคิวรับรอง →', go:this.go('preflight'),
+          req:[{m:'✓',k:'ok',t:'ผ่านการตรวจ 9 ชั้นแล้ว 5 ฉบับ'},{m:'!',k:'bad',t:'2 ฉบับยังมีหลักฐานไม่ครบ'},{m:'→',k:'info',t:'ต้องลงนามโดยผู้มีคุณวุฒิ'}] }
+      ],
+      exec:[
+        { title:'สถานะการปฏิบัติตามของทั้งพอร์ต', status:'อัปเดตแล้ว', k:'ok', ai:'100%', data:'94%', time:'3 นาที', cta:'ดูภาพรวม →', go:this.go('portfolio'),
+          req:[{m:'✓',k:'ok',t:'14 โรงไฟฟ้า · 5 ครบกำหนดใน 60 วัน'},{m:'!',k:'bad',t:'3 โรงมีความเสี่ยงถูกตีกลับ'},{m:'→',k:'info',t:'สรุปส่งบอร์ดได้ในคลิกเดียว'}] },
+        { title:'อนุมัติรายงานที่รอลงนาม', status:'รอคุณ', k:'warn', ai:'—', data:'100%', time:'10 นาที', cta:'เปิดคิวอนุมัติ →', go:this.go('preflight'),
+          req:[{m:'✓',k:'ok',t:'ทุกฉบับผ่านการตรวจอัตโนมัติ'},{m:'→',k:'info',t:'มีสรุปสิ่งที่เปลี่ยนจากฉบับก่อน'},{m:'→',k:'info',t:'7 ฉบับรอลายมือชื่อ'}] },
+        { title:'ประเมินผลกระทบจากการแก้กฎใหม่', status:'AI กำลังทำงาน', k:'ok', ai:'95%', data:'88%', time:'5 นาที', cta:'ดูผลประเมิน →', go:this.go('mission'),
+          req:[{m:'✓',k:'ok',t:'ติดตามการแก้ไขระเบียบอัตโนมัติ'},{m:'!',k:'warn',t:'กระทบ 4 โรงไฟฟ้าในพอร์ต'},{m:'→',k:'info',t:'มีข้อเสนอการแก้ไขรายบท'}] }
+      ]
+    };
+    const missions = missionsByRole[s.role].map(m => ({ ...m, tagStyle: tag(m.k),
+      req: m.req.map(r => ({ mark:r.m, text:r.t, markStyle:{ color:'var(--st-'+(r.k==='info'?'info':r.k)+')', fontWeight:800, flex:'none' } })) }));
+
+    const attentionByRole = {
+      owner:[
+        { kind:'ขาดหลักฐาน', k:'bad', title:'ผลวิเคราะห์คุณภาพน้ำใต้ดินของรอบนี้ยังไม่เข้าระบบ', note:'กั้นไม่ให้บทที่ 3 และ 5 ปิดได้ · ส่งคำขอไปที่ไซต์แล้ว 3 วัน', cta:'ติดตาม', go:this.go('docs') },
+        { kind:'ข้อมูลขัดแย้ง', k:'bad', title:'กำลังผลิตติดตั้ง 48 MW กับ 45 MW ไม่ตรงกัน', note:'ใบอนุญาตระบุ 48.0 MW แต่ตารางในบทที่ 5 ระบุ 45.0 MW', cta:'ตัดสิน', go:this.go('preflight') },
+        { kind:'เอกสารหมดอายุ', k:'warn', title:'หนังสือรับรองห้องปฏิบัติการหมดอายุ 31 ส.ค. 2569', note:'ทำให้ผลวิเคราะห์ 3 ฉบับที่อ้างถึงใช้ไม่ได้', cta:'ขอใหม่', go:this.go('docs') },
+        { kind:'รออนุมัติ', k:'cond', title:'บทที่ 1 และ 2 รอคุณกดอนุมัติและล็อก', note:'ผ่านการตรวจครบแล้ว ไม่มีข้อสังเกตคงค้าง', cta:'เปิดบท', go:this.go('studio') }
+      ],
+      consultant:[
+        { kind:'ขาดหลักฐาน', k:'bad', title:'ลพบุรี 2 ยังไม่ได้รับแบบผังบริเวณฉบับล่าสุดจากลูกค้า', note:'ค้างมา 9 วัน · กระทบกำหนดส่งงาน 30 พ.ย.', cta:'ทวงงาน', go:this.go('docs') },
+        { kind:'ความเสี่ยง', k:'bad', title:'3 รายงานในคิวมีโอกาสถูก กกพ. ตีกลับสูง', note:'สาเหตุเดียวกันทั้งสามฉบับ: ข้อความอ้างผลตรวจวัดโดยไม่มีเอกสารแนบ', cta:'ดูรายละเอียด', go:this.go('portfolio') },
+        { kind:'รอรับรอง', k:'warn', title:'7 รายงานรอผู้มีคุณวุฒิลงนาม', note:'5 ฉบับผ่านการตรวจ 9 ชั้นครบแล้ว', cta:'เปิดคิว', go:this.go('preflight') },
+        { kind:'กฎเปลี่ยน', k:'cond', title:'มีการแก้ไขระเบียบที่กระทบลูกค้า 4 ราย', note:'COP24 ระบุบทที่ต้องแก้และร่างข้อความเปลี่ยนแปลงไว้แล้ว', cta:'ดูผลกระทบ', go:this.go('mission') }
+      ],
+      exec:[
+        { kind:'ความเสี่ยง', k:'bad', title:'3 โรงไฟฟ้ามีความเสี่ยงยื่นไม่ทันหรือถูกตีกลับ', note:'มูลค่าความเสี่ยงต่อใบอนุญาตที่เกี่ยวข้อง ประเมินเบื้องต้น 3 ฉบับ', cta:'ดูพอร์ต', go:this.go('portfolio') },
+        { kind:'รออนุมัติ', k:'warn', title:'7 รายงานรอลายมือชื่อของคุณ', note:'ทุกฉบับผ่านการตรวจอัตโนมัติและมีสรุปสิ่งที่เปลี่ยนให้อ่านก่อน', cta:'เปิดคิว', go:this.go('preflight') },
+        { kind:'กำหนดเวลา', k:'cond', title:'5 โรงไฟฟ้าครบกำหนดยื่นภายใน 60 วัน', note:'ทั้งหมดเป็นรายงานผลการปฏิบัติตาม CoP รอบปี', cta:'ดูปฏิทิน', go:this.go('monitor') },
+        { kind:'กฎเปลี่ยน', k:'cond', title:'การแก้ไขระเบียบปี 2567 กระทบ 4 โรงไฟฟ้าในพอร์ต', note:'ยังไม่ต้องตัดสินใจในสัปดาห์นี้ แต่ควรรับทราบ', cta:'อ่านสรุป', go:this.go('mission') }
+      ]
+    };
+    const attention = attentionByRole[s.role].map(a => ({ ...a, tagStyle: tag(a.k) }));
+
+    const sIcon = v => v === 1 ? '✓' : (v === 0 ? '?' : '✕');
+    const sStyle = v => ({ display:'inline-grid', placeItems:'center', width:'22px', height:'22px', fontWeight:800, fontSize:'12px',
+      color: v === 1 ? 'var(--st-ok)' : (v === 0 ? 'var(--st-warn)' : 'var(--st-bad)'),
+      background: v === 1 ? 'var(--st-ok-bg)' : (v === 0 ? 'var(--st-warn-bg)' : 'var(--st-bad-bg)') });
+    const docsAll = this.docs.map(d => ({ name:d.name, meta:d.meta, purpose:d.purpose, status:d.status, k:d.k,
+      s1:sIcon(d.s[0]), s2:sIcon(d.s[1]), s3:sIcon(d.s[2]),
+      s1Style:sStyle(d.s[0]), s2Style:sStyle(d.s[1]), s3Style:sStyle(d.s[2]), tagStyle:tag(d.k) }));
+    const docsView = s.docFilter === 'all' ? docsAll : docsAll.filter(d => d.k === s.docFilter || (s.docFilter === 'bad' && d.k === 'cond'));
+
+    const fSteps = this.factorySteps.map((st, i) => {
+      const done = s.fDone || i < s.fStep;
+      const live = s.fRun && i === s.fStep;
+      return { title:st.t, detail:st.d, live,
+        mark: done ? '✓' : (live ? '·' : String(i + 1)),
+        statusText: done ? 'เสร็จแล้ว' : (live ? 'กำลังทำ' : 'รอคิว'),
+        dotStyle:{ flex:'none', width:'30px', height:'30px', display:'grid', placeItems:'center', fontWeight:800, fontSize:'13px',
+          background: done ? 'var(--color-accent)' : (live ? 'var(--color-accent-200)' : 'transparent'),
+          color: done ? 'var(--on-accent)' : (live ? 'var(--color-accent-700)' : 'var(--color-neutral-600)'),
+          border: done ? '0' : '2px solid var(--color-divider)' } };
+    });
+
+    const cur = this.chapterDefs.find(c => c.id === s.chapter) || this.chapterDefs[0];
+    const chapters = this.chapterDefs.map(c => {
+      const active = c.id === s.chapter;
+      const stText = c.st === 'approved' ? 'อนุมัติแล้ว' : (c.st === 'drafting' ? 'ร่างโดย AI' : 'ยังไม่ร่าง');
+      return { num:c.num + '.', title:c.title, statusText:stText, go:() => this.setState({ chapter:c.id, drafted:false }),
+        style:{ display:'flex', flexDirection:'column', gap:'2px', width:'100%', padding:'10px 16px', cursor:'pointer',
+          background: active ? 'var(--color-accent-100)' : 'transparent', border:0,
+          borderLeft: active ? '3px solid var(--color-accent)' : '3px solid transparent', fontFamily:'var(--font-body)',
+          color:'var(--color-text)' },
+        dotStyle:{ flex:'none', width:'8px', height:'8px', background: c.st === 'approved' ? 'var(--st-ok)' : (c.st === 'drafting' ? 'var(--st-warn)' : 'var(--color-neutral-400)') } };
+    });
+    const hasBody = cur.paras.length > 0 || s.drafted;
+    const bodyParas = cur.paras.length ? cur.paras : ['ร่างโดย COP24 จากหลักฐาน 11 รายการที่ผูกกับบทนี้ ข้อความทุกย่อหน้าชี้กลับไปยังไฟล์ต้นทางและเลขหน้าได้ ส่วนที่ยังไม่มีหลักฐานรองรับจะไม่ถูกเขียนเป็นข้อความยืนยัน'];
+
+    const evidence = [
+      { mark:'✓', k:'ok', name:'รายงานการศึกษาธรณีวิทยาและอุทกวิทยา', loc:'หน้า 12–19 · ลงนามโดยผู้ชำนาญการ' },
+      { mark:'✓', k:'ok', name:'ผลตรวจวัดคุณภาพอากาศ มิ.ย. 2569', loc:'หน้า 3 ตาราง 2 · 3 จุดตรวจวัด' },
+      { mark:'?', k:'warn', name:'ผลตรวจวัดระดับเสียงโดยรอบ', loc:'ช่วงเก็บตัวอย่างไม่ครอบคลุมกลางคืน' },
+      { mark:'✓', k:'ok', name:'แผนที่การใช้ประโยชน์ที่ดินโดยรอบ', loc:'rev.C · ระยะชุมชนใกล้สุด 680 ม.' },
+      { mark:'✕', k:'bad', name:'ผลวิเคราะห์คุณภาพน้ำใต้ดิน', loc:'ไม่พบในระบบ · ขอจากไซต์แล้ว' }
+    ].map(e => ({ ...e, markStyle:{ color:'var(--st-'+e.k+')', fontWeight:800, flex:'none', fontSize:'12px', lineHeight:'1.5' } }));
+
+    const layers = this.layerDefs.map(l => ({ name:l.name, what:l.what, status:l.status, detail:l.detail, ref:l.ref,
+      open: s.openLayer === l.id, go:() => this.setState({ openLayer: s.openLayer === l.id ? '' : l.id }),
+      mark: l.k === 'ok' ? '✓' : (l.k === 'warn' ? '!' : '✕'), tagStyle: tag(l.k),
+      markStyle:{ flex:'none', width:'26px', height:'26px', display:'grid', placeItems:'center', fontWeight:800, fontSize:'13px',
+        color:'var(--st-'+l.k+')', background:'var(--st-'+l.k+'-bg)' } }));
+
+    const xrayRows = [
+      { ch:'บทที่ 1 · ข้อมูลทั่วไปของโครงการ', finding:'ครบตามแบบรายงาน ไม่พบข้อบกพร่อง', sev:'ผ่าน', k:'ok' },
+      { ch:'บทที่ 2 · รายละเอียดการออกแบบ', finding:'กำลังผลิตติดตั้งระบุ 48 MW แต่ตารางในบทที่ 5 ระบุ 45 MW — ตัวเลขที่ผู้ตรวจมักท้วงเป็นอันดับแรก', sev:'สาระสำคัญ', k:'bad' },
+      { ch:'บทที่ 3 · สภาพแวดล้อมปัจจุบัน', finding:'มีข้อความอ้างผลตรวจวัด 11 จุดโดยไม่มีรายงานห้องปฏิบัติการแนบ', sev:'สาระสำคัญ', k:'bad' },
+      { ch:'บทที่ 4 · มาตรการป้องกันและแก้ไข', finding:'ขาดมาตรการจัดการน้ำล้างแผงและการจัดการแผงเสื่อมสภาพที่ชุดกฎกำหนด', sev:'สาระสำคัญ', k:'bad' },
+      { ch:'บทที่ 5 · มาตรการติดตามตรวจสอบ', finding:'ระบุความถี่การตรวจวัดไม่ครบทุกพารามิเตอร์ และไม่ได้ระบุผู้รับผิดชอบ', sev:'ควรแก้ไข', k:'warn' },
+      { ch:'บทที่ 6 · การมีส่วนร่วมของประชาชน', finding:'ยังไม่มีเนื้อหา — เหมาะสมกับรายงานขั้นต้น แต่ต้องเติมก่อนแปลงเป็นขั้นสุดท้าย', sev:'มีเงื่อนไข', k:'cond' },
+      { ch:'เอกสารแนบ', finding:'สำเนาใบอนุญาตไม่มีการรับรองสำเนาถูกต้อง และขาดหนังสือรับรองห้องปฏิบัติการที่ยังไม่หมดอายุ', sev:'ควรแก้ไข', k:'warn' }
+    ].map(x => ({ ...x, tagStyle: tag(x.k) }));
+
+    const agents = this.agentDefs.map((a, i) => {
+      const stage = s.mDone ? 3 : (s.mRun ? Math.min(s.mStep + 1, 3) : 0);
+      const idx = s.mDone ? 3 : Math.max(0, Math.min(stage - (i > 0 ? 1 : 0), 3));
+      const st = s.mDone ? 'เสร็จแล้ว' : (!s.mRun ? 'รอเริ่ม' : (idx >= 2 ? 'กำลังทำงาน' : 'รอข้อมูลต้นทาง'));
+      const k = s.mDone ? 'ok' : (!s.mRun ? 'cond' : 'warn');
+      return { name:a.name, en:a.en, job:a.job, log:a.logs[s.mDone ? 3 : idx], status:st, tagStyle: tag(k) };
+    });
+
+    const catalog = [
+      { t:'เตรียมรายงาน CoP ขั้นต้น', d:'จากเอกสารโครงการที่มีอยู่' },
+      { t:'แปลงขั้นต้นเป็นขั้นสุดท้าย', d:'นำผลการรับฟังความคิดเห็นเข้ามาและสรุปสิ่งที่เปลี่ยน' },
+      { t:'จัดทำรายงานผลการปฏิบัติตาม CoP รอบปี', d:'ยกยอดข้อมูลเดิมและเติมหลักฐานรอบใหม่' },
+      { t:'ตรวจรายงาน CoP ที่มีอยู่', d:'เทียบกับชุดกฎที่บังคับใช้จริง' },
+      { t:'ปิดหลักฐานที่ยังขาด', d:'ไล่ขอเอกสารจากผู้รับผิดชอบจนครบ' },
+      { t:'ตรวจทานผลวิเคราะห์สิ่งแวดล้อม', d:'ตรวจวันที่ หน่วย วิธี และห้องปฏิบัติการ' },
+      { t:'จัดทำหนังสือชี้แจงต่อ กกพ.', d:'แปลงหนังสือแจ้งข้อบกพร่องเป็นงานและร่างคำตอบ' },
+      { t:'เปรียบเทียบรายงานระหว่างปี', d:'ชี้จุดที่เปลี่ยนและเหตุผลที่เปลี่ยน' },
+      { t:'ประเมินผลกระทบจากการแก้ไขโรงไฟฟ้า', d:'ระบุมาตรการและบทที่ได้รับผลกระทบ' },
+      { t:'จัดชุดเอกสารสำหรับยื่น', d:'รายงาน แบบฟอร์ม ดัชนีหลักฐาน และคำแนะนำการยื่น' }
+    ].map(c => ({ ...c, go: this.go('factory') }));
+
+    const monthNames = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+    const months = monthNames.map((label, i) => {
+      const win = i === 0;
+      const sample = [2, 5, 8, 11].includes(i);
+      return { label, note: win ? 'ยื่นรายงาน' : (sample ? 'เก็บตัวอย่าง' : ''),
+        style:{ flex:'1 1 0', minWidth:'44px', padding:'11px 8px', textAlign:'center',
+          background: win ? 'var(--color-accent)' : (sample ? 'var(--color-accent-200)' : 'var(--color-bg)'),
+          color: win ? 'var(--on-accent)' : (sample ? 'var(--color-accent-800)' : 'var(--color-neutral-600)'),
+          border:'1px solid var(--color-divider)' } };
+    });
+
+    const register = [
+      { measure:'ตรวจวัดคุณภาพน้ำใต้ดินบริเวณบ่อสังเกตการณ์', owner:'หน่วยสิ่งแวดล้อมประจำไซต์', freq:'ทุก 6 เดือน', evidence:'รายงานผลห้องปฏิบัติการ + วันที่และจุดเก็บตัวอย่าง', dest:'บทที่ 5 ตาราง 5-2', status:'เกินกำหนด', k:'bad' },
+      { measure:'ตรวจวัดระดับเสียงบริเวณขอบเขตโครงการ', owner:'หน่วยสิ่งแวดล้อมประจำไซต์', freq:'ปีละครั้ง', evidence:'ผลตรวจวัด 24 ชั่วโมง ครอบคลุมกลางวันและกลางคืน', dest:'บทที่ 5 ตาราง 5-3', status:'ต้องตรวจ', k:'warn' },
+      { measure:'จัดการน้ำล้างแผงเซลล์แสงอาทิตย์', owner:'ฝ่ายปฏิบัติการโรงไฟฟ้า', freq:'ทุกครั้งที่ล้าง', evidence:'บันทึกปริมาณน้ำ สารที่ใช้ และปลายทางการระบาย', dest:'บทที่ 4 หัวข้อ 4.3', status:'ครบแล้ว', k:'ok' },
+      { measure:'จัดการแผงเซลล์เสื่อมสภาพและของเสียอันตราย', owner:'ฝ่ายจัดซื้อและคลัง', freq:'ทุกครั้งที่ส่งกำจัด', evidence:'ใบกำกับการขนส่งของเสียและใบรับจากผู้รับกำจัดที่ได้รับอนุญาต', dest:'บทที่ 4 หัวข้อ 4.6', status:'ครบแล้ว', k:'ok' },
+      { measure:'รับและตอบข้อร้องเรียนจากชุมชน', owner:'ฝ่ายชุมชนสัมพันธ์', freq:'ต่อเนื่อง', evidence:'ทะเบียนข้อร้องเรียน การตอบกลับ และผลการแก้ไข', dest:'บทที่ 6 ภาคผนวก ค', status:'ครบแล้ว', k:'ok' },
+      { measure:'บันทึกภาพถ่ายสภาพพื้นที่ประจำรอบ', owner:'หน่วยสิ่งแวดล้อมประจำไซต์', freq:'ทุก 6 เดือน', evidence:'ภาพถ่ายพร้อมพิกัดและวันที่ จุดถ่ายเดิมทุกรอบ', dest:'ภาคผนวก ก', status:'ครบแล้ว', k:'ok' },
+      { measure:'ตรวจสอบเงื่อนไขแนบท้ายใบอนุญาต', owner:'ฝ่ายกำกับดูแลกิจการ', freq:'ปีละครั้ง', evidence:'บันทึกการทบทวนเงื่อนไขและผลการปฏิบัติแต่ละข้อ', dest:'บทที่ 2 หัวข้อ 2.1', status:'ต้องตรวจ', k:'warn' }
+    ].map(r => ({ ...r, tagStyle: tag(r.k) }));
+
+    const plants = [
+      { name:'โซลาร์ฟาร์ม ลพบุรี 1', client:'ลพบุรี กรีน พาวเวอร์', tech:'โซลาร์บนพื้นดิน', report:'CoP ขั้นต้น', ready:'72%', n:72, due:'30 พ.ย. 2569', risk:'เสี่ยงสูง', k:'bad' },
+      { name:'โซลาร์ฟาร์ม ลพบุรี 2', client:'ลพบุรี กรีน พาวเวอร์', tech:'โซลาร์บนพื้นดิน', report:'CoP ขั้นต้น', ready:'41%', n:41, due:'30 พ.ย. 2569', risk:'เสี่ยงสูง', k:'bad' },
+      { name:'สระบุรี โซลาร์รูฟ (รวม 18 อาคาร)', client:'เอสบี พร็อพเพอร์ตี้', tech:'โซลาร์บนหลังคา', report:'ติดตามผล รอบปี', ready:'88%', n:88, due:'31 ม.ค. 2570', risk:'ปกติ', k:'ok' },
+      { name:'โรงไฟฟ้าชีวมวล นครสวรรค์', client:'เอ็นเอส ไบโอเอนเนอร์ยี', tech:'ชีวมวล', report:'ติดตามผล รอบครึ่งปี', ready:'63%', n:63, due:'31 ม.ค. 2570', risk:'ต้องติดตาม', k:'warn' },
+      { name:'โซลาร์ลอยน้ำ อุบลราชธานี', client:'อีสาน รีนิวเอเบิล', tech:'โซลาร์ลอยน้ำ', report:'CoP ขั้นสุดท้าย', ready:'79%', n:79, due:'15 ธ.ค. 2569', risk:'ต้องติดตาม', k:'warn' },
+      { name:'วินด์ฟาร์ม ชัยภูมิ 2', client:'ชัยภูมิ วินด์', tech:'พลังงานลม', report:'ติดตามผล รอบปี', ready:'95%', n:95, due:'31 ม.ค. 2570', risk:'ปกติ', k:'ok' },
+      { name:'โรงไฟฟ้าก๊าซชีวภาพ ราชบุรี', client:'อาร์บี ไบโอแก๊ส', tech:'ก๊าซชีวภาพ', report:'ติดตามผล รอบครึ่งปี', ready:'54%', n:54, due:'31 ม.ค. 2570', risk:'เสี่ยงสูง', k:'bad' }
+    ].map(p => ({ ...p, tagStyle: tag(p.k),
+      barStyle:{ height:'6px', width:p.ready, background: p.n >= 80 ? 'var(--st-ok)' : (p.n >= 60 ? 'var(--st-warn)' : 'var(--st-bad)') } }));
+
+    return {
+      navMain, navWork, navReport, showAdvanced: advancedOpen, hideAdvanced: !advancedOpen,
+      toggleAll: () => this.setState({ showAll: true }),
+      roleOwner: s.role === 'owner', roleCons: s.role === 'consultant', roleExec: s.role === 'exec',
+      setOwner: () => this.setState({ role:'owner' }), setCons: () => this.setState({ role:'consultant' }), setExec: () => this.setState({ role:'exec' }),
+
+      atHome: at('home'), atEasy: at('easy'), atDocs: at('docs'), atFactory: at('factory'),
+      atStudio: at('studio'), atPreflight: at('preflight'), atXray: at('xray'),
+      atMission: at('mission'), atMonitor: at('monitor'), atPortfolio: at('portfolio'),
+
+      goHome: this.go('home'), goEasy: this.go('easy'), goDocs: this.go('docs'), goFactory: this.go('factory'),
+      goStudio: this.go('studio'), goPreflight: this.go('preflight'), goXray: this.go('xray'),
+      goMission: this.go('mission'), goMonitor: this.go('monitor'), goPortfolio: this.go('portfolio'),
+      noop: () => {},
+      onGoal: e => { this._goal = e.target.value; },
+
+      missions, attention,
+      why: s.why, toggleWhy: () => this.setState({ why: !s.why }),
+
+      docsView,
+      dfAll: s.docFilter === 'all', dfOk: s.docFilter === 'ok', dfWarn: s.docFilter === 'warn', dfBad: s.docFilter === 'bad',
+      dfSetAll: () => this.setState({ docFilter:'all' }), dfSetOk: () => this.setState({ docFilter:'ok' }),
+      dfSetWarn: () => this.setState({ docFilter:'warn' }), dfSetBad: () => this.setState({ docFilter:'bad' }),
+
+      fSteps, fDone: s.fDone, startFactory: this.startFactory,
+      factoryCta: s.fDone ? 'สร้างใหม่อีกครั้ง' : (s.fRun ? 'กำลังสร้างร่าง…' : 'สร้างร่างรายงานทั้งฉบับ'),
+
+      chapters, curTitle: cur.num + '. ' + cur.title, curMeta: cur.meta,
+      curBody: hasBody, curEmpty: !hasBody, curParas: bodyParas.map(t => ({ text:t })),
+      draft: () => this.setState({ drafted: true }), evidence,
+
+      layers,
+
+      startXray: this.startXray, xrayRunning: s.xray === 'running', xrayDone: s.xray === 'done',
+      xrayCta: s.xray === 'done' ? 'วิเคราะห์ใหม่' : (s.xray === 'running' ? 'กำลังวิเคราะห์…' : 'วิเคราะห์ความสอดคล้อง'),
+      xrayRows,
+
+      agents, catalog, mDone: s.mDone, startMission: this.startMission,
+      missionCta: s.mDone ? 'เริ่มภารกิจใหม่' : (s.mRun ? 'ทีมเอเจนต์กำลังทำงาน…' : 'ส่งภารกิจให้ทีมเอเจนต์'),
+
+      months, register, plants,
+      guardOn: guard
+    };
+  }
+}
+</script>
+</body>
+</html>
