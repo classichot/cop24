@@ -35,6 +35,7 @@ npm run lint
 npm run build
 npm run corpus:fetch   # download in-force ERC regulation files listed in corpus/manifest.json
 npm run corpus:ingest  # extract, repair Thai text, split into clauses, index
+npm run ingest:eval    # real ERC files through the ingestion engine: must invent 0 measurements
 ```
 
 ## Repository layout
@@ -62,6 +63,11 @@ src/packs/         Domain knowledge (rule packs) consumed by the engines
 src/core/report/   Report Engine — 24 Series Report Generation Quality Standard v1.0 (brief, data
                    contract, claim ledger, calculations, semantic rewrite checks, editorial rubric,
                    model registry/routing, 9 release gates, approval binding)
+src/core/ingest/   Smart Data Ingestion & AI Handoff Engine (COP24-DI-001): classify, extract and
+                   normalise Thai/English evidence, regulation-driven checklist, validation, missing
+                   register, evidence requests, checkpointed AI missions, document control, audit,
+                   handoff to the Report Engine
+src/lib/ingest/    Browser side: PDF/OCR/Word/Excel/image/ZIP parsing and IndexedDB persistence
 src/core/corpus*.ts Legal corpus types + Thai PDF text repair and clause chunking
 src/packs/report/  Report packs (ERC CoP Solar Farm form V1.0/2565 requirement matrix)
 corpus/            Legal corpus: manifest (52 sources, 36 from the ERC catalogue), index, scripts in
@@ -80,6 +86,7 @@ docs/              Concept, architecture, features and wow features, design syst
 | Route | Capability | Engine |
 | --- | --- | --- |
 | `/` | Home / ASK 24 — goal in plain language, missions by role, attention list, Next Best Action | Agent, all |
+| `/ingest` | Data Preparation — **Import Everything** (files, folders, ZIP; no naming or tagging) and **Hand Off to AI** (instruction → authorised mission); checklist, side-by-side review, missing evidence and requests, findings, mission log, project profile, audit | Evidence, Document, Agent |
 | `/start` | Easy Start — explainable applicability across every domain at once | Applicability |
 | `/missions` | AGI Mission Mode — Regulation / Document / Report / QA agents with guardrails and QA veto | Agent |
 | `/evidence` | Document Control Center — 3-layer evidence, AI-drafted evidence requests | Evidence, Document |
@@ -135,6 +142,12 @@ Report Engine in `src/core/report/`. It is applied first to the Lopburi 1 prelim
 against the standard’s §16 acceptance scenarios. See `docs/06-report-standard-implementation.md` for the
 section-by-section mapping and what is not built yet, and `docs/07-cop-report-references.md` for the
 official ERC form and the EGAT example report.
+
+## Smart Data Ingestion & AI Handoff
+
+The COP24-DI-001 spec is implemented in `src/core/ingest/` and the `/ingest` screen. Files are read in
+the browser and never leave it. See `docs/08-smart-data-ingestion.md` for the requirement mapping, the
+§9 acceptance results and what still needs a backend.
 
 ## Deploy
 

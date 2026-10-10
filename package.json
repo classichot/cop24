@@ -12,13 +12,21 @@
     "test": "node --import tsx --test \"src/core/__tests__/*.test.ts\"",
     "corpus:ingest": "node --import tsx scripts/corpus/ingest.ts",
     "corpus:check": "node --import tsx scripts/corpus/ingest.ts --dry",
-    "corpus:fetch": "node --import tsx scripts/corpus/fetch.ts"
+    "corpus:fetch": "node --import tsx scripts/corpus/fetch.ts",
+    "postinstall": "node scripts/copy-pdf-worker.mjs",
+    "ingest:eval": "node --import tsx scripts/ingest/eval.ts"
   },
   "dependencies": {
+    "exifr": "^7.1.3",
+    "jszip": "^3.10.2",
     "lucide-react": "^1.55.0",
+    "mammoth": "^1.13.0",
     "next": "16.4.0",
+    "pdfjs-dist": "^6.4.299",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "tesseract.js": "^7.0.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
@@ -27,7 +35,6 @@
     "@types/react-dom": "^19.3.0",
     "eslint": "^10.12.0",
     "eslint-config-next": "16.4.0",
-    "mammoth": "^1.13.0",
     "pdf-parse": "^1.1.1",
     "tsx": "^4.23.15",
     "typescript": "^5.9.3"

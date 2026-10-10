@@ -11,6 +11,7 @@ interface NavItem { href: string; th: string; en: string; sub?: string }
 
 const NAV_MAIN: NavItem[] = [
   { href: "/", th: "หน้าหลัก · ถาม 24", en: "Home · ASK 24" },
+  { href: "/ingest", th: "เตรียมข้อมูล · นำเข้าครั้งเดียว", en: "Data preparation" },
   { href: "/missions", th: "ภารกิจของฉัน", en: "My missions" },
   { href: "/start", th: "เริ่มต้นใช้งาน", en: "Easy Start" },
 ];
