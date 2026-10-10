@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Fragment, Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useApp } from "@/state/AppState";
 import { AppChip, PageHead, Seg, Tag } from "@/components/ui";
@@ -39,8 +39,8 @@ function Register() {
               const appDef = APPS.find((a) => a.id === r.app)!;
               const open = openKey === r.key;
               return (
-                <>
-                  <tr key={r.key} onClick={() => setOpenKey(open ? "" : r.key)} style={{ cursor: "pointer" }}>
+                <Fragment key={r.key}>
+                  <tr onClick={() => setOpenKey(open ? "" : r.key)} style={{ cursor: "pointer" }}>
                     <td style={{ verticalAlign: "top" }}><div className="code" style={{ fontWeight: 600 }}>{r.obligation.id}</div><AppChip app={appDef.name} accent={appDef.accent} /></td>
                     <td style={{ verticalAlign: "top", lineHeight: 1.4 }}><div style={{ fontWeight: 600 }}>{L(r.obligation.title)}</div><div className="muted tiny">{sevLabel(r.obligation.severity)} · {r.packId} · {L(r.obligation.dueRule)}</div></td>
                     <td className="muted-7" style={{ verticalAlign: "top", fontSize: 13 }}>{L(data.entities.find((e) => e.id === r.entityId)!.name)}</td>
@@ -52,7 +52,7 @@ function Register() {
                     <td style={{ verticalAlign: "top" }}><Tag k={r.status}>{L(r.statusLabel)}</Tag></td>
                   </tr>
                   {open && (
-                    <tr key={r.key + ":d"}>
+                    <tr>
                       <td colSpan={9} style={{ background: "var(--color-surface)", borderLeft: "3px solid var(--color-accent)", padding: "14px 18px" }}>
                         <div style={{ fontSize: 13, lineHeight: 1.7 }}>{L(r.obligation.summary)}</div>
                         <div className="small muted-7" style={{ marginTop: 6 }}><strong>{tx("หลักฐานที่ต้องมี", "Required evidence")}:</strong> {r.obligation.evidenceRequired.map((e) => L(e)).join(" · ")}{r.obligation.reportDest ? <> · <strong>{tx("ปลายทาง", "Destination")}:</strong> {L(r.obligation.reportDest)}</> : null}</div>
@@ -60,7 +60,7 @@ function Register() {
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               );
             })}
           </tbody>
