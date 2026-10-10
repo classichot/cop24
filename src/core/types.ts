@@ -118,6 +118,8 @@ export interface Obligation {
   severity: Severity;
   reportDest?: LText;
   controlIds?: string[];
+  /** Legal corpus anchors: source id (corpus/manifest.json) and, when known, the clause label. */
+  citations?: { sourceId: string; clause?: string }[];
 }
 
 export interface ChapterTemplate {

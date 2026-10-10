@@ -23,12 +23,14 @@ const NAV_WORK: NavItem[] = [
 const NAV_REPORT: NavItem[] = [
   { href: "/studio", th: "สตูดิโอรายงาน", en: "Report Studio" },
   { href: "/preflight", th: "ตรวจก่อนยื่น", en: "Preflight" },
+  { href: "/report-quality", th: "มาตรฐานคุณภาพรายงาน", en: "Report Quality" },
   { href: "/xray", th: "เอกซเรย์รายงานเดิม", en: "Compliance X-Ray" },
   { href: "/portfolio", th: "พอร์ตโฟลิโอหลายหน่วยงาน", en: "Portfolio" },
 ];
 const NAV_ENGINE: NavItem[] = [
   { href: "/universe", th: "จักรวาลการปฏิบัติตาม", en: "Compliance Universe" },
   { href: "/obligations", th: "ทะเบียนข้อผูกพัน", en: "Obligation Register" },
+  { href: "/corpus", th: "คลังกฎหมาย", en: "Legal Corpus" },
   { href: "/controls", th: "ทดสอบการควบคุม", en: "Control Testing" },
   { href: "/changes", th: "ติดตามกฎที่เปลี่ยน", en: "Regulatory Change" },
   { href: "/audit", th: "ร่องรอยการตรวจสอบ", en: "Audit Trail" },

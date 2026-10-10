@@ -1,0 +1,1482 @@
+{
+  "version": 2,
+  "inbox": "corpus/inbox",
+  "sources": [
+    {
+      "id": "energy-industry-act-2550",
+      "title": {
+        "th": "พระราชบัญญัติการประกอบกิจการพลังงาน พ.ศ. 2550",
+        "en": "Energy Industry Act B.E. 2550"
+      },
+      "shortTitle": {
+        "th": "พ.ร.บ. การประกอบกิจการพลังงาน 2550",
+        "en": "Energy Industry Act 2550"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "act",
+      "domain": "licensing",
+      "year": 2007,
+      "officialUrl": "https://www.erc.or.th",
+      "sourcePage": "https://www.erc.or.th/th/energy-articles/1858",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "pending",
+      "inForce": true,
+      "notes": {
+        "th": "ERC จัดระเบียบ CoP และระเบียบใบอนุญาตไว้ในหมวด “มาตรา 50” ของหน้ากฎหมาย — ต้องหาไฟล์ พ.ร.บ. ฉบับรวมแยกต่างหาก",
+        "en": "The ERC files the CoP and licensing regulations under “Section 50” on its law page. The consolidated Act PDF must be sourced separately."
+      }
+    },
+    {
+      "id": "erc-cop-reg-2565",
+      "title": {
+        "th": "ระเบียบคณะกรรมการกำกับกิจการพลังงาน ว่าด้วยหลักเกณฑ์การจัดทำรายงานประมวลหลักการปฏิบัติ และรายงานผลการปฏิบัติตามประมวลหลักการปฏิบัติ สำหรับการประกอบกิจการผลิตไฟฟ้า พ.ศ. 2565",
+        "en": "ERC Regulation on criteria for preparing the Code of Practice report and the CoP compliance (monitoring) report for electricity generation, B.E. 2565"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. รายงาน CoP และ CoP Monitor พ.ศ. 2565",
+        "en": "ERC CoP & CoP Monitor Regulation 2565"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202207/m_laws/8504/2528/file_download/4db65efc5ca1a410717c5e05975d9a16.pdf",
+      "sizeBytes": 3384413,
+      "ercGroup": "2528",
+      "file": "erc-cop-reg-2565.pdf"
+    },
+    {
+      "id": "erc-cop-reg-2567-no2",
+      "title": {
+        "th": "ระเบียบคณะกรรมการกำกับกิจการพลังงาน ว่าด้วยหลักเกณฑ์การจัดทำรายงานประมวลหลักการปฏิบัติ และรายงานผลการปฏิบัติตามประมวลหลักการปฏิบัติ สำหรับการประกอบกิจการผลิตไฟฟ้า (ฉบับที่ 2) พ.ศ. 2567",
+        "en": "ERC Regulation on CoP and CoP compliance reports for electricity generation (No. 2), B.E. 2567"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. รายงาน CoP (ฉบับที่ 2) พ.ศ. 2567",
+        "en": "ERC CoP Regulation (No. 2) 2567"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2024,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "needs-ocr",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202409/m_laws/8504/2528/file_download/7dc603f3efdaea616d38973478dd8878.pdf",
+      "sizeBytes": 724926,
+      "ercGroup": "2528",
+      "file": "erc-cop-reg-2567-no2.pdf"
+    },
+    {
+      "id": "erc-cop-annex-forms-4-24",
+      "title": {
+        "th": "แบบเอกสารแนบท้ายระเบียบฯ หมายเลข 4-24",
+        "en": "Regulation annex forms No. 4–24"
+      },
+      "shortTitle": {
+        "th": "แบบเอกสารแนบท้าย 4–24",
+        "en": "Annex forms 4–24"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "form",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202209/m_laws/8504/2528/file_download/518f3886489c919cb72d4a4f7754e92d.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202209/m_laws/8504/2528/file_download/4d3647df9c5759fa1c49b847517364cd.docx"
+      ],
+      "sizeBytes": 2186923,
+      "ercGroup": "2528",
+      "notes": {
+        "th": "แบบฟอร์มรายงาน CoP / CoP Monitor — ใช้เป็นแม่แบบบทของ Report Factory",
+        "en": "CoP / CoP Monitor report forms — the chapter templates for the Report Factory"
+      },
+      "file": "erc-cop-annex-forms-4-24.pdf"
+    },
+    {
+      "id": "erc-selfcert-fuel",
+      "title": {
+        "th": "แบบฟอร์มรับรองตนเอง เรื่อง เชื้อเพลิง",
+        "en": "Self-certification form — fuel"
+      },
+      "shortTitle": {
+        "th": "แบบรับรองตนเอง: เชื้อเพลิง",
+        "en": "Self-certification: fuel"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "form",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8504/2528/file_download/c36f8df92149f543f17d2f26050c629b.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8504/2528/file_download/f8cf26bb6cbab1ba9618c059043d22c4.docx"
+      ],
+      "sizeBytes": 382876,
+      "ercGroup": "2528",
+      "file": "erc-selfcert-fuel.pdf"
+    },
+    {
+      "id": "erc-selfcert-location",
+      "title": {
+        "th": "แบบฟอร์มรับรองตนเอง เรื่อง ที่ตั้งโครงการ",
+        "en": "Self-certification form — project location"
+      },
+      "shortTitle": {
+        "th": "แบบรับรองตนเอง: ที่ตั้งโครงการ",
+        "en": "Self-certification: location"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "form",
+      "domain": "licensing",
+      "year": 2025,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202512/m_laws/8504/2528/file_download/3e0b926bf8678247471db690b94e856e.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202512/m_laws/8504/2528/file_download/23fabb1fe1dacec81b2b15abaee0ead7.docx"
+      ],
+      "sizeBytes": 144815,
+      "ercGroup": "2528",
+      "notes": {
+        "th": "ใช้ยืนยันข้อสมมติเรื่องเขตคุ้มครองสิ่งแวดล้อมใน Applicability Engine",
+        "en": "Confirms the protected-zone assumption in the Applicability Engine"
+      },
+      "file": "erc-selfcert-location.pdf"
+    },
+    {
+      "id": "erc-cop-infographic",
+      "title": {
+        "th": "infographic ประมวลหลักการปฏิบัติสำหรับการประกอบกิจการผลิตไฟฟ้า",
+        "en": "Infographic — Code of Practice for electricity generation"
+      },
+      "shortTitle": {
+        "th": "Infographic CoP",
+        "en": "CoP infographic"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "guideline",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "pending",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202209/m_laws/8504/2528/file_download/7a8512ede0b72f4ce5e9c27ea93d71e3.pdf",
+      "sizeBytes": 15267819,
+      "ercGroup": "2528",
+      "notes": {
+        "th": "ไฟล์ภาพขนาดใหญ่ น่าจะต้อง OCR",
+        "en": "Large image-based file; likely needs OCR"
+      }
+    },
+    {
+      "id": "erc-cop-checklist-solar-farm",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - Solar Farm",
+        "en": "CoP environmental measures checklist — Solar Farm"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — Solar Farm",
+        "en": "CoP checklist — Solar Farm"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/0491fabffbe633295fdabe475ef389c6.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/a815a079265f4beed7b64dafb017e0fe.docx"
+      ],
+      "sizeBytes": 884212,
+      "tech": "solar-ground",
+      "ercGroup": "2528",
+      "notes": {
+        "th": "มาตรการรายเทคโนโลยี — แหล่งข้อผูกพันของชุดกฎ",
+        "en": "Technology-specific measures — the source of the pack's obligations"
+      },
+      "file": "erc-cop-checklist-solar-farm.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-solar-rooftop",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - Solar Rooftop",
+        "en": "CoP environmental measures checklist — Solar Rooftop"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — Solar Rooftop",
+        "en": "CoP checklist — Solar Rooftop"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2024,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202409/m_laws/8504/2528/file_download/ba72fa752ca196585d6c278a282b2f92.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202409/m_laws/8504/2528/file_download/c0fa4aa78bed125ca0ab092b99209d50.docx"
+      ],
+      "sizeBytes": 271970,
+      "tech": "solar-roof",
+      "ercGroup": "2528",
+      "notes": {
+        "th": "แบบรายงาน CoP และ checklist ฉบับทางการ Version 1.0/2567 (13 หน้า) — ใช้เป็นโครงสร้างอ้างอิงของรายงาน CoP 5 ส่วน",
+        "en": "The official CoP report form and checklist, Version 1.0/2567 (13 pages). The reference for the 5-part CoP report structure."
+      },
+      "file": "erc-cop-checklist-solar-rooftop-v1-2567.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-floating-solar",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - Floating Solar",
+        "en": "CoP environmental measures checklist — Floating Solar"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — Floating Solar",
+        "en": "CoP checklist — Floating Solar"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/67da7c4671a66f3e5660bf49b2c725ca.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/ff62fa8b15cd22509bc678d631a8b570.docx"
+      ],
+      "tech": "solar-float",
+      "ercGroup": "2528",
+      "file": "erc-cop-checklist-floating-solar.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-wind",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - พลังงานลม",
+        "en": "CoP environmental measures checklist — Wind"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — พลังงานลม",
+        "en": "CoP checklist — Wind"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/a5700c4d6eb860798fa4957f56cc9fbd.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/9ecd7696c2e212be21d8d542719e01e8.docx"
+      ],
+      "tech": "wind",
+      "ercGroup": "2528",
+      "file": "erc-cop-checklist-wind.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-biomass",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - ชีวมวล",
+        "en": "CoP environmental measures checklist — Biomass"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — ชีวมวล",
+        "en": "CoP checklist — Biomass"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/7e66d58792d7c7d1cdbe1292c40a96bb.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/6420c786800ae5543eed49d8f1772379.docx"
+      ],
+      "tech": "biomass",
+      "ercGroup": "2528",
+      "file": "erc-cop-checklist-biomass.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-biogas",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - ก๊าซชีวภาพ",
+        "en": "CoP environmental measures checklist — Biogas"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — ก๊าซชีวภาพ",
+        "en": "CoP checklist — Biogas"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/f873c3e0a3de9bf02a885b601592689b.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/90ce7752e7d65e03a68017933e60aabd.docx"
+      ],
+      "tech": "biogas",
+      "ercGroup": "2528",
+      "file": "erc-cop-checklist-biogas.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-msw-direct",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - ขยะมูลฝอยชุมชนที่มีการเผาไหม้ขยะมูลฝอยโดยตรง",
+        "en": "CoP environmental measures checklist — Municipal solid waste — direct combustion"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — ขยะมูลฝอยชุมชนที่มีการเผาไหม้ขยะมูลฝอยโดยตรง",
+        "en": "CoP checklist — Municipal solid waste — direct combustion"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/9998d1b7201c50333a3ff89824196b8f.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/56eda8135f782f9c4227d32c2764d09d.docx"
+      ],
+      "tech": "msw",
+      "ercGroup": "2528",
+      "file": "erc-cop-checklist-msw-direct.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-msw-biogas",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - ขยะมูลฝอยชุมชนที่ใช้ก๊าซชีวภาพจากผลพลอยได้จากการจัดการขยะมูลฝอย",
+        "en": "CoP environmental measures checklist — Municipal solid waste — biogas by-product"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — ขยะมูลฝอยชุมชนที่ใช้ก๊าซชีวภาพจากผลพลอยได้จากการจัดการขยะมูลฝอย",
+        "en": "CoP checklist — Municipal solid waste — biogas by-product"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/b8a76b59da38e9f7e178ae127631008d.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/29bc4d9087522e4e26d2ad631920db1c.docx"
+      ],
+      "tech": "msw",
+      "ercGroup": "2528",
+      "file": "erc-cop-checklist-msw-biogas.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-industrial-waste",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - ขยะอุตสาหกรรม",
+        "en": "CoP environmental measures checklist — Industrial waste"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — ขยะอุตสาหกรรม",
+        "en": "CoP checklist — Industrial waste"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/a1229de85b01d96f0b44b4648ebee7e8.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/f9203bddab5037d917ac069a522b3805.docx"
+      ],
+      "tech": "industrial-waste",
+      "ercGroup": "2528",
+      "file": "erc-cop-checklist-industrial-waste.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-coal",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - ถ่านหิน",
+        "en": "CoP environmental measures checklist — Coal"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — ถ่านหิน",
+        "en": "CoP checklist — Coal"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/448a90b8a79293066dae294e24ab15e5.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/cca19b7153884d02ded323a494b73636.docx"
+      ],
+      "tech": "coal",
+      "ercGroup": "2528",
+      "file": "erc-cop-checklist-coal.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-natural-gas",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - ก๊าซธรรมชาติ",
+        "en": "CoP environmental measures checklist — Natural gas"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — ก๊าซธรรมชาติ",
+        "en": "CoP checklist — Natural gas"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/8925a3c0a0d5b2daee4d9f5c32aed8a1.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202210/m_laws/8504/2528/file_download/5dcc6c747235979810dd8b5155cfe6c5.docx"
+      ],
+      "tech": "natural-gas",
+      "ercGroup": "2528",
+      "file": "erc-cop-checklist-natural-gas.pdf"
+    },
+    {
+      "id": "erc-wind-project-selfcert-table",
+      "title": {
+        "th": "ตารางตรวจสอบข้อมูลโครงการ และรับรองตนเอง สำหรับการผลิตไฟฟ้าจากพลังงานลม",
+        "en": "Project data check and self-certification table — wind"
+      },
+      "shortTitle": {
+        "th": "ตารางรับรองตนเอง: พลังงานลม",
+        "en": "Wind self-certification table"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "form",
+      "domain": "licensing",
+      "year": 2025,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202512/m_laws/8504/2528/file_download/385d70d0e73bb668d37052bbbff76892.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202512/m_laws/8504/2528/file_download/76ffa6ff1b592ee6b031292dc606315c.xlsx"
+      ],
+      "tech": "wind",
+      "ercGroup": "2528",
+      "file": "erc-wind-project-selfcert-table.pdf"
+    },
+    {
+      "id": "erc-minicop-checklist",
+      "title": {
+        "th": "รายการตรวจสอบด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ (Code of Practice) - MiniCOP",
+        "en": "CoP environmental checklist — MiniCOP"
+      },
+      "shortTitle": {
+        "th": "Checklist MiniCOP",
+        "en": "MiniCOP checklist"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8504/2622/file_download/ec87c41b9251a56b9971f5c1c890a9e9.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8504/2622/file_download/8599b4b9cd6a02f6022eb0cdfce35f21.docx"
+      ],
+      "ercGroup": "2622",
+      "file": "erc-minicop-checklist.pdf"
+    },
+    {
+      "id": "erc-pv-exempt-notification-2557",
+      "title": {
+        "th": "ประกาศ กกพ. เรื่อง มาตรการด้านการออกแบบติดตั้งและการจัดการขยะและกากของเสีย สำหรับผู้ประกอบกิจการผลิตไฟฟ้าพลังงานแสงอาทิตย์จากเทคโนโลยีแผงโฟโตโวลเทอิกที่ได้รับการยกเว้นไม่ต้องขอรับใบอนุญาตประกอบกิจการผลิตไฟฟ้า พ.ศ. 2557",
+        "en": "ERC Notification on design, installation and waste measures for licence-exempt PV generators, B.E. 2557"
+      },
+      "shortTitle": {
+        "th": "ประกาศ กกพ. PV ที่ได้รับยกเว้นใบอนุญาต พ.ศ. 2557",
+        "en": "ERC Notification — licence-exempt PV, 2557"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "notification",
+      "domain": "licensing",
+      "year": 2014,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202209/m_laws/8504/2622/file_download/7b8cd8f83d1fc447f4f690391c214093.pdf",
+      "tech": "solar-roof",
+      "ercGroup": "2622",
+      "file": "erc-pv-exempt-notification-2557.pdf"
+    },
+    {
+      "id": "erc-env-report-reg-2563",
+      "title": {
+        "th": "ระเบียบคณะกรรมการกำกับกิจการพลังงาน ว่าด้วยการจัดทำรายงานสิ่งแวดล้อมสำหรับการขอรับใบอนุญาตผลิตไฟฟ้า พ.ศ. 2563",
+        "en": "ERC Regulation on environmental reports for generation licence applications, B.E. 2563"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. รายงานสิ่งแวดล้อมเพื่อขอใบอนุญาต พ.ศ. 2563",
+        "en": "ERC Environmental Report Regulation 2563"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2020,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/m_laws/8504/1782/file_download/3d2fad3af8da0afb95ef06f7637389be.pdf",
+      "ercGroup": "1782",
+      "file": "erc-env-report-reg-2563.pdf"
+    },
+    {
+      "id": "erc-msw-10mw-reg-2565",
+      "title": {
+        "th": "ระเบียบคณะกรรมการกำกับกิจการพลังงาน ว่าด้วยมาตรการป้องกัน แก้ไข และติดตามตรวจสอบผลกระทบสิ่งแวดล้อม สำหรับผู้ประกอบกิจการผลิตไฟฟ้าที่ใช้ขยะมูลฝอยเป็นเชื้อเพลิงที่มีกำลังผลิตติดตั้ง ตั้งแต่ 10 เมกะวัตต์ ขึ้นไป พ.ศ. 2565",
+        "en": "ERC Regulation on environmental measures for municipal-waste generators ≥ 10 MW, B.E. 2565"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. ขยะมูลฝอย ≥ 10 MW พ.ศ. 2565",
+        "en": "ERC MSW ≥10 MW Regulation 2565"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202207/m_laws/8504/2529/file_download/4f6bc0897cfdee581edd869131e19c55.pdf",
+      "sizeBytes": 666882,
+      "tech": "msw",
+      "ercGroup": "2529",
+      "file": "erc-msw-10mw-reg-2565.pdf"
+    },
+    {
+      "id": "erc-cop-checklist-msw-10mw",
+      "title": {
+        "th": "รายการตรวจสอบ (checklist) มาตรการด้านสิ่งแวดล้อมตามประมวลหลักการปฏิบัติ - โรงไฟฟ้าที่ใช้ขยะมูลฝอยเป็นเชื้อเพลิงที่มีกำลังผลิตติดตั้ง ตั้งแต่ 10 เมกะวัตต์ ขึ้นไป",
+        "en": "CoP checklist — municipal-waste plants ≥ 10 MW"
+      },
+      "shortTitle": {
+        "th": "Checklist CoP — ขยะ ≥ 10 MW",
+        "en": "CoP checklist — MSW ≥10 MW"
+      },
+      "authority": {
+        "th": "สำนักงาน กกพ.",
+        "en": "Office of the ERC"
+      },
+      "type": "standard",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202211/m_laws/8504/2529/file_download/03e4433b99a69830093e9a2f63b4e47c.pdf",
+      "altUrls": [
+        "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202211/m_laws/8504/2529/file_download/008d2bb34975eaeecc0a7bbd99186efc.docx"
+      ],
+      "tech": "msw",
+      "ercGroup": "2529",
+      "file": "erc-cop-checklist-msw-10mw.pdf"
+    },
+    {
+      "id": "erc-site-location-reg-2564",
+      "title": {
+        "th": "ระเบียบคณะกรรมการกำกับกิจการพลังงาน ว่าด้วยหลักเกณฑ์ วิธีการ และเงื่อนไขในการพิจารณาสถานที่ตั้งและสภาพแวดล้อมของโรงไฟฟ้าสำหรับการออกใบอนุญาตผลิตไฟฟ้า พ.ศ. 2564",
+        "en": "ERC Regulation on criteria for assessing plant location and surroundings for generation licences, B.E. 2564"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. สถานที่ตั้งโรงไฟฟ้า พ.ศ. 2564",
+        "en": "ERC Plant Location Regulation 2564"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2021,
+      "officialUrl": "https://www.erc.or.th/th/energy-articles/1858",
+      "sourcePage": "https://www.erc.or.th/th/energy-articles/1858",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8834/1858/file_download/f7cfb4a5baf195c062e246bc0c6ab8bc.pdf",
+      "sizeBytes": 120205,
+      "ercGroup": "1858",
+      "file": "erc-site-location-reg-2564.pdf"
+    },
+    {
+      "id": "erc-public-hearing-reg-2565",
+      "title": {
+        "th": "ระเบียบคณะกรรมการกำกับกิจการพลังงาน ว่าด้วยการรับฟังความเห็นและทำความเข้าใจกับประชาชนและผู้มีส่วนได้เสียในการพิจารณาออกใบอนุญาตประกอบกิจการผลิตไฟฟ้า พ.ศ. 2565",
+        "en": "ERC Regulation on public and stakeholder hearings for generation licensing, B.E. 2565"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. การรับฟังความเห็น พ.ศ. 2565",
+        "en": "ERC Public Hearing Regulation 2565"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/energy-articles/1858",
+      "sourcePage": "https://www.erc.or.th/th/energy-articles/1858",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202207/m_laws/8834/1858/file_download/25344b6615618754c373845363eae4b8.pdf",
+      "sizeBytes": 419431,
+      "ercGroup": "1858",
+      "file": "erc-public-hearing-reg-2565.pdf"
+    },
+    {
+      "id": "erc-hearing-process-reg",
+      "title": {
+        "th": "ระเบียบ กกพ. ว่าด้วยกระบวนการจัดรับฟังความคิดเห็น (ไฟล์ที่ 3)",
+        "en": "ERC Regulation on the public hearing process (file 3)"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. กระบวนการรับฟังความคิดเห็น",
+        "en": "ERC hearing process regulation"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2022,
+      "officialUrl": "https://www.erc.or.th/th/energy-articles/1858",
+      "sourcePage": "https://www.erc.or.th/th/energy-articles/1858",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8834/1858/file_download/c893ca8701c4764e0397139b4c0ca2b7.pdf",
+      "ercGroup": "1858",
+      "notes": {
+        "th": "ชื่อไฟล์บนเว็บไม่ระบุปี ต้องยืนยันชื่อเต็มเมื่อนำเข้า",
+        "en": "The site's file name has no year; confirm the full title on ingest"
+      },
+      "file": "erc-hearing-process-reg.pdf"
+    },
+    {
+      "id": "erc-licensing-reg-2551",
+      "title": {
+        "th": "ระเบียบคณะกรรมการกำกับกิจการพลังงาน ว่าด้วยการขอรับใบอนุญาตและการอนุญาตการประกอบกิจการพลังงาน พ.ศ. 2551",
+        "en": "ERC Regulation on applying for and granting energy industry licences, B.E. 2551"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. การขอรับใบอนุญาต พ.ศ. 2551",
+        "en": "ERC Licensing Regulation 2551"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2008,
+      "officialUrl": "https://www.erc.or.th/th/energy-articles/1858",
+      "sourcePage": "https://www.erc.or.th/th/energy-articles/1858",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8834/1858/file_download/31c8be1872ff222a74fdd46d943e6dc2.pdf",
+      "sizeBytes": 108141,
+      "ercGroup": "1858",
+      "file": "erc-licensing-reg-2551.pdf"
+    },
+    {
+      "id": "erc-licensing-reg-2557-no2",
+      "title": {
+        "th": "ระเบียบ กกพ. ว่าด้วยการขอรับใบอนุญาตและการอนุญาตการประกอบกิจการพลังงาน (ฉบับที่ 2) พ.ศ. 2557",
+        "en": "ERC Licensing Regulation (No. 2), B.E. 2557"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. ใบอนุญาต (ฉบับที่ 2) พ.ศ. 2557",
+        "en": "ERC Licensing Regulation (No. 2) 2557"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2014,
+      "officialUrl": "https://www.erc.or.th/th/energy-articles/1858",
+      "sourcePage": "https://www.erc.or.th/th/energy-articles/1858",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8834/1858/file_download/1f10689bd9b02f7fc2bcb87ec982b930.pdf",
+      "ercGroup": "1858",
+      "file": "erc-licensing-reg-2557-no2.pdf"
+    },
+    {
+      "id": "erc-licensing-reg-2560-no3",
+      "title": {
+        "th": "ระเบียบ กกพ. ว่าด้วยการขอรับใบอนุญาตและการอนุญาตการประกอบกิจการพลังงาน (ฉบับที่ 3) พ.ศ. 2560",
+        "en": "ERC Licensing Regulation (No. 3), B.E. 2560"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. ใบอนุญาต (ฉบับที่ 3) พ.ศ. 2560",
+        "en": "ERC Licensing Regulation (No. 3) 2560"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2017,
+      "officialUrl": "https://www.erc.or.th/th/energy-articles/1858",
+      "sourcePage": "https://www.erc.or.th/th/energy-articles/1858",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8834/1858/file_download/5f0baae0410f31fa0166dca5e4e439f5.pdf",
+      "ercGroup": "1858",
+      "file": "erc-licensing-reg-2560-no3.pdf"
+    },
+    {
+      "id": "erc-licence-procedure-reg-2559",
+      "title": {
+        "th": "ระเบียบ กกพ. ว่าด้วยการกำหนดขั้นตอนการขอรับใบอนุญาตการประกอบกิจการไฟฟ้า ตามมาตรา 47 และการขออนุญาตตามมาตรา 48 แห่งพระราชบัญญัติการประกอบกิจการพลังงาน พ.ศ. 2550 พ.ศ. 2559",
+        "en": "ERC Regulation on licence application steps under ss. 47 and 48 of the Energy Industry Act, B.E. 2559"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. ขั้นตอนขอใบอนุญาต ม.47/48 พ.ศ. 2559",
+        "en": "ERC s.47/48 Procedure Regulation 2559"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2016,
+      "officialUrl": "https://www.erc.or.th/th/energy-articles/1858",
+      "sourcePage": "https://www.erc.or.th/th/energy-articles/1858",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8834/1858/file_download/215447c857c24d45571e571332075709.pdf",
+      "ercGroup": "1858",
+      "file": "erc-licence-procedure-reg-2559.pdf"
+    },
+    {
+      "id": "erc-fee-reg-2551",
+      "title": {
+        "th": "ระเบียบ กกพ. กำหนดอัตราค่าธรรมเนียมการอนุญาตและการประกอบกิจการพลังงาน พ.ศ. 2551",
+        "en": "ERC Regulation on licence and operating fees, B.E. 2551"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. ค่าธรรมเนียม พ.ศ. 2551",
+        "en": "ERC Fee Regulation 2551"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2008,
+      "officialUrl": "https://www.erc.or.th/th/energy-articles/1858",
+      "sourcePage": "https://www.erc.or.th/th/energy-articles/1858",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "ingested",
+      "inForce": true,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202208/m_laws/8834/1858/file_download/ee36a134155df3870b773144f55ec139.pdf",
+      "ercGroup": "1858",
+      "file": "erc-fee-reg-2551.pdf"
+    },
+    {
+      "id": "erc-pv-licensed-notification-2557",
+      "title": {
+        "th": "ประกาศ กกพ. เรื่อง มาตรการป้องกัน แก้ไข และติดตามตรวจสอบผลกระทบสิ่งแวดล้อม สำหรับผู้ประกอบกิจการไฟฟ้าพลังงานแสงอาทิตย์จากเทคโนโลยีแผงโฟโตโวลเทอิก ที่เข้าข่ายต้องได้รับใบอนุญาตประกอบกิจการผลิตไฟฟ้า พ.ศ. 2557",
+        "en": "ERC Notification on environmental measures for licensed PV generators, B.E. 2557 (repealed)"
+      },
+      "shortTitle": {
+        "th": "ประกาศ กกพ. CoP โซลาร์ พ.ศ. 2557 (ยกเลิก)",
+        "en": "ERC Solar CoP Notification 2557 (repealed)"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "notification",
+      "domain": "licensing",
+      "year": 2014,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [
+        "ERC-CoP-SOLAR-GROUND"
+      ],
+      "status": "superseded",
+      "inForce": false,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202205/m_laws/8504/1788/file_download/405ef8c5980f714b569cf52704007048.pdf",
+      "sizeBytes": 242275,
+      "tech": "solar-ground",
+      "ercGroup": "1788",
+      "notes": {
+        "th": "ERC ระบุกลุ่มนี้ว่า (ยกเลิก) — เก็บไว้เพื่อเทียบประวัติ ไม่ใช้เป็นฐานข้อผูกพัน",
+        "en": "Marked repealed by the ERC. Kept for history; not a basis for obligations."
+      }
+    },
+    {
+      "id": "erc-cop-solar-manual",
+      "title": {
+        "th": "คู่มือประมวลหลักการปฏิบัติ Code of Practice : CoP - Solar",
+        "en": "CoP manual — Solar (repealed group)"
+      },
+      "shortTitle": {
+        "th": "คู่มือ CoP Solar (ยกเลิก)",
+        "en": "CoP Solar manual (repealed)"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "guideline",
+      "domain": "licensing",
+      "year": 2014,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "superseded",
+      "inForce": false,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202205/m_laws/8504/1788/file_download/8546abc39d15d62171a7001c02ea08a9.pdf",
+      "sizeBytes": 35961857,
+      "tech": "solar-ground",
+      "ercGroup": "1788"
+    },
+    {
+      "id": "erc-cop-solar-report-guideline",
+      "title": {
+        "th": "แนวทางการจัดทำรายงานประมวลหลักการปฏิบัติ CoP - Solar",
+        "en": "Guideline for preparing the CoP report — Solar (repealed group)"
+      },
+      "shortTitle": {
+        "th": "แนวทางรายงาน CoP Solar (ยกเลิก)",
+        "en": "CoP Solar report guideline (repealed)"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "guideline",
+      "domain": "licensing",
+      "year": 2014,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "superseded",
+      "inForce": false,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/202205/m_laws/8504/1788/file_download/45e9312393ed4376c9798d26cc039d3c.pdf",
+      "sizeBytes": 835894,
+      "tech": "solar-ground",
+      "ercGroup": "1788"
+    },
+    {
+      "id": "erc-floating-solar-reg-2562",
+      "title": {
+        "th": "ระเบียบ กกพ. ว่าด้วยมาตรการป้องกัน และติดตามตรวจสอบผลกระทบสิ่งแวดล้อมสำหรับผู้ประกอบกิจการผลิตไฟฟ้า จากพลังงานแสงอาทิตย์ด้วยเทคโนโลยีโฟโตโวลเทอิก แบบทุ่นลอยน้ำ พ.ศ. 2562",
+        "en": "ERC Regulation on environmental measures for floating PV, B.E. 2562 (repealed)"
+      },
+      "shortTitle": {
+        "th": "ระเบียบ กกพ. โซลาร์ลอยน้ำ พ.ศ. 2562 (ยกเลิก)",
+        "en": "ERC Floating Solar Regulation 2562 (repealed)"
+      },
+      "authority": {
+        "th": "คณะกรรมการกำกับกิจการพลังงาน",
+        "en": "Energy Regulatory Commission (ERC)"
+      },
+      "type": "regulation",
+      "domain": "licensing",
+      "year": 2019,
+      "officialUrl": "https://www.erc.or.th/th/code-of-practice",
+      "sourcePage": "https://www.erc.or.th/th/code-of-practice",
+      "packIds": [],
+      "status": "superseded",
+      "inForce": false,
+      "downloadUrl": "https://www.erc.or.th/web-upload/200xf869baf82be74c18cc110e974eea8d5c/m_laws/8504/1787/file_download/d181748d847419bc4e28778c18c55b52.pdf",
+      "sizeBytes": 460132,
+      "tech": "solar-float",
+      "ercGroup": "1787"
+    },
+    {
+      "id": "sec-tj-55-2563",
+      "title": {
+        "th": "ประกาศคณะกรรมการกำกับตลาดทุน ที่ ทจ. 55/2563 เรื่อง หลักเกณฑ์ เงื่อนไข และวิธีการรายงานการเปิดเผยข้อมูลเกี่ยวกับฐานะการเงินและผลการดำเนินงานของบริษัทที่ออกหลักทรัพย์",
+        "en": "Capital Market Supervisory Board Notification TorJor. 55/2563 on disclosure of financial position and performance (Form 56-1 One Report)"
+      },
+      "shortTitle": {
+        "th": "ประกาศ ทจ. 55/2563 (56-1 One Report)",
+        "en": "TorJor. 55/2563 (56-1 One Report)"
+      },
+      "authority": {
+        "th": "สำนักงาน ก.ล.ต.",
+        "en": "SEC Thailand"
+      },
+      "type": "notification",
+      "domain": "esg",
+      "year": 2020,
+      "officialUrl": "https://www.sec.or.th",
+      "packIds": [
+        "SET-56-1-ONE-REPORT"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "sec-one-report-manual",
+      "title": {
+        "th": "คู่มือการจัดทำแบบ 56-1 One Report",
+        "en": "Form 56-1 One Report preparation manual"
+      },
+      "shortTitle": {
+        "th": "คู่มือ 56-1 One Report",
+        "en": "One Report manual"
+      },
+      "authority": {
+        "th": "สำนักงาน ก.ล.ต.",
+        "en": "SEC Thailand"
+      },
+      "type": "guideline",
+      "domain": "esg",
+      "year": 2025,
+      "officialUrl": "https://www.sec.or.th",
+      "packIds": [
+        "SET-56-1-ONE-REPORT"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "tfrs-s1-s2",
+      "title": {
+        "th": "มาตรฐานการรายงานทางการเงินด้านความยั่งยืน TFRS S1 และ TFRS S2",
+        "en": "Thai Financial Reporting Standards for Sustainability — TFRS S1 and S2 (IFRS S1/S2)"
+      },
+      "shortTitle": {
+        "th": "TFRS S1 / S2",
+        "en": "TFRS S1 / S2"
+      },
+      "authority": {
+        "th": "สภาวิชาชีพบัญชี",
+        "en": "TFAC"
+      },
+      "type": "standard",
+      "domain": "esg",
+      "year": 2026,
+      "officialUrl": "https://www.tfac.or.th",
+      "packIds": [
+        "TFRS-S1-S2"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "tgo-cfo-guideline",
+      "title": {
+        "th": "แนวทางการประเมินคาร์บอนฟุตพริ้นท์ขององค์กร (Carbon Footprint for Organization)",
+        "en": "TGO Carbon Footprint for Organization guideline"
+      },
+      "shortTitle": {
+        "th": "แนวทาง CFO ของ อบก.",
+        "en": "TGO CFO guideline"
+      },
+      "authority": {
+        "th": "องค์การบริหารจัดการก๊าซเรือนกระจก",
+        "en": "TGO"
+      },
+      "type": "guideline",
+      "domain": "environmental",
+      "year": 2025,
+      "officialUrl": "https://thaicarbonlabel.tgo.or.th",
+      "packIds": [
+        "TGO-GHG-VERIFY"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "pdpa-2562",
+      "title": {
+        "th": "พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562",
+        "en": "Personal Data Protection Act B.E. 2562"
+      },
+      "shortTitle": {
+        "th": "พ.ร.บ. PDPA 2562",
+        "en": "PDPA 2562"
+      },
+      "authority": {
+        "th": "สำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล",
+        "en": "PDPC"
+      },
+      "type": "act",
+      "domain": "privacy",
+      "year": 2019,
+      "effectiveFrom": "2022-06-01",
+      "officialUrl": "https://www.pdpc.or.th",
+      "packIds": [
+        "TH-PDPA-2562"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "pdpc-breach-notification",
+      "title": {
+        "th": "ประกาศคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล เรื่อง หลักเกณฑ์และวิธีการในการแจ้งเหตุการละเมิดข้อมูลส่วนบุคคล",
+        "en": "PDPC Notification on criteria and procedure for notifying personal data breaches"
+      },
+      "shortTitle": {
+        "th": "ประกาศ สคส. แจ้งเหตุละเมิด",
+        "en": "PDPC breach notification rule"
+      },
+      "authority": {
+        "th": "สคส.",
+        "en": "PDPC"
+      },
+      "type": "notification",
+      "domain": "privacy",
+      "year": 2022,
+      "officialUrl": "https://www.pdpc.or.th",
+      "packIds": [
+        "TH-PDPA-2562"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "labour-protection-2541",
+      "title": {
+        "th": "พระราชบัญญัติคุ้มครองแรงงาน พ.ศ. 2541 และที่แก้ไขเพิ่มเติม",
+        "en": "Labour Protection Act B.E. 2541, as amended"
+      },
+      "shortTitle": {
+        "th": "พ.ร.บ. คุ้มครองแรงงาน 2541",
+        "en": "Labour Protection Act 2541"
+      },
+      "authority": {
+        "th": "กรมสวัสดิการและคุ้มครองแรงงาน",
+        "en": "DLPW"
+      },
+      "type": "act",
+      "domain": "labour",
+      "year": 1998,
+      "officialUrl": "https://www.labour.go.th",
+      "packIds": [
+        "TH-LABOUR-OSH"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "osh-act-2554",
+      "title": {
+        "th": "พระราชบัญญัติความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พ.ศ. 2554",
+        "en": "Occupational Safety, Health and Environment Act B.E. 2554"
+      },
+      "shortTitle": {
+        "th": "พ.ร.บ. ความปลอดภัยฯ 2554",
+        "en": "OSH Act 2554"
+      },
+      "authority": {
+        "th": "กรมสวัสดิการและคุ้มครองแรงงาน",
+        "en": "DLPW"
+      },
+      "type": "act",
+      "domain": "labour",
+      "year": 2011,
+      "officialUrl": "https://www.labour.go.th",
+      "packIds": [
+        "TH-LABOUR-OSH"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "plc-act-2535",
+      "title": {
+        "th": "พระราชบัญญัติบริษัทมหาชนจำกัด พ.ศ. 2535",
+        "en": "Public Limited Companies Act B.E. 2535"
+      },
+      "shortTitle": {
+        "th": "พ.ร.บ. บริษัทมหาชนฯ 2535",
+        "en": "PLC Act 2535"
+      },
+      "authority": {
+        "th": "กรมพัฒนาธุรกิจการค้า",
+        "en": "DBD"
+      },
+      "type": "act",
+      "domain": "corporate",
+      "year": 1992,
+      "officialUrl": "https://www.dbd.go.th",
+      "packIds": [
+        "TH-CORPORATE-DBD"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "ccc-partnerships-companies",
+      "title": {
+        "th": "ประมวลกฎหมายแพ่งและพาณิชย์ บรรพ 3 ลักษณะ 22 หุ้นส่วนและบริษัท",
+        "en": "Civil and Commercial Code, Book III Title XXII — Partnerships and Companies"
+      },
+      "shortTitle": {
+        "th": "ป.พ.พ. หุ้นส่วนและบริษัท",
+        "en": "CCC — Partnerships & Companies"
+      },
+      "authority": {
+        "th": "สำนักงานคณะกรรมการกฤษฎีกา",
+        "en": "Office of the Council of State"
+      },
+      "type": "act",
+      "domain": "corporate",
+      "year": 1925,
+      "officialUrl": "https://www.krisdika.go.th",
+      "packIds": [
+        "TH-CORPORATE-DBD"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "cybersecurity-act-2562",
+      "title": {
+        "th": "พระราชบัญญัติการรักษาความมั่นคงปลอดภัยไซเบอร์ พ.ศ. 2562",
+        "en": "Cybersecurity Act B.E. 2562"
+      },
+      "shortTitle": {
+        "th": "พ.ร.บ. ไซเบอร์ 2562",
+        "en": "Cybersecurity Act 2562"
+      },
+      "authority": {
+        "th": "สำนักงาน สกมช.",
+        "en": "NCSA"
+      },
+      "type": "act",
+      "domain": "cyber",
+      "year": 2019,
+      "officialUrl": "https://www.ncsa.or.th",
+      "packIds": [
+        "TH-CYBER-CII"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "revenue-code",
+      "title": {
+        "th": "ประมวลรัษฎากร (มาตรา 65–76 ภาษีเงินได้นิติบุคคล, มาตรา 77–90 ภาษีมูลค่าเพิ่ม)",
+        "en": "Revenue Code (ss. 65–76 corporate income tax, ss. 77–90 VAT)"
+      },
+      "shortTitle": {
+        "th": "ประมวลรัษฎากร",
+        "en": "Revenue Code"
+      },
+      "authority": {
+        "th": "กรมสรรพากร",
+        "en": "Revenue Department"
+      },
+      "type": "act",
+      "domain": "tax",
+      "year": 1938,
+      "officialUrl": "https://www.rd.go.th",
+      "packIds": [
+        "TH-REVENUE-PERIODIC",
+        "TH-TRANSFER-PRICING"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "mr-370-transfer-pricing",
+      "title": {
+        "th": "กฎกระทรวง ฉบับที่ 370 (พ.ศ. 2563) ออกตามความในประมวลรัษฎากร ว่าด้วยการปรับปรุงรายได้และรายจ่ายของบริษัทหรือห้างหุ้นส่วนนิติบุคคลที่มีความสัมพันธ์กัน",
+        "en": "Ministerial Regulation No. 370 (B.E. 2563) under the Revenue Code — related-party income and expense adjustments"
+      },
+      "shortTitle": {
+        "th": "กฎกระทรวง 370 (ราคาโอน)",
+        "en": "MR 370 (transfer pricing)"
+      },
+      "authority": {
+        "th": "กรมสรรพากร",
+        "en": "Revenue Department"
+      },
+      "type": "regulation",
+      "domain": "tax",
+      "year": 2020,
+      "officialUrl": "https://www.rd.go.th",
+      "packIds": [
+        "TH-TRANSFER-PRICING"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "top-up-tax-decree-2567",
+      "title": {
+        "th": "พระราชกำหนดภาษีส่วนเพิ่ม พ.ศ. 2567",
+        "en": "Emergency Decree on Top-up Tax B.E. 2567 (Pillar Two)"
+      },
+      "shortTitle": {
+        "th": "พ.ร.ก. ภาษีส่วนเพิ่ม 2567",
+        "en": "Top-up Tax Decree 2567"
+      },
+      "authority": {
+        "th": "กรมสรรพากร",
+        "en": "Revenue Department"
+      },
+      "type": "decree",
+      "domain": "tax",
+      "year": 2024,
+      "effectiveFrom": "2025-01-01",
+      "officialUrl": "https://www.rd.go.th",
+      "packIds": [
+        "TH-PILLAR-TWO"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "customs-act-2560",
+      "title": {
+        "th": "พระราชบัญญัติศุลกากร พ.ศ. 2560",
+        "en": "Customs Act B.E. 2560"
+      },
+      "shortTitle": {
+        "th": "พ.ร.บ. ศุลกากร 2560",
+        "en": "Customs Act 2560"
+      },
+      "authority": {
+        "th": "กรมศุลกากร",
+        "en": "Thai Customs"
+      },
+      "type": "act",
+      "domain": "trade",
+      "year": 2017,
+      "officialUrl": "https://www.customs.go.th",
+      "packIds": [
+        "TH-CUSTOMS-FTA"
+      ],
+      "status": "pending",
+      "inForce": true
+    },
+    {
+      "id": "example-egat-minicop-srt-floating-250kw",
+      "title": {
+        "th": "รายงานประมวลหลักการปฏิบัติ (CoP) โครงการพัฒนาทุ่นลอยน้ำขนาดใหญ่สำหรับติดตั้งระบบผลิตไฟฟ้าจากเซลล์แสงอาทิตย์ ขนาด 250 kW ณ เขื่อนสิรินธร จังหวัดอุบลราชธานี (พฤษภาคม 2560)",
+        "en": "CoP report — 250 kW floating solar demonstration at Sirindhorn Dam, Ubon Ratchathani (May 2017)"
+      },
+      "shortTitle": {
+        "th": "ตัวอย่างรายงาน CoP — กฟผ. โซลาร์ลอยน้ำ เขื่อนสิรินธร",
+        "en": "Example CoP report — EGAT floating solar, Sirindhorn Dam"
+      },
+      "authority": {
+        "th": "กฟผ. (เจ้าของโครงการ) · บจก. อีอาร์เอ็ม-สยาม (ที่ปรึกษา)",
+        "en": "EGAT (project owner) · ERM-Siam (consultant)"
+      },
+      "type": "other",
+      "domain": "licensing",
+      "year": 2017,
+      "officialUrl": "https://www.egat.co.th/home/wp-content/uploads/2021/08/MiniCoP-6005_SRT-floatingsolar-250kW.pdf",
+      "downloadUrl": "https://www.egat.co.th/home/wp-content/uploads/2021/08/MiniCoP-6005_SRT-floatingsolar-250kW.pdf",
+      "file": "egat-minicop-6005-srt-floating-solar-250kw.pdf",
+      "packIds": [],
+      "status": "ingested",
+      "inForce": true,
+      "role": "example",
+      "tech": "solar-float",
+      "sizeBytes": 6728320,
+      "notes": {
+        "th": "ตัวอย่างรายงานจริง 127 หน้า จัดทำภายใต้ประกาศ กกพ. PV ที่ได้รับยกเว้นใบอนุญาต พ.ศ. 2557 — ใช้เป็นแบบอย่างการเขียน ไม่ใช่แหล่งกฎหมาย",
+        "en": "A real 127-page report prepared under the 2557 notification for licence-exempt PV. A drafting reference, not a legal source."
+      }
+    }
+  ]
+}

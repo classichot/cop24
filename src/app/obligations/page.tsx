@@ -2,6 +2,7 @@
 
 import { Fragment, Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useApp } from "@/state/AppState";
 import { AppChip, PageHead, Seg, Tag } from "@/components/ui";
 import { APPS, DOMAINS } from "@/packs";
@@ -56,6 +57,7 @@ function Register() {
                       <td colSpan={9} style={{ background: "var(--color-surface)", borderLeft: "3px solid var(--color-accent)", padding: "14px 18px" }}>
                         <div style={{ fontSize: 13, lineHeight: 1.7 }}>{L(r.obligation.summary)}</div>
                         <div className="small muted-7" style={{ marginTop: 6 }}><strong>{tx("หลักฐานที่ต้องมี", "Required evidence")}:</strong> {r.obligation.evidenceRequired.map((e) => L(e)).join(" · ")}{r.obligation.reportDest ? <> · <strong>{tx("ปลายทาง", "Destination")}:</strong> {L(r.obligation.reportDest)}</> : null}</div>
+                        {r.obligation.citations?.length ? <div className="small muted-7" style={{ marginTop: 4 }}><strong>{tx("อ้างอิงกฎหมาย", "Legal basis")}:</strong> <Link href="/corpus" className="code">{r.obligation.citations.map((c) => c.clause ? `${c.sourceId} ${c.clause}` : c.sourceId).join(" · ")}</Link></div> : null}
                         <div className="small muted-7" style={{ marginTop: 4 }}><strong>{tx("หลักฐานที่ผูกแล้ว", "Bound evidence")}:</strong> {r.evidence.length ? r.evidence.map((e) => `${e.id} ${L(e.name)} (${L(e.statusLabel)})`).join(" · ") : tx("ยังไม่มี", "none")}</div>
                       </td>
                     </tr>

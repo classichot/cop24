@@ -33,6 +33,8 @@ npm test           # engine tests (node:test + tsx)
 npm run typecheck
 npm run lint
 npm run build
+npm run corpus:fetch   # download in-force ERC regulation files listed in corpus/manifest.json
+npm run corpus:ingest  # extract, repair Thai text, split into clauses, index
 ```
 
 ## Repository layout
@@ -57,6 +59,13 @@ src/packs/         Domain knowledge (rule packs) consumed by the engines
   thai-general.ts    PDPA, Labour/OSH, Corporate/DBD, Cybersecurity CII
   tax-apps.ts        ACC24 periodic tax, TP24 transfer pricing, GMT24 Pillar Two, TRADE24 customs
   domains.ts         The 13-domain Compliance Universe + the 24-app catalogue
+src/core/report/   Report Engine — 24 Series Report Generation Quality Standard v1.0 (brief, data
+                   contract, claim ledger, calculations, semantic rewrite checks, editorial rubric,
+                   model registry/routing, 9 release gates, approval binding)
+src/core/corpus*.ts Legal corpus types + Thai PDF text repair and clause chunking
+src/packs/report/  Report packs (ERC CoP Solar Farm form V1.0/2565 requirement matrix)
+corpus/            Legal corpus: manifest (52 sources, 36 from the ERC catalogue), index, scripts in
+                   scripts/corpus/ (fetch, ingest); raw files and extracted text stay local
 src/data/          Demo tenant (Lopburi Green Power group) — entities, evidence, controls, tests,
                    regulatory changes, report draft, audit trail, agents, missions, portfolio
 src/state/         App state (language, role, mode, Evidence Guard, active entity) + snapshot
@@ -86,6 +95,8 @@ docs/              Concept, architecture, features and wow features, design syst
 | `/controls` | Control Testing — effectiveness from tests; failed controls open gaps | Control |
 | `/changes` | Regulatory Change Monitor — impact to obligations, chapters, entities; proposed new obligations | Change |
 | `/audit` | Audit Trail — every AI / human / system action with the engine that did it | all |
+| `/report-quality` | Report Quality — the standard applied: 9 gates, requirement matrix from the ERC form, claim ledger with Click to Source, numbers and conflicts, findings, data contract, model registry and routing, approval binding, audit package | Report Engine |
+| `/corpus` | Legal Corpus — ERC catalogue (in force / repealed), clause index, extraction-quality flags, reference reports | Regulation |
 | `/packs` | Packs & 24 apps — installed packs; the **COP24 experience inside ESG24 / TP24 / GMT24** (same snapshot, app-skinned) | all |
 | `/engine` | COP24 Core Engine — the nine engines with live metrics and the snapshot data flow | all |
 
@@ -116,6 +127,14 @@ utility classes the prototype expressed as repeated inline styles. See `docs/04-
 10. **Compliance Universe** — 13 domains × every entity on one map; ESG24 sees one column, COP24 sees the sheet.
 11. **The COP24 experience inside every 24 app** — the same snapshot, filtered to the app's packs, in the app's brand.
 12. **Audit Trail with rulepack pinning** — every output traceable to a rulepack version and an evidence snapshot.
+
+## Report Generation Quality Standard
+
+The 24 Series Report Generation Quality Standard (Draft v1.0, `docs/standards/`) is implemented as the shared
+Report Engine in `src/core/report/`. It is applied first to the Lopburi 1 preliminary CoP report and tested
+against the standard’s §16 acceptance scenarios. See `docs/06-report-standard-implementation.md` for the
+section-by-section mapping and what is not built yet, and `docs/07-cop-report-references.md` for the
+official ERC form and the EGAT example report.
 
 ## Deploy
 

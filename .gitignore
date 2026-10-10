@@ -30,3 +30,11 @@ yarn-error.log*
 
 .vercel
 .env*
+
+# legal corpus — raw sources and extracted text stay local
+corpus/inbox/*
+!corpus/inbox/.gitkeep
+corpus/text/*
+!corpus/text/.gitkeep
+corpus/reference/*
+!corpus/reference/.gitkeep

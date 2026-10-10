@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useApp } from "@/state/AppState";
-import { Cells, PageHead, Sweep } from "@/components/ui";
+import { Cells, PageHead, Sweep, Tag } from "@/components/ui";
+import { route } from "@/core/report/models";
 
 export default function FactoryPage() {
   const { L, tx, data, entityId, snap } = useApp();
@@ -16,6 +17,7 @@ export default function FactoryPage() {
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const routing = route("authority-th", "drafting");
 
   const steps = [
     { t: tx("อ่านและจัดหมวดหมู่เอกสารของหน่วยงาน", "Read and classify the entity's documents"), d: tx("128 ไฟล์ · PDF แบบสแกน 41 ไฟล์ ผ่าน OCR · ไฟล์ซ้ำ 6 ไฟล์ถูกรวม", "128 files · 41 scanned PDFs through OCR · 6 duplicates merged") },
@@ -61,6 +63,9 @@ export default function FactoryPage() {
         <span className="muted small">{tx("ใช้เวลาประมาณ 6–9 นาที · คุณไม่ต้องเฝ้าหน้าจอ", "About 6–9 minutes · you don't need to watch")}</span>
       </div>
 
+      <div className="note note-warn" style={{ marginTop: 14, fontSize: 12 }}>
+        <strong>{tx("การจำลอง", "Simulation")}</strong> · {tx("ขั้นตอนด้านล่างเป็นการสาธิต ในการใช้งานจริงงานร่างจะ", "The steps below are a demonstration. A real drafting job is")} <Tag k={routing.outcome === "run" ? "ok" : "bad"}>{routing.outcome}</Tag> — {L(routing.reason)} <a href="/report-quality">{tx("ดูทะเบียนโมเดล →", "See model registry →")}</a>
+      </div>
       <hr className="hr" style={{ margin: "28px 0 0" }} />
       <div>
         {steps.map((s, i) => {
@@ -82,7 +87,7 @@ export default function FactoryPage() {
 
       {done && (
         <div className="callout" style={{ marginTop: 28, padding: 22 }}>
-          <div className="callout-kicker">{tx("ผลลัพธ์ · ต้องผ่านการตรวจโดยมนุษย์", "Result · requires human review")}</div>
+          <div className="callout-kicker">{tx("สถานะ: สร้างแล้ว — ยังไม่ใช่ “พร้อมให้ตรวจ” “อนุมัติ” หรือ “ยื่นแล้ว”", "Status: generated — not “ready for review”, “approved” or “submitted”")}</div>
           <h3 style={{ margin: "6px 0 10px", fontSize: 24 }}>{tx("ร่าง", "Draft of")} {sel && L(sel.r.name)} {tx("พร้อมให้ตรวจแล้ว", "is ready for review")}</h3>
           <Cells min={140} thin accent>
             <div className="cell" style={{ padding: "12px 14px" }}><div className="label-9">{tx("บทที่เขียนแล้ว", "Chapters drafted")}</div><div className="stat-value stat-value-sm">{sel?.r.chapters.length || 6} / {sel?.r.chapters.length || 6}</div></div>
@@ -94,7 +99,8 @@ export default function FactoryPage() {
           <div className="row" style={{ marginTop: 16 }}>
             <Link href="/studio" className="btn btn-primary">{tx("เปิดร่างในสตูดิโอ →", "Open in Studio →")}</Link>
             <Link href="/preflight" className="btn btn-secondary" style={{ background: "var(--color-bg)" }}>{tx("ดูผลตรวจก่อนยื่น", "See preflight")}</Link>
-            <button className="btn btn-secondary" style={{ background: "var(--color-bg)" }}>{tx("ดาวน์โหลด Word / PDF", "Download Word / PDF")}</button>
+            <a href="/report-quality" className="btn btn-secondary" style={{ background: "var(--color-bg)" }}>{tx("ตรวจประตูคุณภาพ 9 ประตู", "Check the 9 quality gates")}</a>
+            <button className="btn btn-secondary" style={{ background: "var(--color-bg)" }}>{tx("ดาวน์โหลดฉบับร่าง (ตรา DRAFT)", "Download draft (DRAFT-marked)")}</button>
           </div>
         </div>
       )}

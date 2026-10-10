@@ -1,16 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useApp } from "@/state/AppState";
 import { Glyph, Tag, layerMark } from "@/components/ui";
 import { obligationById } from "@/packs";
+import { assessReport } from "@/core/report/assess";
+import { checkRewrite } from "@/core/report/semantic";
+import { LB1_REPORT_INPUT, LB1_REWRITE_DEMO } from "@/data/report-lb1";
 
 export default function StudioPage() {
-  const { L, tx, data, evidenceGuard } = useApp();
+  const { L, tx, data, evidenceGuard, lang } = useApp();
   const report = data.report;
   const [chapterId, setChapterId] = useState("env");
   const [drafted, setDrafted] = useState<Record<string, boolean>>({});
+  const [rewrite, setRewrite] = useState(false);
+  const quality = useMemo(() => assessReport(LB1_REPORT_INPUT), []);
+  const rewriteCheck = useMemo(() => checkRewrite(LB1_REWRITE_DEMO.before, LB1_REWRITE_DEMO.after, { sectionId: "env", outcome: "clarity", requirementIds: [], allowedSources: [], approvedFacts: [], lockedWording: [] }), []);
   const cur = report.chapters.find((c) => c.id === chapterId) ?? report.chapters[0];
   const hasBody = cur.paras.length > 0 || drafted[cur.id];
   const evidence = cur.evidenceIds.map((id) => data.evidence.find((e) => e.id === id)!).filter(Boolean);
@@ -26,6 +32,8 @@ export default function StudioPage() {
         <div className="kicker" style={{ margin: 0 }}>{tx("สตูดิโอรายงาน / AI REPORT STUDIO", "AI Report Studio")}</div>
         <span className="muted" style={{ fontSize: 13 }}>{L(data.entities.find((e) => e.id === report.entityId)!.name)} · {tx("รายงาน CoP ขั้นต้น", "Preliminary CoP report")} · {tx("ฉบับร่าง", "Draft")} {report.version} · rulepack {report.rulepackVersion}</span>
         {!evidenceGuard && <Tag k="warn">{tx("Evidence Guard ปิดอยู่", "Evidence Guard off")}</Tag>}
+        <Tag k="bad">DRAFT</Tag>
+        <Link href="/report-quality" className="btn btn-ghost btn-sm">{tx(`ประตูคุณภาพ ${quality.gates.filter((g) => g.result === "pass").length}/${quality.gates.length} →`, `Quality gates ${quality.gates.filter((g) => g.result === "pass").length}/${quality.gates.length} →`)}</Link>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 0, border: "2px solid var(--color-divider)" }}>
         <div style={{ flex: "1 1 200px", minWidth: 190, background: "var(--color-bg)", boxShadow: "0 0 0 1px var(--color-divider)", padding: "16px 0" }}>
@@ -47,7 +55,7 @@ export default function StudioPage() {
         <div style={{ flex: "3 1 420px", minWidth: 320, background: "var(--color-bg)", boxShadow: "0 0 0 1px var(--color-divider)", padding: "20px 22px" }}>
           <div className="row row-center" style={{ paddingBottom: 12, borderBottom: "2px solid var(--color-divider)" }}>
             <button className="btn btn-secondary btn-sm" onClick={() => setDrafted({ ...drafted, [cur.id]: true })}>{tx("ร่างหัวข้อนี้ด้วย AI", "Draft this section with AI")}</button>
-            <button className="btn btn-secondary btn-sm">{tx("ปรับสำนวน", "Rephrase")}</button>
+            <button className="btn btn-secondary btn-sm" onClick={() => setRewrite(!rewrite)}>{tx("เขียนใหม่ให้ชัดขึ้น", "Rewrite for clarity")}</button>
             <Link href="/preflight" className="btn btn-secondary btn-sm">{tx("ตรวจความสอดคล้องกับหน่วยงานกำกับ", "Check against the regulator")}</Link>
             <button className="btn btn-secondary btn-sm">{tx("สร้างตาราง", "Build table")}</button>
             <button className="btn btn-secondary btn-sm">{tx("หาหลักฐานสนับสนุน", "Find supporting evidence")}</button>
@@ -83,6 +91,37 @@ export default function StudioPage() {
               <button className="btn btn-secondary">{tx("ส่งให้ผู้มีคุณวุฒิตรวจ", "Send to qualified reviewer")}</button>
               <span className="muted small" style={{ alignSelf: "center" }}>{tx("สถานะปล่อยผ่าน: ร่างโดย AI → หลักฐานครบ → พร้อมรับรอง → อนุมัติให้ยื่น", "Release gate: AI draft → evidence complete → ready to certify → approved to file")}</span>
             </div>
+            {rewrite && (
+              <div className="panel" style={{ marginTop: 14 }}>
+                <div className="label" style={{ marginBottom: 8 }}>{tx("สัญญาการเขียนใหม่ · ตรวจการเปลี่ยนความหมาย (มาตรฐาน §10)", "Rewrite contract · semantic change check (standard §10)")}</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 12 }}>
+                  <div><div className="label-9">{tx("ก่อน", "Before")}</div><div style={{ fontSize: 14, lineHeight: 1.7 }}>{LB1_REWRITE_DEMO.before}</div></div>
+                  <div><div className="label-9">{tx("หลัง (ข้อเสนอของ AI)", "After (AI proposal)")}</div><div style={{ fontSize: 14, lineHeight: 1.7 }}>{LB1_REWRITE_DEMO.after}</div></div>
+                </div>
+                <div style={{ marginTop: 10 }}>
+                  {rewriteCheck.changes.map((c, i) => <div key={i} className="small" style={{ display: "flex", gap: 8, padding: "3px 0" }}><Tag k={c.material ? "bad" : "warn"}>{c.kind}</Tag><span><span className="muted">{c.before}</span> → <strong>{c.after}</strong></span></div>)}
+                </div>
+                <div className="note note-bad" style={{ marginTop: 10 }}>{rewriteCheck.reasons.map((r) => (lang === "th" ? r.th : r.en)).join(" · ")} · {tx("ไม่อนุญาตให้ยอมรับแบบกลุ่ม และการอนุมัติเดิมจะถูกยกเลิกหากยอมรับ", "Batch acceptance is not allowed, and accepting would invalidate prior approval")}</div>
+                <div className="row" style={{ marginTop: 10 }}>
+                  <button className="btn btn-secondary btn-sm" onClick={() => setRewrite(false)}>{tx("ปฏิเสธการเปลี่ยนแปลง", "Reject change")}</button>
+                  <button className="btn btn-secondary btn-sm" disabled>{tx("ยอมรับ (ต้องมีหลักฐานใหม่และผู้ตรวจ)", "Accept (needs new evidence and a reviewer)")}</button>
+                </div>
+              </div>
+            )}
+
+            {quality.claims.some((c) => c.sectionId === cur.id) && (
+              <div style={{ marginTop: 14 }}>
+                <div className="label" style={{ marginBottom: 6 }}>{tx("บัญชีข้อความของบทนี้ (Claim ledger)", "Claim ledger for this chapter")}</div>
+                {quality.claims.filter((c) => c.sectionId === cur.id).map((c) => (
+                  <div key={c.id} style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "5px 0", borderBottom: "1px solid var(--color-divider)" }}>
+                    <span className="code" style={{ width: 48, flex: "none" }}>{c.id}</span>
+                    <span style={{ flex: 1, fontSize: 12, lineHeight: 1.5 }}>{L(c.text)}</span>
+                    <Tag k={c.supportStatus === "supported" ? "ok" : c.supportStatus === "unsupported" ? "bad" : c.supportStatus === "unresolved" ? "cond" : "warn"}>{c.supportStatus}</Tag>
+                  </div>
+                ))}
+                <Link href="/report-quality" className="btn btn-ghost btn-sm" style={{ marginTop: 6 }}>{tx("เปิดหลักฐานต้นทาง (Click to Source) →", "Click to Source →")}</Link>
+              </div>
+            )}
             {guardBlocks && <div className="note note-bad" style={{ marginTop: 10 }}>{tx("Evidence Guard: บทนี้ปิดไม่ได้จนกว่าหลักฐานที่ขาดจะเข้าระบบและช่อง “ยังไม่ยุติ” ถูกปิดโดยมนุษย์", "Evidence Guard: this chapter cannot close until the missing evidence arrives and every unresolved slot is closed by a person.")}</div>}
           </div>
         </div>
