@@ -284,3 +284,27 @@
 .hd-minted { padding: 14px 16px; border: 1px solid var(--color-accent-700); background: var(--color-accent-100); }
 .hd-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--color-divider); font-size: 12px; align-items: center; }
 @media (max-width: 760px) { .login-main { padding: 28px 16px 40px; } .login-wordmark { font-size: 40px; } .login-title { font-size: 28px; } .hd-grid { grid-template-columns: 1fr; } .login-foot { padding: 14px 16px; } }
+
+/* AI badge on menu items that use (solid) or would need (outline) the LLM */
+.nav-ai { flex: none; margin-left: auto; font-family: var(--font-heading); font-weight: 800; font-size: 9px; letter-spacing: .08em; padding: 1px 5px; line-height: 1.4; border: 1px solid var(--color-accent-700); color: var(--color-accent-700); }
+.nav-ai-live { background: var(--color-accent-100); }
+.nav-ai-live.on { background: var(--color-accent); color: var(--on-accent); border-color: var(--color-accent); }
+.nav-ai-needs { border-style: dashed; opacity: .75; }
+.nav-line { width: 100%; }
+.sidenav.collapsed .nav-ai { position: absolute; top: 4px; right: 4px; padding: 0 3px; font-size: 7px; }
+.sidenav.collapsed .nav-btn { position: relative; }
+
+/* Explain me / Playbook pop-ups on every page */
+.page-tools { display: flex; justify-content: flex-end; gap: 6px; padding: 6px 32px 0; }
+.pt-btn { font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 10px; background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-divider); display: inline-flex; gap: 6px; align-items: center; }
+.pt-btn:hover { border-color: var(--color-accent); background: var(--color-accent-100); }
+.pt-backdrop { z-index: 80; }
+.pt-dialog { width: min(620px, 100%); max-height: 86vh; overflow-y: auto; }
+.pt-body { display: flex; flex-direction: column; gap: 12px; font-size: 14px; line-height: 1.6; }
+.pt-body p { margin: 4px 0 0; }
+.pt-next { border-left: 3px solid var(--color-accent); background: var(--color-accent-100); padding: 10px 12px; }
+.pt-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.pt-steps li { display: flex; gap: 10px; align-items: flex-start; }
+.pt-n { flex: none; width: 24px; height: 24px; display: grid; place-items: center; background: var(--color-accent); color: var(--on-accent); font-weight: 800; font-size: 12px; }
+@media (max-width: 760px) { .page-tools { padding: 6px 16px 0; } }
+.nav-ask .kbd-hint { display: none; }

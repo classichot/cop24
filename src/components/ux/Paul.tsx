@@ -48,7 +48,12 @@ export function Paul() {
   }, []);
   // the AI READY badge in the header opens Paul
   useEffect(() => {
-    const openPaul = () => setOpen(true);
+    const openPaul = (e: Event) => {
+      setOpen(true);
+      const d = (e as CustomEvent<{ text?: string; mode?: PaulMode }>).detail;
+      if (d?.text) setInput(d.text);
+      if (d?.mode) setPick(d.mode);
+    };
     window.addEventListener("cop24:open-paul", openPaul);
     return () => window.removeEventListener("cop24:open-paul", openPaul);
   }, []);

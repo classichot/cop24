@@ -5,6 +5,28 @@ import { useApp } from "@/state/AppState";
 
 export interface AiStatus { provider: string; model: string; connected: boolean; error?: string }
 
+// one request per page load, shared by the header badge and the menu badges
+let cache: { at: number; p: Promise<AiStatus> } | null = null;
+function fetchStatus(): Promise<AiStatus> {
+  if (!cache || Date.now() - cache.at > 5 * 60_000) {
+    cache = { at: Date.now(), p: fetch("/api/paul").then((r) => r.json() as Promise<AiStatus>).catch(() => ({ provider: "offline", model: "-", connected: false })) };
+  }
+  return cache.p;
+}
+
+/** Live AI connection status (verified server-side with a token-free model lookup). */
+export function useAiStatus(): AiStatus | null {
+  const [s, setS] = useState<AiStatus | null>(null);
+  useEffect(() => {
+    let alive = true;
+    const load = () => fetchStatus().then((j) => { if (alive) setS(j); });
+    load();
+    const t = setInterval(load, 5 * 60_000);
+    return () => { alive = false; clearInterval(t); };
+  }, []);
+  return s;
+}
+
 /**
  * “AI READY” badge beside the COP24 logo. It blinks only when the server has verified the
  * configured AI provider with a real (token-free) model lookup; a missing, wrong or expired
@@ -12,15 +34,7 @@ export interface AiStatus { provider: string; model: string; connected: boolean;
  */
 export function AiReadyBadge() {
   const { tx } = useApp();
-  const [s, setS] = useState<AiStatus | null>(null);
-  useEffect(() => {
-    let alive = true;
-    const load = () => fetch("/api/paul").then((r) => r.json()).then((j: AiStatus) => { if (alive) setS(j); }).catch(() => { if (alive) setS({ provider: "offline", model: "-", connected: false }); });
-    load();
-    const t = setInterval(load, 5 * 60_000);
-    return () => { alive = false; clearInterval(t); };
-  }, []);
-
+  const s = useAiStatus();
   const state = !s ? "checking" : s.connected ? "ready" : s.provider !== "offline" ? "error" : "offline";
   const name = s?.provider === "openai" ? "OpenAI" : s?.provider === "anthropic" ? "Claude" : "";
   const label = state === "ready" ? "AI READY" : state === "error" ? "AI ERROR" : state === "offline" ? "AI OFFLINE" : "AI …";

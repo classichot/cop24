@@ -9,8 +9,9 @@ import { Seg, Tag } from "./ui";
 import { CopilotProvider, useCopilot } from "./ux/Copilot";
 import { ComplexityGuard } from "./ux/ComplexityGuard";
 import { NextStepBar } from "./ux/parts";
+import { PageTools } from "./ux/PageTools";
 import { Paul } from "./ux/Paul";
-import { AiReadyBadge } from "./ux/AiStatus";
+import { AiReadyBadge, useAiStatus } from "./ux/AiStatus";
 import { USER } from "@/data/tenant";
 
 interface NavItem { href: string; th: string; en: string; sub?: string }
@@ -59,6 +60,32 @@ const NAV_ENGINE: NavItem[] = [
 const NAV_ORDER = [...NAV_PRIMARY, ...NAV_WORK, ...NAV_REPORT, ...NAV_ENGINE].map((it) => it.href);
 const navNum = (href: string) => String(NAV_ORDER.indexOf(href) + 1).padStart(2, "0");
 
+/**
+ * Which menu items use, or would need, the LLM. "live": the screen calls the connected model
+ * (subject to its own gates). "needs": the screen runs on rules today and an LLM would help.
+ */
+const AI_MENU: Record<string, { kind: "live" | "needs"; th: string; en: string }> = {
+  "/agi": { kind: "live", th: "เขียนรายงานด้วย AI (เมื่อโมเดลผ่านการรับรอง) และภารกิจ AGI", en: "AI report writing (once the model is qualified) and AGI missions" },
+  "/report-quality": { kind: "live", th: "ทดสอบและรับรองโมเดลที่เขียนรายงาน", en: "Benchmarks and qualifies the report-writing model" },
+  "/corpus": { kind: "live", th: "Paul ตอบคำถามกฎหมายจากคลังนี้พร้อมอ้างอิง", en: "Paul answers legal questions from this corpus, with citations" },
+  "/feedback": { kind: "live", th: "Paul รับและจัดหมวดข้อเสนอแนะ", en: "Paul receives and triages feedback" },
+  "#ask": { kind: "needs", th: "ใช้กฎเข้าใจเป้าหมาย — LLM จะช่วยเข้าใจคำถามที่ซับซ้อน", en: "Understands goals with rules — an LLM would handle open-ended requests" },
+  "/ingest": { kind: "needs", th: "สกัดข้อมูลด้วยกฎและ OCR — LLM จะช่วยเอกสารรูปแบบใหม่", en: "Rule and OCR extraction — an LLM would help with unfamiliar documents" },
+  "/factory": { kind: "needs", th: "ประกอบร่างจากหลักฐาน — LLM จะช่วยเขียนเนื้อความ", en: "Assembles drafts from evidence — an LLM would write the prose" },
+  "/studio": { kind: "needs", th: "แก้ไขรายบท — LLM จะช่วยเขียนใหม่โดยรักษาข้อเท็จจริง", en: "Chapter editing — an LLM would rewrite while preserving facts" },
+  "/xray": { kind: "needs", th: "ตรวจรายงานกับชุดกฎ — LLM จะช่วยอ่านรายงานที่ไม่มีโครงสร้าง", en: "Checks reports against the pack — an LLM would read unstructured reports" },
+};
+
+function NavAi({ href }: { href: string }) {
+  const { tx } = useApp();
+  const s = useAiStatus();
+  const a = AI_MENU[href];
+  if (!a) return null;
+  const on = a.kind === "live" && !!s?.connected;
+  const title = (a.kind === "live" ? tx("ใช้ AI: ", "Uses AI: ") : tx("AI จะช่วยได้: ", "AI would help: ")) + tx(a.th, a.en) + (a.kind === "live" && !s?.connected ? tx(" · ยังไม่ได้เชื่อมต่อ AI", " · AI not connected") : "");
+  return <span className={`nav-ai nav-ai-${a.kind}${on ? " on" : ""}`} title={title} aria-label={title}>AI</span>;
+}
+
 function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
   const path = usePathname();
   const { L } = useApp();
@@ -68,12 +95,12 @@ function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
       <div className="nav-group">{title}</div>
       {items.map((it) => {
         if (it.href === "#ask") {
-          return <button key={it.href} type="button" className="nav-btn nav-ask" title={L({ th: it.th, en: it.en })} onClick={() => copilot.open()}><span className="nav-line"><span className="nav-num">{navNum(it.href)}</span><span className="nav-label">{L({ th: it.th, en: it.en })}</span></span> <span className="kbd-hint">Ctrl K</span></button>;
+          return <button key={it.href} type="button" className="nav-btn nav-ask" title={L({ th: it.th, en: it.en })} onClick={() => copilot.open()}><span className="nav-line"><span className="nav-num">{navNum(it.href)}</span><span className="nav-label">{L({ th: it.th, en: it.en })}</span></span> <NavAi href={it.href} /><span className="kbd-hint">Ctrl K</span></button>;
         }
         const active = it.href === "/" ? path === "/" : path.startsWith(it.href);
         return (
           <Link key={it.href} href={it.href} className={`nav-btn${active ? " active" : ""}`} aria-current={active ? "page" : undefined} title={L({ th: it.th, en: it.en })}>
-            <span className="nav-line"><span className="nav-num">{navNum(it.href)}</span><span className="nav-label">{L({ th: it.th, en: it.en })}</span></span>
+            <span className="nav-line"><span className="nav-num">{navNum(it.href)}</span><span className="nav-label">{L({ th: it.th, en: it.en })}</span><NavAi href={it.href} /></span>
           </Link>
         );
       })}
@@ -257,6 +284,7 @@ function Shell({ children, session, onSignOut }: { children: ReactNode; session:
         </nav>
         <main className="main">
           <ComplexityGuard />
+          <PageTools />
           <NextStepBar />
           {children}
         </main>

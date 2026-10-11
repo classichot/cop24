@@ -1,0 +1,50 @@
+import { t } from "../i18n-text";
+import type { LText } from "../types";
+import type { GlossaryId } from "./guidance";
+
+/**
+ * Per-screen playbooks (“how do I use this page”) and the professional terms each screen explains.
+ * Every registered screen has a playbook — the UX test enforces it.
+ */
+export interface Playbook { steps: LText[]; tips?: LText[] }
+
+export const PLAYBOOKS: Record<string, Playbook> = {
+  "/": { steps: [t("พิมพ์สิ่งที่ต้องการในช่อง Ask 24 เป็นภาษาธรรมดา", "Type what you need in the Ask 24 box, in plain words"), t("ตรวจแผนที่ Copilot เสนอ: ข้อมูลที่มี ข้อมูลที่ขาด และขั้นตอน", "Check the plan the Copilot proposes: data in hand, data missing, steps"), t("เลือก ทำเอง / แนะนำฉัน / ทำให้ฉัน", "Choose Do it myself / Guide me / Do it for me"), t("ทำ “สิ่งที่แนะนำ” ข้อแรกก่อน แล้วดูภารกิจของคุณด้านล่าง", "Do the first recommended action, then follow your missions below")] },
+  "/missions": { steps: [t("เปิดภารกิจจากการ์ด", "Open a mission from its card"), t("ดูว่าอยู่ขั้นไหนในเส้นทาง และ AI ต้องการอะไรจากคุณ", "See which stage you are at and what the AI needs from you"), t("กด “ดำเนินภารกิจต่อ” เพื่อไปยังงานถัดไปที่ต้องใช้คน", "Press Continue mission to go to the next task that needs a person"), t("กด “ทำไม AI จึงเลือกสิ่งนี้” เพื่อดูเหตุผลและแหล่งอ้างอิง", "Open “Why did AI choose this?” for reasoning and sources")] },
+  "/my-work": { steps: [t("ตัดสินค่าที่ขัดแย้ง — เลือกค่าและใส่เหตุผล", "Decide conflicting values — pick one and give a reason"), t("เปิดบทที่รออนุมัติในสตูดิโอ", "Open the chapters awaiting approval in the studio"), t("ตรวจคำขอเอกสารที่ AI ร่างไว้แล้วกดส่ง", "Review the evidence requests the AI drafted and send them"), t("ดูข้อยกเว้นและมอบผู้รับผิดชอบ", "Review exceptions and assign owners")] },
+  "/outputs": { steps: [t("ดูสถานะการยื่นด้านบน — พร้อมหรือยัง และทำไม", "Read the filing status at the top — ready or not, and why"), t("เปิดผลลัพธ์ที่ต้องการ: รายงาน ชุดยื่น ดัชนีหลักฐาน", "Open the output you need: report, bundle, evidence index"), t("ทำสิ่งที่กั้นการยื่นก่อนส่งออก", "Clear what blocks filing before exporting")] },
+  "/agi": { steps: [t("เลือกภารกิจหลัก F01–F07 หรือภารกิจจากแคตตาล็อก", "Pick a flagship F01–F07 or a mission from the catalog"), t("ตรวจตัวอย่างภารกิจ: ขอบเขต โหมด ระดับอิสระ งบ และจุดอนุมัติ", "Check the preview: scope, mode, autonomy, budget and approval gates"), t("กด “ยอมรับและเริ่มภารกิจ”", "Press Accept and start mission"), t("ในศูนย์ควบคุม ทำเฉพาะสิ่งที่ต้องเป็นคน: อนุมัติ ส่งหลักฐาน ตรวจยืนยัน", "In Mission Control do only the human actions: approve, supply evidence, verify")], tips: [t("ภารกิจที่มีรายการค้างจบแบบ “ต้องให้คนดำเนินการ” ไม่ใช่ “เสร็จสมบูรณ์”", "A mission with open items ends Needs Human Action, never Completed")] },
+  "/ingest": { steps: [t("เลือกโรงไฟฟ้า ชนิดรายงาน และปี", "Pick the plant, report type and year"), t("ลากไฟล์ โฟลเดอร์ หรือ ZIP มาวาง แล้วกดเริ่มประมวลผล", "Drop files, a folder or a ZIP, then start processing"), t("ดูรายการหลักฐานและสิ่งที่ขาด", "Read the checklist and what is missing"), t("ตรวจเฉพาะค่าที่ AI ไม่มั่นใจในแท็บ “ตรวจค่าที่สกัด”", "Review only the values the AI is unsure of in the review tab"), t("หรือส่งต่อให้ AI ขอเอกสารที่ขาด (ภาค B)", "Or hand off to the AI to request what is missing (section B)")] },
+  "/start": { steps: [t("ตอบคำถามเกี่ยวกับธุรกิจ", "Answer the questions about the business"), t("ดูข้อกำหนดที่บังคับใช้พร้อมเหตุผล", "See the requirements that apply, with reasons"), t("ยืนยันหรือแก้ข้อสมมติ", "Confirm or correct the assumptions")] },
+  "/evidence": { steps: [t("ดูหลักฐานแต่ละรายการใน 3 ชั้น: มีอยู่ ใช้ได้ พิสูจน์ได้", "Check each item on 3 layers: exists, valid, proves"), t("เปิดรายการที่ตกชั้นใดชั้นหนึ่ง", "Open the items failing any layer"), t("อนุมัติคำขอเอกสารที่ AI ร่างไว้", "Approve the evidence requests the AI drafted")] },
+  "/factory": { steps: [t("เลือกแม่แบบรายงาน", "Choose the report template"), t("กดสร้างร่าง — ส่วนที่ไม่มีหลักฐานจะถูกทำเครื่องหมาย ไม่ถูกแต่ง", "Generate the draft — parts without evidence are marked, never invented"), t("เปิดร่างในสตูดิโอเพื่อตรวจ", "Open the draft in the studio to review")] },
+  "/calendar": { steps: [t("ดูกำหนดที่ใกล้ที่สุด", "Find the nearest deadline"), t("กดเพื่อเริ่มภารกิจของกำหนดนั้น", "Start the mission for that deadline"), t("ตรวจทะเบียนมาตรการและการตรวจวัด", "Check the measures and sampling register")] },
+  "/gaps": { steps: [t("กรองช่องว่างที่เป็นสาระสำคัญก่อน", "Filter to material gaps first"), t("อ่านสาเหตุและวิธีแก้ที่เสนอ", "Read the cause and the proposed fix"), t("มอบผู้รับผิดชอบและวันครบกำหนด", "Assign an owner and a due date")] },
+  "/studio": { steps: [t("เลือกบทจากรายการด้านซ้าย", "Pick a chapter on the left"), t("อ่านร่างของ AI โดยดูข้อกำหนดและหลักฐานด้านข้าง", "Read the AI draft with the obligation and evidence beside it"), t("แก้ไข แล้วอนุมัติ — Evidence Guard กันการปิดบทที่หลักฐานไม่ครบ", "Edit, then approve — Evidence Guard stops a chapter closing without evidence")] },
+  "/preflight": { steps: [t("อ่านสถานะประตูปล่อยรายงาน", "Read the release-gate status"), t("เปิดชั้นที่ไม่ผ่านและแก้ทีละข้อ", "Open each failing layer and fix it"), t("เมื่อผ่านทั้งหมด ส่งให้ผู้มีคุณวุฒิรับรอง", "When all pass, send for qualified certification")] },
+  "/report-quality": { steps: [t("ดู 9 ประตูคุณภาพและข้อค้นพบ", "Review the 9 quality gates and findings"), t("ตัดสินข้อความที่ยังไม่มีแหล่งอ้างอิง", "Decide the claims without a source"), t("ดูแท็บโมเดล: ระดับ สถานะการรับรอง และผลการทดสอบ", "Check the models tab: tier, qualification and benchmark results")], tips: [t("โมเดลเขียนรายงานต่อหน่วยงานได้หลังผ่านชุดทดสอบและมีผู้ทรงคุณวุฒิลงชื่อ", "A model writes authority reports only after passing the benchmark with a reviewer's sign-off")] },
+  "/xray": { steps: [t("อัปโหลดรายงานที่มีอยู่", "Upload an existing report"), t("อ่านช่องว่างรายบทและข้อความที่ไม่มีหลักฐาน", "Read the chapter gaps and unsupported statements"), t("ส่งรายการแก้ไขให้ผู้จัดทำ", "Send the fix list to the author")] },
+  "/portfolio": { steps: [t("เริ่มจากหน่วยงานที่เสี่ยงที่สุดด้านบน", "Start with the highest-risk entity at the top"), t("เปิดรายละเอียดและตัดสินเรื่องที่ต้องการผู้บริหาร", "Open the detail and decide what needs management")] },
+  "/universe": { steps: [t("ดูว่ากฎโดเมนใดใช้กับหน่วยงานใด", "See which domain rules apply to which entity"), t("กดช่องเพื่อดูข้อผูกพันในโดเมนนั้น", "Click a cell to see that domain's obligations")] },
+  "/obligations": { steps: [t("กรองตามหน่วยงานหรือโดเมน", "Filter by entity or domain"), t("เปิดข้อผูกพันเพื่อดูหลักฐานและกำหนด", "Open an obligation to see evidence and due date")] },
+  "/corpus": { steps: [t("ค้นหาระเบียบที่ต้องการ", "Find the regulation you need"), t("ดูสถานะการบังคับใช้และข้อที่สกัดได้", "Check its in-force status and extracted clauses"), t("ถาม Paul (2 · กฎหมาย CoP) เพื่อคำตอบพร้อมอ้างอิง", "Ask Paul (2 · CoP law) for a cited answer")] },
+  "/controls": { steps: [t("ดูการควบคุมที่ไม่ผ่าน", "Find the failed controls"), t("อ่านผลทดสอบล่าสุด", "Read the latest test"), t("แก้ไขแล้วบันทึกการทดสอบซ้ำ", "Fix and record a retest")] },
+  "/changes": { steps: [t("อ่านการเปลี่ยนแปลงกฎล่าสุด", "Read the latest rule changes"), t("ดูข้อผูกพัน บท และหน่วยงานที่กระทบ", "See the obligations, chapters and entities affected"), t("ตัดสินว่าจะใช้ข้อเสนอการแก้ไขหรือไม่", "Decide whether to adopt the proposed edits")] },
+  "/audit": { steps: [t("กรองตามผู้กระทำหรือเครื่องยนต์", "Filter by actor or engine"), t("เปิดเหตุการณ์เพื่อดูรายละเอียดและเวอร์ชันชุดกฎ", "Open an event for detail and rule-pack version")] },
+  "/packs": { steps: [t("ดูชุดกฎที่ติดตั้ง", "Review the installed rule packs"), t("เลือกแอป 24 เพื่อดูประสบการณ์ COP24 ภายในแอปนั้น", "Pick a 24 app to see the COP24 experience inside it")] },
+  "/engine": { steps: [t("ดูเครื่องยนต์ 9 ตัวและตัวชี้วัดสด", "Review the nine engines and live metrics"), t("ตามการไหลของข้อมูลจากสแนปช็อต", "Follow the data flow from the snapshot")] },
+  "/ux-standard": { steps: [t("ดูผลการทดสอบ 7 ข้อของทุกหน้าจอ", "Review the seven tests for every screen"), t("เปิดหน้าจอที่มีผล “บางส่วน” เพื่อปรับปรุง", "Open screens marked partial to improve them")] },
+  "/feedback": { steps: [t("บอก Paul ว่าอะไรควรปรับปรุง (3 · ข้อเสนอแนะ)", "Tell Paul what should improve (3 · Feedback)"), t("ดูรายการปรับปรุงที่เรียงตามผลกระทบ", "Review the backlog ranked by impact"), t("ทำเครื่องหมายเมื่อปรับปรุงแล้ว", "Mark items improved when done")] },
+  "/host-desk": { steps: [t("ปลดล็อกด้วย PIN ผู้ดูแล", "Unlock with the host PIN"), t("กรอกชื่อผู้เข้าชม บทบาท และจำนวนวัน (สูงสุด 45)", "Enter the guest, roles and days (max 45)"), t("สร้างลิงก์ แล้วส่งทางอีเมลหรือ LINE", "Mint the link and send it by email or LINE"), t("เพิกถอนลิงก์เมื่อไม่ใช้แล้ว", "Revoke links that are no longer needed")] },
+};
+
+/** Professional terms each screen explains (Explain This ids). */
+export const ROUTE_TERMS: Record<string, GlossaryId[]> = {
+  "/": ["readiness", "gate"], "/missions": ["mission-authorisation"], "/my-work": ["evidence-layers", "material-gap"], "/outputs": ["gate"],
+  "/agi": ["mission-authorisation", "evidence-layers"], "/ingest": ["mission-authorisation", "lab-accreditation", "noise-baseline"], "/start": ["applicability"],
+  "/evidence": ["evidence-layers", "readiness", "evidence-guard"], "/factory": ["cop", "evidence-guard"], "/calendar": ["obligation"], "/gaps": ["material-gap"],
+  "/studio": ["evidence-guard", "claim-ledger"], "/preflight": ["preflight", "gate"], "/report-quality": ["claim-ledger", "gate"], "/xray": ["cop"],
+  "/portfolio": ["material-gap"], "/universe": ["applicability", "obligation"], "/obligations": ["obligation", "applicability"], "/corpus": ["rulepack", "applicability"],
+  "/controls": ["control-test"], "/changes": ["reg-change"], "/audit": ["rulepack"], "/packs": ["rulepack"], "/engine": ["applicability", "evidence-layers", "rulepack"],
+  "/ux-standard": [], "/feedback": [], "/host-desk": [],
+};

@@ -39,6 +39,14 @@ test("§22 every screen is registered with a capability layer and an experience 
   }
 });
 
+test("every screen in the app chrome has a playbook and a terms list for Explain me / Playbook", async () => {
+  const { PLAYBOOKS, ROUTE_TERMS } = await import("../ux/playbooks");
+  for (const s of SCREENS.filter((x) => x.route !== "/login")) {
+    assert.ok(PLAYBOOKS[s.route]?.steps.length, `${s.route} has no playbook`);
+    assert.ok(ROUTE_TERMS[s.route], `${s.route} has no terms entry`);
+  }
+});
+
 test("§21 every screen is UX-complete (no more than one ‘No’)", () => {
   const failing = SCREENS.map(evaluate).filter((r) => !r.complete).map((r) => r.spec.route);
   assert.deepEqual(failing, []);
