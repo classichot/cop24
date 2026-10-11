@@ -131,7 +131,12 @@ function Missions() {
         {mine.map((m) => <MissionCard key={m.mission.id} view={m} showApp={m.mission.app !== "cop24"} />)}
       </div>
       <hr className="hr hr-section" />
-      <h3 id="catalog" style={{ margin: "0 0 12px", fontSize: 21 }}>{tx("แคตตาล็อกภารกิจ — ข้ามทุกแอป 24", "Mission catalogue — across every 24 app")}</h3>
+      <Link href="/agi#catalog" className="callout agi-callout">
+        <span className="callout-kicker">{tx("โหมด AGI", "AGI mode")}</span>
+        <span className="heading" style={{ fontSize: 20 }}>{tx("แคตตาล็อกภารกิจ AGI — 108 ภารกิจ ใน 12 หมวด →", "AGI mission catalog — 108 missions in 12 categories →")}</span>
+        <span className="small">{tx("ภารกิจหลัก F01–F07 ตัวอย่างก่อนเริ่ม ศูนย์ควบคุมภารกิจ Single Bot / Team / Swarm", "Flagships F01–F07, mission preview, Mission Control, Single Bot / Team / Swarm")}</span>
+      </Link>
+      <h3 id="catalog" style={{ margin: "22px 0 12px", fontSize: 21 }}>{tx("เป้าหมายที่พบบ่อย — ข้ามทุกแอป 24", "Common goals — across every 24 app")}</h3>
       <Cells min={224}>
         {others.map((m) => {
           const app = APPS.find((a) => a.id === m.app)!;

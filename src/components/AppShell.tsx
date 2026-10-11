@@ -20,10 +20,11 @@ const NAV_PRIMARY: NavItem[] = [
   { href: "/missions", th: "ภารกิจของฉัน", en: "My missions" },
   { href: "/my-work", th: "งานของฉัน", en: "My work" },
   { href: "/outputs", th: "รายงานและผลลัพธ์", en: "Reports & outputs" },
+  // AGI mode is a primary capability, so it stays visible in Easy mode too
+  { href: "/agi", th: "AGI · แคตตาล็อกภารกิจ 108", en: "AGI · Mission catalog (108)" },
 ];
 /** All modules — the complete professional application, grouped. */
 const NAV_WORK: NavItem[] = [
-  { href: "/agi", th: "ศูนย์ควบคุม AGI · ภารกิจ 108", en: "AGI Mission Control" },
   { href: "/ingest", th: "เตรียมข้อมูล · นำเข้าครั้งเดียว", en: "Data preparation" },
   { href: "/start", th: "เริ่มต้นใช้งาน", en: "Easy Start" },
   { href: "/evidence", th: "ศูนย์ควบคุมเอกสาร", en: "Document Control" },

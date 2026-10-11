@@ -186,3 +186,19 @@
 .agi-agent { cursor: pointer; display: block; }
 .agi-agent.off { opacity: .5; }
 @media (max-width: 760px) { .pv-row { grid-template-columns: 1fr; gap: 4px; } }
+
+/* AGI page section bar and anchors */
+.agi-sections { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.agi-sections a { text-decoration: none; }
+.anchor { scroll-margin-top: 90px; }
+.agi-callout { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: var(--color-text); }
+.agi-callout:hover { background: var(--color-accent-200); }
+/* AGI mission catalog — 24-series card grid */
+.agi-cat { border: 0; background: transparent; margin: 0 0 22px; }
+.agi-cat-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.agi-cat-letter { flex: none; display: grid; place-items: center; width: 34px; height: 34px; background: var(--color-accent); color: var(--on-accent); font-family: var(--font-heading); font-weight: 800; font-size: 16px; }
+.agi-card { min-height: 158px; gap: 6px; text-decoration: none; }
+.agi-card-title { font-size: 14.5px; font-weight: 700; line-height: 1.35; }
+.agi-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.agi-card-planned { cursor: default; opacity: .62; }
+.agi-card-planned:hover { background: var(--color-bg); }
