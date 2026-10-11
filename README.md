@@ -170,6 +170,15 @@ that spotlights each control and performs the key actions itself. `/manual` is t
 printable user manual; every section has a **Show me** button into the demo. `npm run manual:md`
 exports it to `docs/12-user-manual.md`.
 
+## RAG24 shared evidence
+
+COP24 can draw approved, permission-checked evidence from RAG24, the 24 Series evidence service
+(github.com/classichot/RAG24). The connection is additive and server-side only (`src/lib/rag24/`,
+SDK vendored with `npm run rag24:sync-sdk`): the Legal Corpus page has a RAG24 search panel, Paul
+cites RAG24 passages beside COP24's own corpus, and report drafting attaches RAG24's evidence package.
+It is off unless `RAG24_URL`, `RAG24_SERVICE_KEY` and `RAG24_STAGE` are set (see `.env.example`);
+when RAG24 is off or down COP24 behaves exactly as before.
+
 ## Paul — chat assistant
 
 The “Ask Paul” button on every screen helps people use the app, answers CoP legal questions with

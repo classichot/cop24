@@ -17,7 +17,8 @@
     "ingest:eval": "node --import tsx scripts/ingest/eval.ts",
     "corpus:passages": "node --import tsx scripts/corpus/passages.ts",
     "report:benchmark": "node --import tsx scripts/report/benchmark.ts",
-    "manual:md": "node --import tsx scripts/manual/export.ts"
+    "manual:md": "node --import tsx scripts/manual/export.ts",
+    "rag24:sync-sdk": "node scripts/rag24/sync-sdk.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",

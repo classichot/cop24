@@ -38,7 +38,7 @@ export function AiWriter({ d, siteName, onAccept }: { d: Deliverable; siteName: 
   const write = async () => {
     setBusy(true);
     try {
-      const r = await fetch("/api/report/draft", { method: "POST", headers: { "content-type": "application/json", ...authHeaders() }, body: JSON.stringify({ sections: toSections(d, siteName) }) });
+      const r = await fetch("/api/report/draft", { method: "POST", headers: { "content-type": "application/json", ...authHeaders() }, body: JSON.stringify({ sections: toSections(d, siteName), entityId: d.site }) });
       const j = (await r.json()) as { outcome: string; modelId?: string; results?: Result[]; reason?: LText };
       if (j.results) { setResults(j.results); setModel(j.modelId ?? ""); } else if (j.reason) setStatus({ outcome: "queued", reason: j.reason });
     } finally { setBusy(false); }

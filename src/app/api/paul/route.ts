@@ -6,6 +6,7 @@ import { appHelp, detectMode, feedbackOffline, legalOffline, systemPrompt, triag
 import { preferredSources, searchPassages, type Hit, type PassageIndex } from "@/core/paul/retrieve";
 import type { UxContext } from "@/core/ux/context";
 import { requireAuth } from "@/lib/auth/token";
+import { rag24Evidence, type Rag24Evidence } from "@/lib/rag24/server";
 
 /**
  * POST /api/paul — Paul's reply as newline-delimited JSON:
@@ -62,23 +63,30 @@ export async function POST(req: Request) {
     const prev = messages.filter((m) => m.role === "user").slice(-2).map((m) => m.content).join(" ");
     hits = searchPassages(corpus(), prev, 6, preferredSources(tech));
   }
+  // RAG24 shared evidence, additive: off, unconfigured or down → Paul answers exactly as before
+  const rag: Rag24Evidence | undefined = mode === "legal" && typeof body.ctx.entityId === "string" ? await rag24Evidence("search", body.ctx.entityId, last.content) : undefined;
+  const ragPassages = rag?.status === "evidence_available" ? rag.passages : [];
   const triage = mode === "feedback" ? triageFeedback(last.content, route) : undefined;
   const help = mode === "help" ? appHelp(last.content, body.ctx, lang) : undefined;
   const actions: PaulAction[] = help?.actions ?? (mode === "feedback" ? [{ label: lang === "th" ? "ดูข้อเสนอแนะทั้งหมด" : "See all feedback", href: "/feedback" }] : [{ label: lang === "th" ? "คลังกฎหมาย" : "Legal Corpus", href: "/corpus" }]);
-  const offline = mode === "legal" ? legalOffline(last.content, hits, lang) : mode === "feedback" ? feedbackOffline(triage!, lang) : help!.text;
+  const offline = mode === "legal" ? legalOffline(last.content, hits, lang, ragPassages) : mode === "feedback" ? feedbackOffline(triage!, lang) : help!.text;
 
   const p = provider();
-  const sources = hits.map((h) => ({ id: h.passage.id, cite: citation(h, lang), title: h.source[lang], url: h.source.url, excerpt: h.passage.t.slice(0, 600) }));
+  const sources = [
+    ...hits.map((h) => ({ id: h.passage.id, cite: citation(h, lang), title: h.source[lang], url: h.source.url, excerpt: h.passage.t.slice(0, 600) })),
+    ...ragPassages.map((p) => ({ id: p.id, cite: `RAG24 · ${p.cite}`, title: p.title, url: p.url ?? undefined, excerpt: p.text.slice(0, 600), origin: "rag24" as const })),
+  ];
+  const rag24 = rag ? { status: rag.status, stage: rag.stage, count: ragPassages.length } : undefined;
   const enc = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
       const send = (o: unknown) => controller.enqueue(enc.encode(JSON.stringify(o) + "\n"));
-      send({ type: "meta", mode, provider: p.name, model: p.model, sources, actions, triage });
+      send({ type: "meta", mode, provider: p.name, model: p.model, sources, actions, triage, rag24 });
       try {
         if (p.name === "offline") {
           send({ type: "delta", text: offline });
         } else {
-          const system = systemPrompt(mode, body.ctx, lang, hits, triage);
+          const system = systemPrompt(mode, body.ctx, lang, hits, triage, ragPassages);
           let wrote = false;
           if (p.name === "openai") {
             const client = new OpenAI();

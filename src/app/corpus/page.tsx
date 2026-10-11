@@ -8,6 +8,7 @@ import { corpusStats, packCoverage, type CorpusIndex, type CorpusManifest, type 
 import manifestJson from "../../../corpus/manifest.json";
 import indexJson from "../../../corpus/index.json";
 import type { Status } from "@/core/types";
+import { Rag24Panel } from "@/components/Rag24Panel";
 
 const manifest = manifestJson as CorpusManifest;
 const index = indexJson as CorpusIndex;
@@ -47,6 +48,7 @@ export default function CorpusPage() {
   return (
     <div className="page page-wide">
       <PageHead explain={["rulepack","applicability"]} kicker={tx("คลังกฎหมาย / LEGAL CORPUS", "Legal Corpus")} title={tx("ทุกข้อผูกพันต้องชี้กลับไปยังตัวบทกฎหมาย", "Every obligation points back to the text of the law")} lead={tx("คลังกฎหมายคือข้อความต้นฉบับที่อยู่เบื้องหลังชุดกฎทุกชุด เครื่องยนต์อ้างอิงจากที่นี่ ไม่ใช่จากความจำ ชุดแรกมาจากแคตตาล็อกทางการของ กกพ. (หน้าระเบียบ มาตรา 50 และหน้าประมวลหลักการปฏิบัติ) — แต่ละไฟล์ถูกตรึงด้วยแฮช แยกเป็นข้อ/มาตรา/ส่วน และตรวจคุณภาพการสกัดข้อความภาษาไทย", "The corpus is the source text behind every rule pack; the engine cites from here, not from memory. The first set comes from the ERC's official catalogue (its regulations page and Code of Practice page). Each file is pinned by hash, split into clauses and checked for Thai extraction quality.")} />
+      <Rag24Panel />
 
       <Cells min={150} style={{ marginTop: 22 }}>
         <Stat label={tx("แหล่งกฎหมายในรายการ", "Legal sources listed")} value={stats.total} size="md" sub={`${stats.inForce} ${tx("มีผล", "in force")} · ${stats.superseded} ${tx("ยกเลิก", "repealed")}`} />

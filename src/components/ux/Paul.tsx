@@ -12,7 +12,8 @@ import { uxSignal, useUx } from "./useUx";
 /* ═══════════════ Paul — the COP24 chat assistant ═══════════════
    1 · how to use COP24 · 2 · legal consultant for CoP projects · 3 · feedback that improves COP24 */
 
-interface Source { id: string; cite: string; title: string; url?: string; excerpt: string }
+interface Source { id: string; cite: string; title: string; url?: string; excerpt: string; origin?: "rag24" }
+interface Rag24Meta { status: string; stage: string; count: number }
 interface Msg {
   role: "user" | "assistant";
   content: string;
@@ -20,6 +21,7 @@ interface Msg {
   provider?: string;
   model?: string;
   sources?: Source[];
+  rag24?: Rag24Meta;
   actions?: PaulAction[];
   triage?: Triage;
   note?: string;
@@ -90,7 +92,7 @@ export function Paul() {
           buf = buf.slice(nl + 1);
           if (!line) continue;
           const ev = JSON.parse(line) as { type: string; text?: string; message?: string } & Partial<Msg>;
-          if (ev.type === "meta") { meta = { mode: ev.mode, provider: ev.provider, model: ev.model, sources: ev.sources, actions: ev.actions, triage: ev.triage }; patchLast((m) => ({ ...m, ...meta })); }
+          if (ev.type === "meta") { meta = { mode: ev.mode, provider: ev.provider, model: ev.model, sources: ev.sources, rag24: ev.rag24, actions: ev.actions, triage: ev.triage }; patchLast((m) => ({ ...m, ...meta })); }
           else if (ev.type === "delta") patchLast((m) => ({ ...m, content: m.content + (ev.text ?? "") }));
           else if (ev.type === "provider-error") patchLast((m) => ({ ...m, note: tx(`AI ขัดข้อง (${ev.message}) — ตอบแบบออฟไลน์แทน`, `AI unavailable (${ev.message}) — answered offline instead`) }));
         }
@@ -164,9 +166,12 @@ export function Paul() {
               <details className="paul-sources">
                 <summary>{tx(`แหล่งอ้างอิง ${m.sources.length} ตอน`, `${m.sources.length} sources`)}</summary>
                 {m.sources.map((s, j) => (
-                  <div key={s.id} className="paul-source"><b>[{j + 1}] {s.cite}</b><div className="muted tiny">{s.title}</div><div className="paul-excerpt">{s.excerpt}{s.excerpt.length >= 600 ? "…" : ""}</div></div>
+                  <div key={s.id} className={`paul-source${s.origin === "rag24" ? " paul-source-rag24" : ""}`}><b>[{j + 1}] {s.cite}</b><div className="muted tiny">{s.title}</div><div className="paul-excerpt">{s.excerpt}{s.excerpt.length >= 600 ? "…" : ""}</div></div>
                 ))}
               </details>
+            )}
+            {m.rag24 && m.rag24.status !== "not_configured" && m.rag24.status !== "disabled" && (
+              <div className="muted tiny" style={{ marginTop: 4 }}>RAG24 · {m.rag24.status === "evidence_available" ? tx(`หลักฐานร่วม ${m.rag24.count} ตอน`, `${m.rag24.count} shared passage(s)`) : m.rag24.status === "missing_evidence" ? tx("ไม่พบหลักฐานร่วม", "no shared evidence found") : tx("ไม่พร้อมใช้งาน — ตอบจากคลังของ COP24", "unavailable — answered from COP24's own corpus")}</div>
             )}
             {m.triage && <div className="paul-triage">{tx("บันทึกแล้ว", "Logged")}: <b>{m.triage.category}</b> · {m.triage.severity} · {m.triage.screen}{m.forwarded ? (m.forwarded.ok ? <> · <a href={m.forwarded.url} target="_blank" rel="noreferrer">{tx("ส่งถึงทีมแล้ว", "sent to the team")}</a></> : <> · {tx("เก็บในเบราว์เซอร์นี้", "kept in this browser")}</>) : null}</div>}
             {m.actions && m.actions.length > 0 && <div className="row" style={{ gap: 6, marginTop: 8 }}>{m.actions.map((a) => <Link key={a.href} href={a.href} className="btn btn-secondary btn-sm btn-plain" onClick={() => setOpen(false)}>{a.label} →</Link>)}</div>}

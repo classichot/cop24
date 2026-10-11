@@ -1,6 +1,7 @@
 import { gradeSection, sectionPrompt, type BenchCase } from "@/core/report/benchmark";
 import { configuredReportModel, generate, reportRouting } from "@/lib/llm/server";
 import { requireAuth } from "@/lib/auth/token";
+import { rag24Evidence } from "@/lib/rag24/server";
 
 /**
  * POST /api/report/draft — AI-written report sections for an authority report.
@@ -8,6 +9,8 @@ import { requireAuth } from "@/lib/auth/token";
  * benchmark-qualified with a human reviewer (fail closed: otherwise "queued" with the reason).
  * Every generated section passes the same guard as the benchmark; a failing section is
  * returned as rejected so the caller keeps its evidence-only text.
+ * With RAG24 in the "workflows" stage, its evidence package for the plant (readiness and missing
+ * items) is attached beside the result; the prompt, the guard and the approval model are unchanged.
  */
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,12 +24,13 @@ export async function GET() {
 export async function POST(req: Request) {
   const denied = await requireAuth(req);
   if (denied) return denied;
-  let body: { sections?: BenchCase[] };
+  let body: { sections?: BenchCase[]; entityId?: string };
   try { body = await req.json(); } catch { return Response.json({ error: "invalid JSON" }, { status: 400 }); }
   const sections = (body.sections ?? []).slice(0, 12);
   if (!sections.length) return Response.json({ error: "sections required" }, { status: 400 });
   const d = reportRouting("authority-th", "drafting");
-  if (d.outcome === "queued" || !d.modelId) return Response.json({ outcome: "queued", reason: d.reason, configured: d.configured });
+  const rag24 = typeof body.entityId === "string" ? await rag24Evidence("report_generation", body.entityId, sections.map((x) => x.task).join(" · ")) : undefined;
+  if (d.outcome === "queued" || !d.modelId) return Response.json({ outcome: "queued", reason: d.reason, configured: d.configured, rag24 });
   const cfg = configuredReportModel()!;
   const results = [];
   for (const s of sections) {
@@ -39,5 +43,5 @@ export async function POST(req: Request) {
       results.push({ id: s.id, text: "", accepted: false, error: err instanceof Error ? err.message.slice(0, 160) : "generation failed" });
     }
   }
-  return Response.json({ outcome: d.outcome, modelId: d.modelId, reason: d.reason, results });
+  return Response.json({ outcome: d.outcome, modelId: d.modelId, reason: d.reason, results, rag24 });
 }
