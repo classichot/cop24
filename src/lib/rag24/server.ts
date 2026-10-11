@@ -122,3 +122,4 @@ export async function rag24Reachable(): Promise<boolean | null> {
   HEALTH = { at: Date.now(), ok };
   return ok;
 }
+

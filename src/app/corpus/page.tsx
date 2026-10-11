@@ -10,7 +10,9 @@ import indexJson from "../../../corpus/index.json";
 import type { Status } from "@/core/types";
 import { Rag24Panel } from "@/components/Rag24Panel";
 
-const manifest = manifestJson as CorpusManifest;
+const fullManifest = manifestJson as CorpusManifest;
+/** This screen belongs to COP24: it lists COP24's legal sources only. Other 24 apps keep their own. */
+const APP = "cop24";
 const index = indexJson as CorpusIndex;
 
 type Filter = "all" | "in-force" | "ingested" | "pending" | "superseded" | "examples";
@@ -18,6 +20,14 @@ type Filter = "all" | "in-force" | "ingested" | "pending" | "superseded" | "exam
 export default function CorpusPage() {
   const { L, tx, data, snap, fd } = useApp();
   const [filter, setFilter] = useState<Filter>("in-force");
+  // a source belongs to COP24 when one of its packs does; sources without a pack are COP24's own
+  // ERC catalogue (checklists for other plant technologies, reference reports)
+  const appsOf = (s: LegalSource) => s.packIds.map((pid) => data.packs.find((p) => p.id === pid)?.app).filter((a): a is NonNullable<typeof a> => Boolean(a));
+  const isMine = (s: LegalSource) => s.packIds.length === 0 || appsOf(s).includes(APP);
+  const manifest: CorpusManifest = { ...fullManifest, sources: fullManifest.sources.filter(isMine) };
+  const others = fullManifest.sources.filter((s) => !isMine(s));
+  const otherApps = [...new Set(others.flatMap(appsOf))].map((a) => APPS.find((x) => x.id === a)?.name ?? String(a).toUpperCase());
+  const myPacks = data.packs.filter((p) => p.app === APP);
   const stats = corpusStats(manifest, index);
   const cov = packCoverage(manifest, index);
   const laws = manifest.sources.filter((s) => s.role !== "example");
@@ -34,8 +44,8 @@ export default function CorpusPage() {
   });
 
   const backs = (sourceId: string) => snap.instances.filter((i) => i.obligation.citations?.some((c) => c.sourceId === sourceId)).length;
-  const citationCount = data.packs.reduce((n, p) => n + p.obligations.reduce((m, o) => m + (o.citations?.length ?? 0), 0), 0);
-  const clauseLevel = data.packs.reduce((n, p) => n + p.obligations.reduce((m, o) => m + (o.citations?.filter((c) => c.clause).length ?? 0), 0), 0);
+  const citationCount = myPacks.reduce((n, p) => n + p.obligations.reduce((m, o) => m + (o.citations?.length ?? 0), 0), 0);
+  const clauseLevel = myPacks.reduce((n, p) => n + p.obligations.reduce((m, o) => m + (o.citations?.filter((c) => c.clause).length ?? 0), 0), 0);
 
   const statusOf = (s: LegalSource): { k: Status; label: string } => {
     const e = index.sources[s.id];
@@ -71,6 +81,12 @@ export default function CorpusPage() {
         <span className="muted small" style={{ marginLeft: "auto" }}>{index.generatedAt ? `${tx("อัปเดตดัชนี", "Index updated")} ${fd(index.generatedAt.slice(0, 10))}` : ""}</span>
       </div>
 
+      {others.length > 0 && (
+        <div className="muted small" style={{ marginTop: 10 }}>
+          {tx(`แสดงเฉพาะแหล่งกฎหมายของ COP24 · อีก ${others.length} แหล่งเป็นของแอป 24 อื่น (${otherApps.join(", ")}) และจัดการในแอปนั้น`, `Showing COP24's legal sources only · ${others.length} more belong to other 24 apps (${otherApps.join(", ")}) and are managed there`)}
+        </div>
+      )}
+
       <div className="table-wrap" style={{ marginTop: 16 }}>
         <table className="table" style={{ minWidth: 1040 }}>
           <thead><tr>
@@ -97,7 +113,7 @@ export default function CorpusPage() {
                   <td className="muted-7" style={{ verticalAlign: "top", fontSize: 12 }}>{s.type}{s.tech ? <div className="code">{s.tech}</div> : null}<div>{dom ? L(dom.short) : s.domain}</div></td>
                   <td style={{ verticalAlign: "top" }}>
                     <div className="stack" style={{ gap: 4 }}>
-                      {s.packIds.length ? s.packIds.map((pid) => {
+                      {s.packIds.length ? s.packIds.filter((pid) => data.packs.find((x) => x.id === pid)?.app === APP).map((pid) => {
                         const p = data.packs.find((x) => x.id === pid);
                         const app = p && APPS.find((a) => a.id === p.app);
                         return <span key={pid} style={{ display: "flex", gap: 6, alignItems: "center" }}>{app && <AppChip app={app.name} accent={app.accent} />}<span className="code">{pid}</span></span>;
@@ -136,7 +152,7 @@ export default function CorpusPage() {
       <hr className="hr" style={{ margin: "30px 0 18px" }} />
       <h3 style={{ margin: "0 0 12px", fontSize: 21 }}>{tx("ความครอบคลุมต่อชุดกฎ", "Coverage by pack")}</h3>
       <Cells min={220}>
-        {data.packs.map((p) => {
+        {myPacks.map((p) => {
           const c = cov.get(p.id);
           const pct = c?.total ? Math.round((c.ingested / c.total) * 100) : 0;
           return (
