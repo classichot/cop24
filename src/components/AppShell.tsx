@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { useApp, type Mode, type Role } from "@/state/AppState";
+import { useApp, type Mode, type Role, type Theme } from "@/state/AppState";
 import { Seg, Tag } from "./ui";
 import { USER } from "@/data/tenant";
 
@@ -57,8 +57,20 @@ function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
   );
 }
 
+const SunIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+  </svg>
+);
+const MoonIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+    <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
+  </svg>
+);
+
 export function AppShell({ children }: { children: ReactNode }) {
-  const { lang, setLang, role, setRole, mode, setMode, showAll, setShowAll, entityId, setEntityId, data, L, tx, snap } = useApp();
+  const { lang, setLang, role, setRole, mode, setMode, theme, setTheme, showAll, setShowAll, entityId, setEntityId, data, L, tx, snap } = useApp();
   const advancedOpen = mode !== "easy" || showAll;
   const entity = data.entities.find((e) => e.id === entityId) ?? data.entities[0];
   const instCount = snap.instances.filter((i) => i.entityId === entity.id).length;
@@ -89,6 +101,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
         <div className="hdr-group">
           <Seg<"th" | "en"> name="lang" value={lang} onChange={setLang} options={[{ v: "th", label: "ไทย" }, { v: "en", label: "EN" }]} />
+        </div>
+        <div className="hdr-group theme-toggle" title={tx("สลับโหมดสว่าง / มืด", "Switch light / dark mode")}>
+          <Seg<Theme> name="theme" value={theme} onChange={setTheme} options={[
+            { v: "light", label: <><SunIcon />{tx("สว่าง", "Light")}</> },
+            { v: "dark", label: <><MoonIcon />{tx("มืด", "Dark")}</> },
+          ]} />
         </div>
         <div className="hdr-user">
           <div className="avatar">{USER.initials}</div>

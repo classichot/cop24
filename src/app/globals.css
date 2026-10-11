@@ -364,3 +364,68 @@ button { font-family: inherit; }
   .page h1.title { font-size: 28px; }
   .hdr-user { border-left: 0; padding-left: 0; }
 }
+
+/* ───────────────────────── Part 4 · light / dark themes ─────────────────────────
+   Light is Part 2. Dark redefines the same tokens, so every component follows.
+   An inline script in the root layout sets data-theme on <html> before first paint,
+   from the saved choice or, when nothing is saved, the operating-system setting. */
+:root { color-scheme: light; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #0b1220; --color-surface: #131c2f; --color-text: #e6e9f2;
+  --color-divider: color-mix(in srgb, #e6e9f2 26%, transparent);
+  --color-accent: #f5c518;
+  --on-accent: #101c3a;
+  --color-accent-100: color-mix(in srgb, var(--color-accent) 13%, #0b1220);
+  --color-accent-200: color-mix(in srgb, var(--color-accent) 24%, #0b1220);
+  --color-accent-300: color-mix(in srgb, var(--color-accent) 42%, #0b1220);
+  --color-accent-400: color-mix(in srgb, var(--color-accent) 66%, #0b1220);
+  --color-accent-500: var(--color-accent);
+  --color-accent-600: color-mix(in srgb, var(--color-accent) 82%, #ffffff);
+  --color-accent-700: color-mix(in srgb, var(--color-accent) 90%, #ffffff);
+  --color-accent-800: color-mix(in srgb, var(--color-accent) 72%, #ffffff);
+  --color-accent-900: color-mix(in srgb, var(--color-accent) 50%, #ffffff);
+  --color-accent-2: #9db4f0;
+  --color-accent-2-100: #18233d; --color-accent-2-800: #c3d0f2;
+  --color-neutral-100: #161f33; --color-neutral-200: #1c2639; --color-neutral-300: #2a3549;
+  --color-neutral-400: #3b475e; --color-neutral-500: #5d6880; --color-neutral-600: #9aa4b9;
+  --color-neutral-700: #b4bdce; --color-neutral-800: #cfd5e2; --color-neutral-900: #e6e9f2;
+  --st-ok: #5fc99c; --st-ok-bg: #11291f;
+  --st-warn: #e8b552; --st-warn-bg: #2b2311;
+  --st-bad: #f2907e; --st-bad-bg: #321a16;
+  --st-info: #aab5c2; --st-info-bg: #1a2331;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-md: 0 3px 10px rgb(0 0 0 / 45%);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 55%);
+}
+:root[data-theme="dark"] .dialog-backdrop { background: rgb(0 0 0 / 60%); }
+/* app skins: lift the darker brand colours so they stay legible on a dark page */
+:root[data-theme="dark"] .theme-esg24 { --color-accent: #45b97c; --on-accent: #0b1220; }
+:root[data-theme="dark"] .theme-tp24 { --color-accent: #7896ea; --on-accent: #0b1220; }
+:root[data-theme="dark"] .theme-gmt24 { --color-accent: #a782e0; --on-accent: #0b1220; }
+:root[data-theme="dark"] .theme-trade24 { --color-accent: #e3913f; --on-accent: #0b1220; }
+:root[data-theme="dark"] .theme-acc24 { --color-accent: #97a6b4; --on-accent: #0b1220; }
+.theme-toggle .seg-opt { gap: 5px; }
+.theme-toggle svg { display: block; }
+/* app skins: recompute the accent tints from the skin's own accent (custom properties resolve where declared) */
+.theme-esg24, .theme-tp24, .theme-gmt24, .theme-trade24, .theme-acc24, .theme-cop24 {
+  --color-accent-100: color-mix(in srgb, var(--color-accent) 10%, #ffffff);
+  --color-accent-200: color-mix(in srgb, var(--color-accent) 20%, #ffffff);
+  --color-accent-300: color-mix(in srgb, var(--color-accent) 35%, #ffffff);
+  --color-accent-400: color-mix(in srgb, var(--color-accent) 60%, #ffffff);
+  --color-accent-500: var(--color-accent);
+  --color-accent-600: color-mix(in srgb, var(--color-accent) 72%, #000000);
+  --color-accent-700: color-mix(in srgb, var(--color-accent) 42%, #000000);
+  --color-accent-800: color-mix(in srgb, var(--color-accent) 30%, #000000);
+  --color-accent-900: color-mix(in srgb, var(--color-accent) 20%, #000000);
+}
+:root[data-theme="dark"] :is(.theme-esg24, .theme-tp24, .theme-gmt24, .theme-trade24, .theme-acc24, .theme-cop24) {
+  --color-accent-100: color-mix(in srgb, var(--color-accent) 13%, #0b1220);
+  --color-accent-200: color-mix(in srgb, var(--color-accent) 24%, #0b1220);
+  --color-accent-300: color-mix(in srgb, var(--color-accent) 42%, #0b1220);
+  --color-accent-400: color-mix(in srgb, var(--color-accent) 66%, #0b1220);
+  --color-accent-600: color-mix(in srgb, var(--color-accent) 82%, #ffffff);
+  --color-accent-700: color-mix(in srgb, var(--color-accent) 90%, #ffffff);
+  --color-accent-800: color-mix(in srgb, var(--color-accent) 72%, #ffffff);
+  --color-accent-900: color-mix(in srgb, var(--color-accent) 50%, #ffffff);
+}

@@ -6,10 +6,12 @@ import { pick } from "@/core/i18n-text";
 import { fmtDate } from "@/core/dates";
 import type { Lang, LText } from "@/core/types";
 import { ALL_PACKS } from "@/packs";
+import { THEME_KEY, type Theme } from "./theme";
 import { ENTITIES, EVIDENCE, CONTROLS, CONTROL_TESTS, REG_CHANGES, REPORT_DRAFT, REPORT_CONFLICTS, REPORT_FACTS, EXTRA_EVENTS, MANUAL_GAPS } from "@/data/tenant";
 
 export type Role = "owner" | "consultant" | "exec";
 export type Mode = "easy" | "professional" | "agi";
+export type { Theme } from "./theme";
 
 export interface AppCtx {
   lang: Lang;
@@ -18,6 +20,9 @@ export interface AppCtx {
   setRole: (r: Role) => void;
   mode: Mode;
   setMode: (m: Mode) => void;
+  /** Colour theme; saved in the browser, defaults to the operating-system setting. */
+  theme: Theme;
+  setTheme: (t: Theme) => void;
   evidenceGuard: boolean;
   setEvidenceGuard: (v: boolean) => void;
   showAll: boolean;
@@ -60,6 +65,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [showAll, setShowAll] = useState(false);
   const [entityId, setEntityId] = useState("lopburi-1");
   const [hydrated, setHydrated] = useState(false);
+  const [theme, setThemeState] = useState<Theme>("light");
+
+  useEffect(() => {
+    // The layout script has already resolved the theme onto <html>; mirror it in state.
+    const root = document.documentElement;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const sync = () => setThemeState(root.dataset.theme === "dark" ? "dark" : "light");
+    queueMicrotask(sync);
+    // With no saved choice the app follows the operating system, including later changes.
+    const onSystem = () => {
+      let saved: string | null = null;
+      try { saved = localStorage.getItem(THEME_KEY); } catch {}
+      if (saved === "light" || saved === "dark") return;
+      root.dataset.theme = mq.matches ? "dark" : "light";
+      sync();
+    };
+    mq.addEventListener("change", onSystem);
+    return () => mq.removeEventListener("change", onSystem);
+  }, []);
+
+  const setTheme = useCallback((t: Theme) => {
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem(THEME_KEY, t); } catch {}
+    setThemeState(t);
+  }, []);
 
   useEffect(() => {
     // Hydrate saved preferences after mount (deferred so the server-rendered
@@ -99,7 +129,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const tx = useCallback((th: string, en: string) => (lang === "th" ? th : en), [lang]);
   const fd = useCallback((iso: string | null) => fmtDate(iso, lang), [lang]);
 
-  const value: AppCtx = { lang, setLang, role, setRole, mode, setMode, evidenceGuard, setEvidenceGuard, showAll, setShowAll, entityId, setEntityId, data: TENANT, snap, L, tx, fd };
+  const value: AppCtx = { lang, setLang, role, setRole, mode, setMode, theme, setTheme, evidenceGuard, setEvidenceGuard, showAll, setShowAll, entityId, setEntityId, data: TENANT, snap, L, tx, fd };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
