@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { useApp, type Mode, type Role, type Theme } from "@/state/AppState";
 import { Seg, Tag } from "./ui";
 import { CopilotProvider, useCopilot } from "./ux/Copilot";
@@ -66,12 +66,12 @@ function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
       <div className="nav-group">{title}</div>
       {items.map((it) => {
         if (it.href === "#ask") {
-          return <button key={it.href} type="button" className="nav-btn nav-ask" onClick={() => copilot.open()}><span className="nav-line"><span className="nav-num">{navNum(it.href)}</span>{L({ th: it.th, en: it.en })}</span> <span className="kbd-hint">Ctrl K</span></button>;
+          return <button key={it.href} type="button" className="nav-btn nav-ask" title={L({ th: it.th, en: it.en })} onClick={() => copilot.open()}><span className="nav-line"><span className="nav-num">{navNum(it.href)}</span><span className="nav-label">{L({ th: it.th, en: it.en })}</span></span> <span className="kbd-hint">Ctrl K</span></button>;
         }
         const active = it.href === "/" ? path === "/" : path.startsWith(it.href);
         return (
-          <Link key={it.href} href={it.href} className={`nav-btn${active ? " active" : ""}`} aria-current={active ? "page" : undefined}>
-            <span className="nav-line"><span className="nav-num">{navNum(it.href)}</span>{L({ th: it.th, en: it.en })}</span>
+          <Link key={it.href} href={it.href} className={`nav-btn${active ? " active" : ""}`} aria-current={active ? "page" : undefined} title={L({ th: it.th, en: it.en })}>
+            <span className="nav-line"><span className="nav-num">{navNum(it.href)}</span><span className="nav-label">{L({ th: it.th, en: it.en })}</span></span>
           </Link>
         );
       })}
@@ -105,18 +105,50 @@ function CopilotButton() {
   );
 }
 
+const NAV_KEY = "cop24.nav.v1";
+const NAV_MIN = 180, NAV_MAX = 420, NAV_DEFAULT = 232;
+
+/** The left menu: drag its edge to resize, or collapse it to the numbered rail. Remembered per browser. */
+function useAdjustableNav() {
+  const [width, setWidth] = useState(NAV_DEFAULT);
+  const [collapsed, setCollapsed] = useState(false);
+  const drag = useRef<{ x: number; w: number } | null>(null);
+  useEffect(() => {
+    queueMicrotask(() => {
+      try { const v = JSON.parse(localStorage.getItem(NAV_KEY) ?? "{}") as { width?: number; collapsed?: boolean }; if (v.width) setWidth(Math.min(NAV_MAX, Math.max(NAV_MIN, v.width))); if (v.collapsed) setCollapsed(true); } catch {}
+    });
+  }, []);
+  const save = (w: number, c: boolean) => { try { localStorage.setItem(NAV_KEY, JSON.stringify({ width: w, collapsed: c })); } catch {} };
+  const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    drag.current = { x: e.clientX, w: collapsed ? NAV_MIN : width };
+    if (collapsed) setCollapsed(false);
+  };
+  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (!drag.current) return;
+    setWidth(Math.min(NAV_MAX, Math.max(NAV_MIN, drag.current.w + e.clientX - drag.current.x)));
+  };
+  const onPointerUp = () => { if (drag.current) { drag.current = null; save(width, false); } };
+  const toggle = () => { const c = !collapsed; setCollapsed(c); save(width, c); };
+  const reset = () => { setWidth(NAV_DEFAULT); setCollapsed(false); save(NAV_DEFAULT, false); };
+  const nudge = (d: number) => { const w = Math.min(NAV_MAX, Math.max(NAV_MIN, width + d)); setWidth(w); save(w, collapsed); };
+  return { width, collapsed, toggle, reset, nudge, handle: { onPointerDown, onPointerMove, onPointerUp, onPointerCancel: onPointerUp } };
+}
+
 function Shell({ children }: { children: ReactNode }) {
   const { lang, setLang, role, setRole, mode, setMode, theme, setTheme, showAll, setShowAll, entityId, setEntityId, data, L, tx, snap } = useApp();
   const advancedOpen = mode !== "easy" || showAll;
   const entity = data.entities.find((e) => e.id === entityId) ?? data.entities[0];
   const instCount = snap.instances.filter((i) => i.entityId === entity.id).length;
   const packCount = new Set(snap.instances.filter((i) => i.entityId === entity.id).map((i) => i.packId)).size;
+  const nav = useAdjustableNav();
 
   return (
     <div className="app">
       <header className="app-header">
         <div className="brand">
-          <Link href="/" className="brand-mark">COP24</Link>
+          <Link href="/" className="brand-mark"><span className="brand-square" aria-hidden="true" />COP24</Link>
           <AiReadyBadge />
           <div className="brand-sub">{tx("Compliance ERP · เครื่องยนต์ร่วมของ 24 Series", "Compliance ERP · the 24 Series engine")}</div>
         </div>
@@ -157,7 +189,10 @@ function Shell({ children }: { children: ReactNode }) {
       </header>
 
       <div className="app-body">
-        <nav className="sidenav">
+        <nav className={`sidenav${nav.collapsed ? " collapsed" : ""}`} style={{ "--nav-w": `${nav.width}px` } as CSSProperties}>
+          <button type="button" className="nav-toggle" onClick={nav.toggle} aria-expanded={!nav.collapsed} title={nav.collapsed ? tx("ขยายเมนู", "Expand menu") : tx("ย่อเมนู", "Collapse menu")}>
+            <span aria-hidden="true">{nav.collapsed ? "»" : "«"}</span><span className="nav-label">{tx("ย่อเมนู", "Collapse menu")}</span>
+          </button>
           <NavGroup title={tx("หลัก", "Main")} items={NAV_PRIMARY} />
           {advancedOpen ? (
             <>
@@ -183,6 +218,20 @@ function Shell({ children }: { children: ReactNode }) {
               <Tag k="ok">{instCount} {tx("ข้อผูกพัน", "obligations")}</Tag>
             </div>
           </div>
+          <div
+            className="nav-resize"
+            role="separator"
+            aria-orientation="vertical"
+            aria-label={tx("ลากเพื่อปรับความกว้างเมนู (ดับเบิลคลิกเพื่อคืนค่า)", "Drag to resize the menu (double-click to reset)")}
+            aria-valuemin={NAV_MIN}
+            aria-valuemax={NAV_MAX}
+            aria-valuenow={nav.collapsed ? 56 : nav.width}
+            tabIndex={0}
+            title={tx("ลากเพื่อปรับความกว้าง · ดับเบิลคลิกเพื่อคืนค่า", "Drag to resize · double-click to reset")}
+            onDoubleClick={nav.reset}
+            onKeyDown={(e) => { if (e.key === "ArrowLeft") nav.nudge(-16); if (e.key === "ArrowRight") nav.nudge(16); }}
+            {...nav.handle}
+          />
         </nav>
         <main className="main">
           <ComplexityGuard />
