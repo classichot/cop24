@@ -18,8 +18,11 @@ async function hmac(data: string, key: string) {
 }
 
 export const secret = () => process.env.DEMO_SECRET || "";
-/** Auth is enforced only once the server has a signing secret. */
-export const authConfigured = () => Boolean(secret());
+/**
+ * Sign-in is enforced only once the server can both sign tokens and check a workspace password.
+ * DEMO_SECRET + HOST_PIN alone switch on the server-signed host desk without locking anyone out.
+ */
+export const authConfigured = () => Boolean(secret() && process.env.WORKSPACE_PASSWORD);
 
 export async function sign(p: Payload): Promise<string> {
   const body = b64url(enc.encode(JSON.stringify(p)));
