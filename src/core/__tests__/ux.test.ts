@@ -47,6 +47,14 @@ test("every screen in the app chrome has a playbook and a terms list for Explain
   }
 });
 
+test("menu numbers come from one shared order — the menu and Paul always agree", async () => {
+  const { NAV_ORDER } = await import("../ux/nav");
+  const shell = readFileSync(join(ROOT, "src/components/AppShell.tsx"), "utf8");
+  const navBlock = shell.slice(shell.indexOf("const NAV_PRIMARY"), shell.indexOf("const NAV_ORDER"));
+  const hrefs = [...navBlock.matchAll(/href: "([^"]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(hrefs, NAV_ORDER, "the AppShell menu and src/core/ux/nav.ts must list the same items in the same order");
+});
+
 test("§21 every screen is UX-complete (no more than one ‘No’)", () => {
   const failing = SCREENS.map(evaluate).filter((r) => !r.complete).map((r) => r.spec.route);
   assert.deepEqual(failing, []);

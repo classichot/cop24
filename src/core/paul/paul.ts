@@ -3,6 +3,7 @@ import { MISSIONS, viewMission } from "../ux/catalog";
 import type { UxContext } from "../ux/context";
 import { GLOSSARY_IDS, explain } from "../ux/guidance";
 import { understand } from "../ux/intent";
+import { navNumber } from "../ux/nav";
 import type { Hit } from "./retrieve";
 
 /**
@@ -100,7 +101,8 @@ const dedupe = (a: PaulAction[]) => a.filter((x, i) => a.findIndex((y) => y.href
 /** The app, described compactly for a language model. */
 export function appKnowledge(ctx: UxContext, lang: Lang): string {
   const L = (x: { th: string; en: string }) => x[lang];
-  const screens = SCREENS.map((s, i) => `${String(i + 1).padStart(2, "0")} ${L(s.name)} (${s.route}) — ${L(s.experience)}`).join("\n");
+  // numbered exactly as the left menu shows them
+  const screens = SCREENS.filter((s) => navNumber(s.route)).map((s) => `${navNumber(s.route)} ${L(s.name)} (${s.route}) — ${L(s.experience)}`).sort().join("\n");
   const missions = MISSIONS.map((m) => { const v = viewMission(m, ctx); return `- ${L(v.title)} [${m.id}] → ${m.module}; status ${v.status}; next: ${v.nextStep ? L(v.nextStep.label) : "done"}`; }).join("\n");
   return [
     `Active entity: ${L(ctx.entityName)} · role: ${ctx.role} · evidence readiness ${ctx.readiness}% (${ctx.evidenceProven}/${ctx.evidenceRequired}) · open gaps ${ctx.openGaps} (${ctx.materialGaps} material) · release gate ${ctx.gate}/4 ${L(ctx.gateLabel)} · conflicts ${ctx.conflicts}${ctx.nextDeadline ? ` · next deadline ${L(ctx.nextDeadline.label)} in ${ctx.nextDeadline.days} days` : ""}`,

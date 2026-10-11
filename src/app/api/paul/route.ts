@@ -49,7 +49,7 @@ export async function POST(req: Request) {
   try { body = (await req.json()) as Body; } catch { return Response.json({ error: "invalid JSON" }, { status: 400 }); }
   const messages = (body.messages ?? []).filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string").slice(-16).map((m) => ({ role: m.role, content: m.content.slice(0, 4000) }));
   const last = [...messages].reverse().find((m) => m.role === "user");
-  if (!last || !body.ctx) return Response.json({ error: "a user message and ctx are required" }, { status: 400 });
+  if (!last || !body.ctx || typeof body.ctx.entityName !== "object" || typeof body.ctx.role !== "string") return Response.json({ error: "a user message and a valid ctx are required" }, { status: 400 });
   const lang: Lang = body.lang === "en" ? "en" : "th";
   const route = typeof body.route === "string" ? body.route.slice(0, 80) : "/";
   const mode = detectMode(last.content, body.mode);
