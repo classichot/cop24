@@ -25,13 +25,14 @@ const NAV_PRIMARY: NavItem[] = [
   { href: "/outputs", th: "รายงานและผลลัพธ์", en: "Reports & outputs" },
   // AGI mode is a primary capability, so it stays visible in Easy mode too
   { href: "/agi", th: "AGI · แคตตาล็อกภารกิจ 108", en: "AGI · Mission catalog (108)" },
+  // report generation is a primary job, so it stays visible in Easy mode
+  { href: "/factory", th: "สร้างรายงาน", en: "Report generation" },
 ];
 /** All modules — the complete professional application, grouped. */
 const NAV_WORK: NavItem[] = [
   { href: "/ingest", th: "เตรียมข้อมูล · นำเข้าครั้งเดียว", en: "Data preparation" },
   { href: "/start", th: "เริ่มต้นใช้งาน", en: "Easy Start" },
   { href: "/evidence", th: "ศูนย์ควบคุมเอกสาร", en: "Document Control" },
-  { href: "/factory", th: "สร้างรายงานอัตโนมัติ", en: "Report Factory" },
   { href: "/calendar", th: "ปฏิทินการปฏิบัติตาม", en: "Compliance Calendar" },
   { href: "/gaps", th: "ช่องว่างและการแก้ไข", en: "Gaps & Remediation" },
 ];

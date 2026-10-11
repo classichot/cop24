@@ -3,8 +3,8 @@
  * when it tells people where to click — a test keeps it identical to the menu in AppShell.
  */
 export const NAV_ORDER = [
-  "/", "#ask", "/missions", "/my-work", "/outputs", "/agi",
-  "/ingest", "/start", "/evidence", "/factory", "/calendar", "/gaps",
+  "/", "#ask", "/missions", "/my-work", "/outputs", "/agi", "/factory",
+  "/ingest", "/start", "/evidence", "/calendar", "/gaps",
   "/studio", "/preflight", "/report-quality", "/xray", "/portfolio",
   "/universe", "/obligations", "/corpus", "/controls", "/changes", "/audit", "/packs", "/engine", "/ux-standard", "/feedback", "/host-desk",
 ];
