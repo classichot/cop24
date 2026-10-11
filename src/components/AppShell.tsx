@@ -9,6 +9,7 @@ import { CopilotProvider, useCopilot } from "./ux/Copilot";
 import { ComplexityGuard } from "./ux/ComplexityGuard";
 import { NextStepBar } from "./ux/parts";
 import { Paul } from "./ux/Paul";
+import { AiReadyBadge } from "./ux/AiStatus";
 import { USER } from "@/data/tenant";
 
 interface NavItem { href: string; th: string; en: string; sub?: string }
@@ -116,6 +117,7 @@ function Shell({ children }: { children: ReactNode }) {
       <header className="app-header">
         <div className="brand">
           <Link href="/" className="brand-mark">COP24</Link>
+          <AiReadyBadge />
           <div className="brand-sub">{tx("Compliance ERP · เครื่องยนต์ร่วมของ 24 Series", "Compliance ERP · the 24 Series engine")}</div>
         </div>
         <CopilotButton />

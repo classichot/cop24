@@ -38,12 +38,18 @@ export function Paul() {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
-  const [provider, setProvider] = useState<{ provider: string; model: string } | null>(null);
+  const [provider, setProvider] = useState<{ provider: string; model: string; connected?: boolean } | null>(null);
   const end = useRef<HTMLDivElement>(null);
   const box = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     queueMicrotask(() => { try { const s = sessionStorage.getItem(STORE); if (s) setMsgs(JSON.parse(s) as Msg[]); } catch {} });
+  }, []);
+  // the AI READY badge in the header opens Paul
+  useEffect(() => {
+    const openPaul = () => setOpen(true);
+    window.addEventListener("cop24:open-paul", openPaul);
+    return () => window.removeEventListener("cop24:open-paul", openPaul);
   }, []);
   useEffect(() => { try { sessionStorage.setItem(STORE, JSON.stringify(msgs.slice(-40))); } catch {} end.current?.scrollIntoView({ block: "end" }); }, [msgs]);
   useEffect(() => {
@@ -108,7 +114,7 @@ export function Paul() {
     feedback: [tx("หน้านี้ใช้ยากตรงที่…", "This screen is confusing because…"), tx("อยากให้ COP24 มี…", "I wish COP24 could…"), tx("พบปัญหา: กดแล้ว…", "Bug: when I click…")],
   };
   const shownMode: PaulMode = pick === "auto" ? "help" : pick;
-  const providerLabel = !provider ? "…" : provider.provider === "offline" ? tx("ออฟไลน์ · ตอบจากคลังข้อมูล ไม่มี AI", "Offline · answers from COP24's own data, no AI") : `${provider.provider === "openai" ? "OpenAI" : "Claude"} · ${provider.model}`;
+  const providerLabel = !provider ? "…" : provider.provider === "offline" ? tx("ออฟไลน์ · ตอบจากคลังข้อมูล ไม่มี AI", "Offline · answers from COP24's own data, no AI") : provider.connected === false ? tx(`ตั้งค่า ${provider.provider} แล้วแต่เชื่อมต่อไม่ได้ — ตอบแบบออฟไลน์`, `${provider.provider} configured but not reachable — answering offline`) : `${provider.provider === "openai" ? "OpenAI" : "Claude"} · ${provider.model}`;
 
   if (!open) {
     return (

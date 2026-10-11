@@ -100,8 +100,26 @@ export async function POST(req: Request) {
   return new Response(stream, { headers: { "content-type": "application/x-ndjson; charset=utf-8", "cache-control": "no-store" } });
 }
 
-/** GET /api/paul — which provider is connected (never the key). */
-export function GET() {
+/**
+ * GET /api/paul — which provider is configured and whether it is actually reachable (never the key).
+ * "connected" comes from a real, token-free model lookup with the configured key, cached for
+ * 10 minutes, so a missing, wrong or expired key never shows as connected.
+ */
+let STATUS: { at: number; key: string; connected: boolean; error?: string } | null = null;
+const STATUS_TTL = 10 * 60_000;
+
+export async function GET() {
   const p = provider();
-  return Response.json({ provider: p.name, model: p.model });
+  const key = `${p.name}:${p.model}`;
+  if (p.name === "offline") return Response.json({ provider: p.name, model: p.model, connected: false });
+  if (!STATUS || STATUS.key !== key || Date.now() - STATUS.at > STATUS_TTL) {
+    try {
+      if (p.name === "openai") await new OpenAI().models.retrieve(p.model);
+      else await new Anthropic().models.retrieve(p.model);
+      STATUS = { at: Date.now(), key, connected: true };
+    } catch (err) {
+      STATUS = { at: Date.now(), key, connected: false, error: err instanceof Error ? err.message.slice(0, 120) : "unreachable" };
+    }
+  }
+  return Response.json({ provider: p.name, model: p.model, connected: STATUS.connected, error: STATUS.error, checkedAt: new Date(STATUS.at).toISOString() });
 }

@@ -209,3 +209,14 @@
 .agi-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .agi-tag { font-size: 10px; letter-spacing: .02em; padding: 1px 6px; border: 1px solid var(--color-divider); color: var(--color-neutral-600); }
 .agi-tag.on { border-color: var(--color-accent); color: var(--color-accent-700); background: var(--color-accent-100); }
+
+/* AI READY badge beside the logo — blinks only when the provider is verified */
+.brand { align-items: center; }
+.ai-badge { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-family: var(--font-heading); font-weight: 800; font-size: 10px; letter-spacing: .1em; padding: 3px 8px; cursor: pointer; border: 1px solid var(--color-divider); background: transparent; color: var(--color-neutral-600); white-space: nowrap; }
+.ai-badge-dot { width: 7px; height: 7px; background: currentColor; }
+.ai-ready { color: var(--on-accent); background: var(--color-accent); border-color: var(--color-accent); animation: ai-blink 1.2s ease-in-out infinite; }
+.ai-ready .ai-badge-dot { background: var(--st-ok); box-shadow: 0 0 0 2px var(--on-accent); }
+.ai-error { color: var(--st-bad); border-color: var(--st-bad); background: var(--st-bad-bg); }
+.ai-checking { opacity: .6; }
+@keyframes ai-blink { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 70%, transparent); } 50% { opacity: .45; box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-accent) 0%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .ai-ready { animation: none; } }
