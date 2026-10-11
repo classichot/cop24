@@ -12,6 +12,7 @@ import { NextStepBar } from "./ux/parts";
 import { PageTools } from "./ux/PageTools";
 import { Paul } from "./ux/Paul";
 import { AiReadyBadge, useAiStatus } from "./ux/AiStatus";
+import { Rag24Badge } from "./ux/Rag24Status";
 import { DemoTour, startDemo } from "./ux/DemoTour";
 import { APP_JOURNEY, helperOf, journeyIndex, journeyMarker, journeyStage } from "@/core/ux/app-journey";
 import { USER } from "@/data/tenant";
@@ -260,6 +261,7 @@ function Shell({ children, session, onSignOut }: { children: ReactNode; session:
         <div className="brand">
           <Link href="/" className="brand-mark"><span className="brand-square" aria-hidden="true" />COP24</Link>
           <AiReadyBadge />
+          <Rag24Badge />
           <div className="brand-sub">{tx("Compliance ERP · เครื่องยนต์ร่วมของ 24 Series", "Compliance ERP · the 24 Series engine")}</div>
         </div>
         <CopilotButton />

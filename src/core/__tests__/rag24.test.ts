@@ -113,3 +113,11 @@ test("the service key stays on the server", () => {
   const route = readFileSync(join(ROOT, "src/app/api/rag24/route.ts"), "utf8");
   assert.match(route, /requireAuth/);
 });
+
+test("the RAG24 badge sits beside AI READY and only shows when connected", () => {
+  const shell = readFileSync(join(ROOT, "src/components/AppShell.tsx"), "utf8");
+  assert.match(shell, /<AiReadyBadge \/>\s*<Rag24Badge \/>/, "the badge follows AI READY in the header");
+  const badge = readFileSync(join(ROOT, "src/components/ux/Rag24Status.tsx"), "utf8");
+  assert.match(badge, /if \(!s \|\| !s\.configured \|\| s\.stage === "disabled"\) return null;/, "hidden unless configured and switched on");
+  assert.ok(!badge.includes("process.env"), "status comes from /api/rag24, never server configuration");
+});

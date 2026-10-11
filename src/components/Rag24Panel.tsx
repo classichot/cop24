@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useApp } from "@/state/AppState";
 import { authHeaders } from "@/lib/access";
 import { Tag } from "./ui";
+import { useRag24Status } from "./ux/Rag24Status";
 
-interface Status { configured: boolean; stage: "disabled" | "search_pilot" | "workflows"; pack: string; host: string | null; reachable: boolean | null }
 interface Passage { id: string; title: string; issuer: string; text: string; cite: string; url: string | null; effectiveFrom: string; effectiveTo: string | null }
 interface Result { status: string; reason: string; passages: Passage[]; warnings: string[]; retrievedAt?: string }
 
@@ -15,11 +15,10 @@ interface Result { status: string; reason: string; passages: Passage[]; warnings
  */
 export function Rag24Panel() {
   const { L, tx, entityId, data } = useApp();
-  const [st, setSt] = useState<Status | null>(null);
+  const st = useRag24Status() ?? null;
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState(false);
   const [res, setRes] = useState<Result | null>(null);
-  useEffect(() => { fetch("/api/rag24").then((r) => r.json()).then(setSt).catch(() => setSt(null)); }, []);
   const entity = data.entities.find((e) => e.id === entityId);
 
   const search = async () => {
@@ -43,7 +42,7 @@ export function Rag24Panel() {
         : tx("การเชื่อมต่อ RAG24 ปิดอยู่", "The RAG24 connection is off");
 
   return (
-    <section className="rag24-panel" aria-label="RAG24">
+    <section id="rag24" className="rag24-panel" aria-label="RAG24">
       <div className="row row-center" style={{ justifyContent: "space-between", gap: 8, flexWrap: "wrap" }}>
         <div className="row row-center" style={{ gap: 8 }}><span className="label" style={{ margin: 0 }}>{tx("หลักฐานร่วม · RAG24", "Shared evidence · RAG24")}</span>{badge}</div>
         {st?.configured && <span className="muted tiny">{tx("ชุดโดเมน", "domain pack")} COP24 {st.pack}</span>}

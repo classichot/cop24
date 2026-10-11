@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useApp } from "@/state/AppState";
 import { HostDesk } from "@/components/auth/HostDesk";
 import { AiReadyBadge } from "@/components/ux/AiStatus";
+import { Rag24Badge } from "@/components/ux/Rag24Status";
 import { startDemo } from "@/components/ux/DemoTour";
 import { LOGIN_ROLES } from "@/data/login-roles";
 import { allowedRoles, currentSession, fmtDate, gateFromUrl, saveSession, serverAuth, signIn, type Gate, type Role } from "@/lib/access";
@@ -62,6 +63,7 @@ export default function LoginPage() {
           <span className="login-wordmark">COP24</span>
           <span className="brand-square" style={{ width: 14, height: 14 }} aria-hidden="true" />
           <AiReadyBadge />
+          <Rag24Badge asLink={false} />
           <span className="login-meta">
             <span className="login-kicker">{tx("ระบบปฏิบัติตาม CoP ด้วย AI · ระเบียบ กกพ. 2565 + 2567", "AI CoP Compliance OS · ERC rules 2565 + 2567")}</span>
             <button type="button" className="btn btn-secondary btn-sm btn-plain" onClick={() => setHost(true)}>{tx("โต๊ะผู้ดูแล", "Host desk")}</button>
