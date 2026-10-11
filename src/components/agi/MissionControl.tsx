@@ -6,6 +6,8 @@ import { useApp } from "@/state/AppState";
 import { Tag } from "@/components/ui";
 import { agentById } from "@/core/agi/agents";
 import { flagshipById } from "@/core/agi/flagship";
+import { sha256 } from "@/core/agi/sha256";
+import { AiWriter } from "./AiWriter";
 import { approve, archive, cancel, resolveHumanTask, retry, submit, trace, verifyAudit, verifyHumanTask, type MissionRun, type Role } from "@/core/agi/engine";
 import type { Status } from "@/core/types";
 
@@ -132,6 +134,18 @@ export function MissionControl({ run, onChange, onResume }: { run: MissionRun; o
               {d.sections?.map((s) => <div key={s.id} className={`mc-sec ${s.status === "blocked" ? "ink-bad" : ""}`}><b>{L(s.title)}</b> — {L(s.text)} {s.sources.length > 0 && <span className="muted tiny">[{s.sources.join(", ")}]</span>}</div>)}
               {d.rows && <div className="table-wrap" style={{ marginTop: 6 }}><table className="table"><thead><tr>{Object.keys(d.rows[0] ?? {}).map((k) => <th key={k}>{k}</th>)}</tr></thead><tbody>{d.rows.map((r, i) => <tr key={i}>{Object.values(r).map((v, j) => <td key={j} className="small">{String(v)}</td>)}</tr>)}</tbody></table></div>}
               {d.id === "report" && <TraceView run={run} site={d.site} />}
+              {d.id === "report" && d === run.deliverables.filter((x) => x.id === "report" && x.site === d.site).at(-1) && (
+                <AiWriter d={d} siteName={d.site} onAccept={(sections, model) => onChange((r) => {
+                  const nd = { ...d, sections, version: r.deliverables.filter((x) => x.id === "report" && x.site === d.site).length + 1, hash: "" };
+                  nd.hash = sha256(JSON.stringify(nd));
+                  r.deliverables.push(nd);
+                  const prev = r.audit.at(-1)?.hash ?? "GENESIS";
+                  const at = new Date().toISOString();
+                  const detail = `AI-written sections by ${model}, each passed the report guard · ${nd.hash}`;
+                  const seq = r.audit.length + 1;
+                  r.audit.push({ seq, at, actor, action: "deliverable", object: `${d.site}:report@v${nd.version}`, detail, prev, hash: sha256([prev, seq, at, actor, "", "deliverable", `${d.site}:report@v${nd.version}`, detail].join("|")) });
+                })} />
+              )}
             </details>
           ))}
           <Link href="/studio" className="btn btn-ghost btn-sm" style={{ marginTop: 6 }}>{tx("เปิดสตูดิโอรายงาน →", "Open Report Studio →")}</Link>

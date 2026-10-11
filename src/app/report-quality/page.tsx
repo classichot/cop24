@@ -211,13 +211,18 @@ export default function ReportQualityPage() {
 
       {tab === "models" && (
         <div style={{ marginTop: 16 }}>
-          <div className="note note-warn" style={{ fontSize: 13, marginBottom: 12 }}>{tx("ยังไม่มีโมเดลใดผ่านชุดทดสอบรายงานที่กำหนดล่วงหน้า (ข้อเท็จจริง ภาษาไทย/อังกฤษ เอกสารยาว และการตรวจโดยผู้ทรงคุณวุฒิ 2 คน) — งานร่างจริงจึงถูกพักไว้ ไม่ลดระดับโมเดลแบบเงียบ ชื่อแบรนด์ ขนาด หรืออันดับบนกระดานคะแนนไม่ใช่หลักฐานความเหมาะสม", "No model has yet passed the predefined report benchmark (facts, Thai/English, long documents, two qualified reviewers), so real drafting jobs are queued — never silently downgraded. Brand, size or leaderboard rank is not evidence of suitability.")}</div>
+          <div className="note note-warn" style={{ fontSize: 13, marginBottom: 12 }}>{tx("โมเดลจะร่างรายงานต่อหน่วยงานได้เมื่อ (1) เป็นระดับสูงสุด ทำงานที่ระดับการให้เหตุผลสูง (2) ผ่านชุดทดสอบ CoP ภาษาไทย 5 กรณี (ตัวเลขตรง ไม่แต่งตัวเลข อ้างอิงครบ ไม่อ้างว่าทำแล้วเมื่อไม่มีหลักฐาน) และ (3) ผู้ทรงคุณวุฒิอ่านผลแล้วลงชื่ออนุมัติ — ก่อนหน้านั้นงานร่างถูกพักไว้ ไม่ลดระดับแบบเงียบ ทุกย่อหน้าที่ AI เขียนยังต้องผ่านการตรวจเดียวกันก่อนใช้", "A model drafts authority reports only when (1) it is a frontier model running at high reasoning effort, (2) it passes the 5-case Thai CoP benchmark (numbers exact, none invented, every fact cited, no compliance claimed without evidence) and (3) a qualified reviewer reads the outputs and signs off. Until then drafting is queued, never silently downgraded — and every AI-written section must still pass the same checks before it is used.")}
+          <div className="code tiny" style={{ marginTop: 6 }}>{`npm run report:benchmark -- --yes · npm run report:benchmark -- --approve "Name, role" --editorial 4.5`}</div></div>
           <Cells min={240}>
             {MODEL_REGISTRY.map((m) => (
               <div key={m.modelId} className="cell">
                 <div className="code" style={{ fontWeight: 600 }}>{m.modelId}</div>
                 <div className="muted tiny">{m.provider} · {(m.contextTokens / 1e6).toFixed(0)}M ctx · {(m.maxOutputTokens / 1000).toFixed(0)}K out · {m.versionPinned ? tx("ตรึงเวอร์ชันได้", "version pinned") : tx("ตรึงเวอร์ชันไม่ได้", "unpinned")}</div>
-                <Tag k={m.status === "approved" ? "ok" : "cond"} style={{ marginTop: 6 }}>{m.status === "approved" ? tx("อนุมัติ", "Approved") : tx("ผู้สมัคร · รอประเมิน", "Candidate · evaluation pending")}</Tag>
+                <div className="row" style={{ gap: 6, marginTop: 6 }}>
+                  <Tag k={m.status === "approved" ? "ok" : "cond"}>{m.status === "approved" ? tx("อนุมัติ", "Approved") : tx("ผู้สมัคร · รอประเมิน", "Candidate · evaluation pending")}</Tag>
+                  <Tag k={m.tier === "frontier" ? "ok" : m.tier === "standard" ? "warn" : "bad"}>{m.tier === "frontier" ? tx("ระดับสูงสุด · ร่างรายงานต่อหน่วยงานได้หลังผ่านการทดสอบ", "Frontier · may draft authority reports once qualified") : m.tier === "standard" ? tx("ระดับกลาง · งานสนับสนุน", "Standard · supporting tasks") : tx("ระดับเล็ก · ห้ามร่างรายงานต่อหน่วยงาน", "Small · never drafts authority reports")}</Tag>
+                </div>
+                {m.evaluations.length > 0 && <div className="tiny" style={{ marginTop: 6 }}>{m.evaluations.map((e, i) => <div key={i}>{e.datasetVersion} · {e.date} · factual {e.factual} · editorial {e.editorial}/5 · {e.reviewers.join(", ") || tx("ยังไม่มีผู้ตรวจ", "no reviewer yet")}</div>)}</div>}
                 <div className="small muted-7" style={{ marginTop: 6, lineHeight: 1.5 }}>{L(m.notes)}</div>
               </div>
             ))}

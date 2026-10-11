@@ -323,6 +323,8 @@ export interface ModelEvaluation {
 export interface RegisteredModel {
   provider: string;
   modelId: string;
+  /** capability class — a floor, never a qualification: authority drafting needs "frontier" AND a passed benchmark */
+  tier: "frontier" | "standard" | "small";
   contextTokens: number;
   maxOutputTokens: number;
   versionPinned: boolean; // provider guarantees fixed version for this id

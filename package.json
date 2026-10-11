@@ -15,7 +15,8 @@
     "corpus:fetch": "node --import tsx scripts/corpus/fetch.ts",
     "postinstall": "node scripts/copy-pdf-worker.mjs",
     "ingest:eval": "node --import tsx scripts/ingest/eval.ts",
-    "corpus:passages": "node --import tsx scripts/corpus/passages.ts"
+    "corpus:passages": "node --import tsx scripts/corpus/passages.ts",
+    "report:benchmark": "node --import tsx scripts/report/benchmark.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",
