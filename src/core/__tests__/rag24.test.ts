@@ -53,7 +53,8 @@ test("not configured or disabled: no call is made and callers carry on", async (
 });
 
 test("search pilot: approved passages come back with provenance; the entity comes from the workspace", async () => {
-  env({ RAG24_URL: url, RAG24_SERVICE_KEY: "rag24_svc_test", RAG24_STAGE: "search_pilot", RAG24_ENTITY_MAP: JSON.stringify({ "lopburi-1": "customer-a-lopburi-1" }) });
+  // values piped from PowerShell into `vercel env add` can carry a trailing CRLF
+  env({ RAG24_URL: url + "\r\n", RAG24_SERVICE_KEY: "rag24_svc_test\r\n", RAG24_STAGE: "search_pilot\r\n", RAG24_ENTITY_MAP: JSON.stringify({ "lopburi-1": "customer-a-lopburi-1" }) });
   reply = "evidence";
   const r = await rag24Evidence("search", "lopburi-1", "ต้องยื่นรายงานเมื่อไร", { year: 2026 });
   assert.equal(r.status, "evidence_available");

@@ -19,7 +19,7 @@ const STAGES: Rag24Stage[] = ["disabled", "search_pilot", "workflows"];
 
 export function rag24Config(): Rag24Config {
   const url = process.env.RAG24_URL?.trim() ?? "";
-  const configured = Boolean(url && process.env.RAG24_SERVICE_KEY);
+  const configured = Boolean(url && process.env.RAG24_SERVICE_KEY?.trim());
   const raw = (process.env.RAG24_STAGE ?? "disabled").trim() as Rag24Stage;
   let host: string | null = null;
   try { host = url ? new URL(url).host : null; } catch {}
@@ -31,7 +31,8 @@ let INST: { sig: string; rag: Rag24Integration } | null = null;
 function adapter(): Rag24Integration | null {
   const c = rag24Config();
   if (!c.configured || c.stage === "disabled") return null;
-  const sig = [process.env.RAG24_URL, process.env.RAG24_SERVICE_KEY, c.stage, c.pack].join("|");
+  const key = process.env.RAG24_SERVICE_KEY!.trim();
+  const sig = [process.env.RAG24_URL, key, c.stage, c.pack].join("|");
   if (INST?.sig !== sig) {
     INST = {
       sig,
@@ -39,7 +40,7 @@ function adapter(): Rag24Integration | null {
         applicationId: "COP24",
         domainPackVersion: c.pack,
         baseUrl: process.env.RAG24_URL!.trim(),
-        apiKey: process.env.RAG24_SERVICE_KEY!,
+        apiKey: key,
         stage: c.stage,
         timeoutMs: 2500,
         // status and reason only — never passages, tokens or raw errors
