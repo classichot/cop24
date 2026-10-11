@@ -48,6 +48,10 @@ const NAV_ENGINE: NavItem[] = [
   { href: "/ux-standard", th: "มาตรฐาน UX 24 Series", en: "24 UX Standard" },
 ];
 
+/** Every menu item keeps a fixed number from its place in the full menu, so Easy mode never renumbers. */
+const NAV_ORDER = [...NAV_PRIMARY, ...NAV_WORK, ...NAV_REPORT, ...NAV_ENGINE].map((it) => it.href);
+const navNum = (href: string) => String(NAV_ORDER.indexOf(href) + 1).padStart(2, "0");
+
 function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
   const path = usePathname();
   const { L } = useApp();
@@ -57,12 +61,12 @@ function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
       <div className="nav-group">{title}</div>
       {items.map((it) => {
         if (it.href === "#ask") {
-          return <button key={it.href} type="button" className="nav-btn nav-ask" onClick={() => copilot.open()}>{L({ th: it.th, en: it.en })} <span className="kbd-hint">Ctrl K</span></button>;
+          return <button key={it.href} type="button" className="nav-btn nav-ask" onClick={() => copilot.open()}><span className="nav-line"><span className="nav-num">{navNum(it.href)}</span>{L({ th: it.th, en: it.en })}</span> <span className="kbd-hint">Ctrl K</span></button>;
         }
         const active = it.href === "/" ? path === "/" : path.startsWith(it.href);
         return (
           <Link key={it.href} href={it.href} className={`nav-btn${active ? " active" : ""}`} aria-current={active ? "page" : undefined}>
-            {L({ th: it.th, en: it.en })}
+            <span className="nav-line"><span className="nav-num">{navNum(it.href)}</span>{L({ th: it.th, en: it.en })}</span>
           </Link>
         );
       })}

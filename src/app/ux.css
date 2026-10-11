@@ -113,3 +113,8 @@
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .app-header { gap: 14px; }
 @media (max-width: 1500px) { .brand-sub, .app-header .hdr-label { display: none; } }
+
+/* numbered side menu */
+.nav-line { display: flex; align-items: baseline; gap: 10px; }
+.nav-num { flex: none; min-width: 18px; font-family: var(--font-heading); font-weight: 800; font-size: 10px; letter-spacing: .04em; color: var(--color-neutral-600); font-variant-numeric: tabular-nums; }
+.nav-btn.active .nav-num, .nav-ask .nav-num { color: var(--color-accent-700); }
