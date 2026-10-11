@@ -87,6 +87,7 @@ function Missions() {
               {mode !== "agi" && <span className="muted tiny">{tx("โหมด AGI เปิดตัวเลือก Swarm", "AGI mode adds Swarm")}</span>}
             </div>
             <div className="row" style={{ marginTop: 14 }}>
+              {mission.agi && <Link href={`/agi?f=${mission.agi}`} className="btn btn-primary">{tx("รันในศูนย์ควบคุม AGI →", "Run in AGI Mission Control →")}</Link>}
               {mission.forMe ? (
                 <Link href={`${mission.forMe}?goal=${encodeURIComponent(L(view.title))}`} className="btn btn-primary">{tx("ส่งต่อให้ AI → ตั้งขอบเขตและอนุญาต", "Hand off to AI → set scope and authorise")}</Link>
               ) : (

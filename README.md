@@ -95,6 +95,7 @@ docs/              Concept, architecture, features and wow features, design syst
 | `/my-work` | My work — only decisions, approvals, missing data and exceptions | Workflow |
 | `/outputs` | Reports & outputs — every deliverable with plain-language status | Reporting |
 | `/ux-standard` | 24 UX Standard — acceptance register (7 tests × every screen) and the core UX components | all |
+| `/agi` | AGI Mission Control — flagship missions, mission preview, Mission Control, 108-mission catalog, agent team builder, triggers, model routing | Agent, all |
 | `/ingest` | Data Preparation — **Import Everything** (files, folders, ZIP; no naming or tagging) and **Hand Off to AI** (instruction → authorised mission); checklist, side-by-side review, missing evidence and requests, findings, mission log, project profile, audit | Evidence, Document, Agent |
 | `/start` | Easy Start — explainable applicability across every domain at once | Applicability |
 | `/evidence` | Document Control Center — 3-layer evidence, AI-drafted evidence requests | Evidence, Document |
@@ -150,6 +151,14 @@ Report Engine in `src/core/report/`. It is applied first to the Lopburi 1 prelim
 against the standard’s §16 acceptance scenarios. See `docs/06-report-standard-implementation.md` for the
 section-by-section mapping and what is not built yet, and `docs/07-cop-report-references.md` for the
 official ERC form and the EGAT example report.
+
+## AGI Mode & Mission Catalog
+
+`/agi` is Mission Control for the virtual CoP compliance department: 108 catalog missions in 12
+categories (65 available, 43 planned and not startable), seven flagship missions (F01–F07), Single
+Bot / AI Team / Cooperative Swarm, Draft / Supervised / Autopilot, a Mission Preview, approval
+gates, a cost governor, triggers and a SHA-256 hash-chained audit trail. The engine is in
+`src/core/agi/`; see `docs/11-agi-mode-mission-catalog.md`.
 
 ## Paul — chat assistant
 

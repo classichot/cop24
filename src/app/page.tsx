@@ -55,7 +55,7 @@ export default function HomePage() {
   return (
     <div className="page">
       <Kicker>{tx("หน้าหลัก / ASK 24", "Home / ASK 24")}</Kicker>
-      <h1 className="title title-xl">{tx("คุณต้องการทำอะไรให้สำเร็จ?", "What would you like to achieve?")}</h1>
+      <h1 className="title title-xl">{tx("ต้องการให้ COP24 ทำอะไร?", "What would you like COP24 to do?")}</h1>
       <p className="text-muted lead" style={{ maxWidth: 680 }}>
         {tx("บอกเป้าหมายเป็นภาษาธรรมดา COP24 จะเข้าใจ เลือกภารกิจ ตรวจว่ามีข้อมูลอะไรแล้วและขาดอะไร แล้ววางแผนให้ — ไม่ต้องรู้จักเมนูหรือศัพท์เฉพาะ", "Say your goal in plain words. COP24 works out the mission, checks what data you have and what's missing, and plans the work — no menus or jargon to learn.")}
       </p>

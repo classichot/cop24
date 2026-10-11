@@ -23,6 +23,7 @@ const NAV_PRIMARY: NavItem[] = [
 ];
 /** All modules — the complete professional application, grouped. */
 const NAV_WORK: NavItem[] = [
+  { href: "/agi", th: "ศูนย์ควบคุม AGI · ภารกิจ 108", en: "AGI Mission Control" },
   { href: "/ingest", th: "เตรียมข้อมูล · นำเข้าครั้งเดียว", en: "Data preparation" },
   { href: "/start", th: "เริ่มต้นใช้งาน", en: "Easy Start" },
   { href: "/evidence", th: "ศูนย์ควบคุมเอกสาร", en: "Document Control" },

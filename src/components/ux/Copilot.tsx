@@ -88,6 +88,7 @@ export function CopilotBox({ seed = "", autoFocus, onNavigate, large }: { seed?:
   const go = (href: string) => { onNavigate?.(); router.push(href); };
   const act = (m: UxMission, a: Assist) => {
     if (a === "myself") return go(m.module);
+    if (a === "for-me" && m.agi) return go(`/agi?f=${m.agi}&site=${entityId}`);
     if (a === "for-me" && m.forMe === "/ingest") return go(`/ingest?goal=${encodeURIComponent(goal || L(m.title(ctx)))}`);
     go(`/missions?m=${m.id}&assist=${a}`);
   };

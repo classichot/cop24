@@ -60,6 +60,8 @@ export interface UxMission {
   modules: string[];
   /** Do It For Me hands off here (an AI-runnable flow); defaults to the mission journey */
   forMe?: string;
+  /** the AGI flagship that runs this goal end to end in Mission Control */
+  agi?: string;
   plan: (ctx: UxContext) => PlanStep[];
   requires: (ctx: UxContext) => Requirement[];
   why: (ctx: UxContext) => WhyAI;
@@ -80,6 +82,7 @@ export const MISSIONS: UxMission[] = [
     module: "/factory",
     modules: ["/factory", "/studio", "/preflight", "/evidence", "/ingest"],
     forMe: "/ingest",
+    agi: "F02",
     plan: (c) => {
       const todo = c.chaptersTotal - c.chaptersApproved - c.chaptersReview - c.chaptersDrafting;
       return [
@@ -282,8 +285,9 @@ export const MISSIONS: UxMission[] = [
     cues: [C(/ติดตามผล|monitoring|รายปี|รอบปี|ประจำปี|annual (cop|monitoring)/iu, 4), C(/รายงาน|report/iu, 1)],
     roles: ["owner", "consultant"],
     module: "/factory",
-    modules: ["/factory", "/calendar", "/ingest"],
+    modules: ["/factory", "/calendar", "/ingest", "/agi"],
     forMe: "/ingest",
+    agi: "F01",
     plan: () => [
       { stage: "assess", label: t("ยกยอดข้อมูลจากรายงานรอบก่อน", "Carry forward last period's report"), by: "ai", done: true },
       { stage: "collect", label: t("ส่งผลตรวจวัดของรอบนี้", "Supply this period's monitoring results"), by: "human", done: false, href: "/ingest" },
@@ -308,6 +312,7 @@ export const MISSIONS: UxMission[] = [
     roles: ["owner", "consultant", "exec"],
     module: "/gaps",
     modules: ["/gaps", "/controls"],
+    agi: "F04",
     plan: (c) => [
       { stage: "assess", label: t("คำนวณช่องว่างจากข้อผูกพัน การควบคุม และกฎที่เปลี่ยน", "Derive gaps from obligations, controls and changes"), by: "ai", done: true, href: "/gaps" },
       { stage: "recommend", label: t("เสนอวิธีแก้และผู้รับผิดชอบ", "Propose the fix and the owner"), by: "ai", done: true },
@@ -353,6 +358,7 @@ export const MISSIONS: UxMission[] = [
     roles: ["exec", "consultant"],
     module: "/portfolio",
     modules: ["/portfolio", "/universe"],
+    agi: "F06",
     plan: () => [
       { stage: "assess", label: t("รวมสถานะทุกหน่วยงาน", "Combine every entity's status"), by: "ai", done: true, href: "/portfolio" },
       { stage: "recommend", label: t("เรียงตามความเสี่ยงและกำหนด", "Rank by risk and deadline"), by: "ai", done: true },
@@ -366,6 +372,47 @@ export const MISSIONS: UxMission[] = [
       sources: [t("Portfolio & Advisor Center", "Portfolio & Advisor Center")],
       alternatives: [{ label: t("อนุมัติรายงานที่รอ", "Approve waiting reports"), missionId: "file-submit" }],
     }),
+  },
+  {
+    id: "check-compliance",
+    app: "cop24",
+    title: (c) => t(`ตรวจว่า${c.entityName.th}ปฏิบัติตามหรือไม่`, `Check whether ${c.entityName.en} complies`),
+    outcome: t("ผลประเมินรายมาตรการ: ปฏิบัติตาม อาจไม่ปฏิบัติตาม ยังยืนยันไม่ได้ พร้อมแหล่งอ้างอิง", "Each measure rated compliant, potentially non-compliant or unverified, with sources"),
+    cues: [C(/ปฏิบัติตาม(หรือไม่|ไหม|แล้วหรือยัง)|comply|complies|compliant|compliance check|check (my|the|our) plant/iu, 5)],
+    roles: ["owner", "consultant", "exec"],
+    module: "/agi",
+    modules: ["/agi", "/controls", "/gaps"],
+    agi: "F03",
+    plan: (c) => [
+      { stage: "assess", label: t("ยืนยันเส้นทางกำกับและทะเบียนมาตรการ", "Confirm the route and measures register"), by: "ai", done: true, href: "/agi?f=F03" },
+      { stage: "analyze", label: t("ประเมินรายมาตรการจากหลักฐาน", "Rate every measure from evidence"), by: "ai", done: false },
+      { stage: "review", label: t("ตัดสินรายการที่ยังยืนยันไม่ได้", "Decide the unverified items"), by: "human", done: c.evidenceGaps === 0, href: "/my-work", count: c.evidenceGaps },
+    ],
+    requires: (c) => [{ label: n(c.evidenceGaps, "รายการหลักฐานที่ขาด", "evidence gap(s)"), k: c.evidenceGaps ? "warn" : "ok" }],
+    why: () => ({
+      reasoning: t("คุณต้องการรู้สถานะการปฏิบัติตาม — มาตรการที่ไม่มีหลักฐานจะแสดงว่า “ยังยืนยันไม่ได้” ไม่ใช่ “ผ่าน”", "You want the compliance status — a measure without evidence shows as unverified, never as passed."),
+      data: [t("ทะเบียนมาตรการ หลักฐาน และผลตรวจวัด", "Measures register, evidence and measurements")],
+      assumptions: [t("เกณฑ์มาตรฐานยังไม่ได้ยืนยันกับประกาศฉบับปัจจุบัน", "Limits not yet verified against current notifications")],
+      sources: [t("ระเบียบ CoP 2565 และแบบตรวจสอบตามเทคโนโลยี", "CoP Regulation 2565 and the technology checklist")],
+      alternatives: [{ label: t("แก้ปัญหาที่พบ", "Fix what is found"), missionId: "fix-gaps" }],
+    }),
+  },
+  {
+    id: "inspection",
+    app: "cop24",
+    title: () => t("เตรียมรับการตรวจของ กกพ.", "Prepare for an ERC inspection"),
+    outcome: t("ชุดเตรียมรับการตรวจและรายการค้าง", "Inspection readiness pack and open items"),
+    cues: [C(/รับการตรวจ|ตรวจสถานที่|inspection|audit visit|site visit/iu, 5)],
+    roles: ["owner", "consultant"],
+    module: "/agi",
+    modules: ["/agi", "/preflight"],
+    agi: "F05",
+    plan: () => [
+      { stage: "collect", label: t("รวบรวมใบอนุญาต รายงาน และหลักฐาน", "Gather licence, reports and evidence"), by: "ai", done: false },
+      { stage: "review", label: t("ปิดรายการค้างก่อนวันตรวจ", "Close open items before the visit"), by: "human", done: false, href: "/my-work" },
+    ],
+    requires: () => [],
+    why: () => ({ reasoning: t("คุณกำลังเตรียมรับการตรวจ", "You are preparing for an inspection."), data: [], assumptions: [], sources: [], alternatives: [] }),
   },
   {
     id: "my-tasks",

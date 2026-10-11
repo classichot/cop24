@@ -58,6 +58,8 @@ export function nextStepFor(route: string, c: UxContext): NextStep {
       return { title: t("เริ่มภารกิจที่ใกล้กำหนดที่สุด", "Start the mission with the nearest deadline"), why: c.nextDeadline ? t(`“${c.nextDeadline.label.th}” ในอีก ${c.nextDeadline.days} วัน`, `"${c.nextDeadline.label.en}" in ${c.nextDeadline.days} days`) : t("ข้อผูกพันถูกระบุครบแล้ว", "Obligations are identified"), href: "/missions?m=prelim-cop", cta: t("เริ่ม →", "Start →") };
     case "/portfolio":
       return { title: t("ตัดสินเรื่องของหน่วยงานที่เสี่ยงที่สุด", "Decide on the highest-risk entity"), why: t("พอร์ตเรียงตามความเสี่ยงแล้ว เริ่มจากแถวบนสุด", "The portfolio is sorted by risk — start at the top"), href: "/portfolio", cta: t("ดูแถวบนสุด ↓", "See the top row ↓") };
+    case "/agi":
+      return { title: t("เริ่ม F01 รายงานผลการปฏิบัติตามประจำรอบ", "Start F01 — the periodic CoP monitoring report"), why: c.nextDeadline ? t(`กำหนดถัดไปในอีก ${c.nextDeadline.days} วัน`, `The next deadline is in ${c.nextDeadline.days} days`) : t("ภารกิจหลักที่ใช้บ่อยที่สุด", "The most used flagship"), href: "/agi?f=F01", cta: t("ดูตัวอย่าง ↓", "Preview ↓") };
     case "/my-work":
     case "/outputs":
     case "/missions":
