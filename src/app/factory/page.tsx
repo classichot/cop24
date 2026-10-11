@@ -1,108 +1,147 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useApp } from "@/state/AppState";
-import { Cells, PageHead, Sweep, Tag } from "@/components/ui";
-import { route } from "@/core/report/models";
+import { Cells, PageHead, Tag } from "@/components/ui";
+import { AiWriter } from "@/components/agi/AiWriter";
+import { createRun, runMission, startRun, type MissionRun } from "@/core/agi/engine";
+import { flagshipById } from "@/core/agi/flagship";
+import { sha256 } from "@/core/agi/sha256";
+import { TODAY } from "@/core/dates";
+import { AGI_SITES } from "@/data/agi-sites";
+import { USER } from "@/data/tenant";
+
+/** One-click report generation (REQ-REPORT-001 Path A) on the real mission engine. */
+const RUNS = "cop24.agi.runs.v1";
+const REPORTS = [
+  { fid: "F01", th: "รายงานผลการปฏิบัติตาม CoP (รายรอบ)", en: "CoP Monitoring Report (periodic)" },
+  { fid: "F02", th: "ชุดคำขอ CoP ขั้นต้น (โครงการใหม่)", en: "Preliminary CoP package (new project)" },
+  { fid: "F03", th: "ผลประเมินการปฏิบัติตาม", en: "Compliance assessment" },
+  { fid: "F05", th: "ชุดเตรียมรับการตรวจ กกพ.", en: "ERC inspection readiness pack" },
+];
+const envFor = () => ({ sites: Object.fromEntries(AGI_SITES.map((s) => [s.id, structuredClone(s)])), actor: USER.initials, now: () => new Date().toISOString(), today: TODAY });
+const loadRuns = (): MissionRun[] => { try { return JSON.parse(localStorage.getItem(RUNS) ?? "[]") as MissionRun[]; } catch { return []; } };
+const saveRuns = (list: MissionRun[]) => { try { localStorage.setItem(RUNS, JSON.stringify(list.slice(0, 12))); } catch {} };
 
 export default function FactoryPage() {
-  const { L, tx, data, entityId, snap } = useApp();
-  const entity = data.entities.find((e) => e.id === entityId)!;
-  const packs = snap.applicability.filter((a) => a.entityId === entityId && a.applicable).map((a) => data.packs.find((p) => p.id === a.packId)!);
-  const reports = packs.flatMap((p) => p.reports.map((r) => ({ pack: p, r })));
-  const [reportIdx, setReportIdx] = useState(0);
-  const sel = reports[Math.min(reportIdx, Math.max(0, reports.length - 1))];
-  const [run, setRun] = useState(false);
-  const [step, setStep] = useState(0);
-  const [done, setDone] = useState(false);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
-  const routing = route("authority-th", "drafting");
+  const { L, tx, entityId } = useApp();
+  const [siteId, setSiteId] = useState(AGI_SITES.some((s) => s.id === entityId) ? entityId : "lopburi-1");
+  const [fid, setFid] = useState("F01");
+  const [run, setRun] = useState<MissionRun | null>(null);
+  const [ms, setMs] = useState(0);
+  // show the latest one-click run for this plant and report type, if there is one
+  useEffect(() => { queueMicrotask(() => setRun(loadRuns().find((r) => r.flagship === fid && r.sites.length === 1 && r.sites[0] === siteId) ?? null)); }, [fid, siteId]);
 
-  const steps = [
-    { t: tx("อ่านและจัดหมวดหมู่เอกสารของหน่วยงาน", "Read and classify the entity's documents"), d: tx("128 ไฟล์ · PDF แบบสแกน 41 ไฟล์ ผ่าน OCR · ไฟล์ซ้ำ 6 ไฟล์ถูกรวม", "128 files · 41 scanned PDFs through OCR · 6 duplicates merged") },
-    { t: tx("ระบุชุดกฎที่บังคับใช้กับหน่วยงานนี้", "Pin the rule pack that binds this entity"), d: sel ? `${sel.pack.id} ${sel.pack.version} · ${sel.pack.obligationCount} ${tx("ข้อผูกพัน", "obligations")}` : "—" },
-    { t: tx("สกัดข้อเท็จจริงและผูกกับหน้าต้นฉบับ", "Extract facts and bind them to source pages"), d: tx("412 ข้อเท็จจริง · ทุกค่ามีเลขหน้าและชื่อไฟล์กำกับ", "412 facts · every value carries a page number and file name") },
-    { t: tx("สร้างตารางและชุดข้อมูล", "Build tables and datasets"), d: tx("17 ตาราง · 4 กราฟเปรียบเทียบ · หน่วยและวิธีวิเคราะห์ถูกตรวจแล้ว", "17 tables · 4 comparison charts · units and methods checked") },
-    { t: tx("เขียนร่างทุกบทตามแบบของหน่วยงานกำกับ", "Draft every chapter to the regulator's template"), d: sel ? `${sel.r.chapters.length || 6} ${tx("บท · หัวข้อบังคับถูกล็อกไว้", "chapters · mandatory headings locked")}` : "—" },
-    { t: tx("ตรวจความครบถ้วนและความขัดแย้ง 9 ชั้น", "Run the 9-layer completeness and conflict check"), d: tx(`พบประเด็นค้าง ${snap.preflight.blockers + snap.preflight.observations} รายการ · ไม่มีการเติมค่าที่ไม่มีแหล่งอ้างอิง`, `${snap.preflight.blockers + snap.preflight.observations} open issues found · no unsourced value filled`) },
-  ];
-
-  const start = () => {
-    if (run) return;
-    setRun(true); setStep(0); setDone(false);
-    timer.current = setInterval(() => {
-      setStep((s) => {
-        if (s + 1 >= steps.length) { if (timer.current) clearInterval(timer.current); setRun(false); setDone(true); return steps.length; }
-        return s + 1;
-      });
-    }, 950);
+  const site = AGI_SITES.find((s) => s.id === siteId)!;
+  const f = flagshipById(fid)!;
+  const generate = () => {
+    const t0 = performance.now();
+    const now = new Date().toISOString();
+    const r = createRun(fid, [structuredClone(site)], { autonomy: "supervised" }, USER.initials, now);
+    startRun(r, USER.initials, now);
+    runMission(r, envFor());
+    setMs(Math.round(performance.now() - t0));
+    saveRuns([r, ...loadRuns()]);
+    setRun(r);
   };
-  useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
+  const updateRun = (fn: (r: MissionRun) => void) => {
+    if (!run) return;
+    const c = structuredClone(run); fn(c);
+    saveRuns(loadRuns().map((x) => (x.id === c.id ? c : x)));
+    setRun(c);
+  };
+
+  const report = run?.deliverables.filter((d) => d.id === "report" || d.id === "results-matrix" || d.id === "inspection" || d.id === "plan").at(-1);
+  const draft = run?.deliverables.filter((d) => d.id === "report").at(-1);
+  const qa = run?.tasks.find((x) => x.taskId === "qa")?.output;
+  const blocked = draft?.sections?.filter((s) => s.status === "blocked").length ?? 0;
+  const gates = run?.tasks.filter((x) => x.status === "awaiting") ?? [];
+  const open = run?.humanTasks.filter((h) => h.status !== "done") ?? [];
 
   return (
     <div className="page page-mid">
-      <PageHead explain={["cop","evidence-guard"]} kicker={tx("สร้างรายงานอัตโนมัติ / ONE-CLICK REPORT FACTORY", "One-Click Report Factory")} title={tx("กดครั้งเดียว ได้ร่างรายงานทั้งฉบับ", "One click, a complete draft")} lead={tx("Reporting Engine อ่านเอกสารทั้งหมดที่มี เทียบกับชุดกฎที่บังคับใช้ เขียนทุกบท แล้วส่งคืนเป็นร่างพร้อมรายการข้อยกเว้นให้คนตรวจ — ใช้เครื่องยนต์เดียวกันไม่ว่าจะเป็นรายงาน CoP, 56-1 One Report หรือ Local File", "The Reporting Engine reads every document, matches the binding pack, writes every chapter and returns a draft with an exception list for humans — the same engine whether it is a CoP report, a 56-1 One Report or a TP local file.")} />
+      <PageHead explain={["cop", "evidence-guard"]} kicker={tx("สร้างรายงาน / ONE-CLICK REPORT GENERATION", "Report generation / One click")} title={tx("กดครั้งเดียว ได้ร่างรายงานจากหลักฐานจริง", "One click, a report draft built from real evidence")} lead={tx("เลือกโรงไฟฟ้าและชนิดรายงาน แล้วกดปุ่มเดียว ทีม AI ของ COP24 ระบุข้อกำหนด รวบรวมและตรวจหลักฐาน ร่างทุกบท และตรวจคุณภาพ ส่วนที่ยังไม่มีหลักฐานถูกกั้นไว้อย่างเปิดเผย ไม่ถูกแต่งขึ้น", "Pick the plant and the report, press one button. COP24's AI team identifies the requirements, gathers and checks the evidence, drafts every section and runs QA. Anything without evidence is openly blocked, never invented.")} />
 
-      <Cells min={190} style={{ marginTop: 22 }}>
-        <div className="cell" style={{ padding: "14px 16px" }}><div className="label-9">{tx("หน่วยงาน", "Entity")}</div><div style={{ fontSize: 14, fontWeight: 600, marginTop: 3 }}>{L(entity.name)}</div></div>
-        <div className="cell" style={{ padding: "14px 16px" }}>
-          <div className="label-9">{tx("ประเภทรายงาน", "Report type")}</div>
-          <select className="input" value={reportIdx} onChange={(e) => setReportIdx(Number(e.target.value))} style={{ marginTop: 4, fontWeight: 600, fontSize: 13, minHeight: 32, padding: "2px 6px" }}>
-            {reports.map((x, i) => <option key={x.r.id} value={i}>{L(x.r.name)} · {x.pack.app.toUpperCase()}</option>)}
-            {!reports.length && <option>{tx("ไม่มีแบบรายงานสำหรับหน่วยงานนี้", "No report template for this entity")}</option>}
-          </select>
+      <div className="oneclick">
+        <div className="oneclick-fields">
+          <label className="field" style={{ margin: 0 }}><span className="label">{tx("โรงไฟฟ้า", "Plant")}</span>
+            <select className="input" value={siteId} onChange={(e) => setSiteId(e.target.value)}>{AGI_SITES.map((s) => <option key={s.id} value={s.id}>{L(s.name)}</option>)}</select>
+          </label>
+          <label className="field" style={{ margin: 0 }}><span className="label">{tx("รายงาน", "Report")}</span>
+            <select className="input" value={fid} onChange={(e) => setFid(e.target.value)}>{REPORTS.map((r) => <option key={r.fid} value={r.fid}>{tx(r.th, r.en)}</option>)}</select>
+          </label>
         </div>
-        <div className="cell" style={{ padding: "14px 16px" }}><div className="label-9">{tx("ชุดกฎ", "Rule pack")}</div><div style={{ fontSize: 14, fontWeight: 600, marginTop: 3 }}>{sel ? `${sel.pack.id} ${sel.pack.version}` : "—"}</div></div>
-        <div className="cell" style={{ padding: "14px 16px" }}><div className="label-9">{tx("แหล่งข้อมูล", "Sources")}</div><div style={{ fontSize: 14, fontWeight: 600, marginTop: 3 }}>128 {tx("ไฟล์", "files")} · {snap.evidenceScore.required} {tx("รายการบังคับ", "required items")}</div></div>
-      </Cells>
-      <div className="muted small" style={{ marginTop: 8 }}>{tx("COP24 ตั้งค่าที่แนะนำไว้ให้แล้ว · ", "Recommended settings applied · ")}<a href="#">{tx("ตั้งค่าขั้นสูง ▾", "Advanced ▾")}</a></div>
-
-      <div className="row row-center" style={{ marginTop: 22, gap: 10 }}>
-        <button className="btn btn-primary btn-xl" onClick={start} disabled={!sel}>{done ? tx("สร้างใหม่อีกครั้ง", "Generate again") : run ? tx("กำลังสร้างร่าง…", "Drafting…") : tx("สร้างร่างรายงานทั้งฉบับ", "Draft the whole report")}</button>
-        <span className="muted small">{tx("ใช้เวลาประมาณ 6–9 นาที · คุณไม่ต้องเฝ้าหน้าจอ", "About 6–9 minutes · you don't need to watch")}</span>
+        <button type="button" className="btn btn-primary oneclick-btn" onClick={generate}>
+          <span aria-hidden="true">⚡</span> {run ? tx("สร้างใหม่อีกครั้ง", "Generate again") : tx("สร้างรายงาน — คลิกเดียว", "Generate report — one click")}
+        </button>
+        <div className="muted tiny">{L(f.goal)} · {tx(`ปีรายงาน ${site.year + 543}`, `reporting year ${site.year}`)} · {tx("ทีม AI (Supervised) · การอนุมัติ การรับรอง และการยื่นยังเป็นของคน", "AI Team (Supervised) · approvals, certification and filing stay with people")}</div>
       </div>
 
-      <div className="note note-warn" style={{ marginTop: 14, fontSize: 12 }}>
-        <strong>{tx("การจำลอง", "Simulation")}</strong> · {tx("ขั้นตอนด้านล่างเป็นการสาธิต ในการใช้งานจริงงานร่างจะ", "The steps below are a demonstration. A real drafting job is")} <Tag k={routing.outcome === "run" ? "ok" : "bad"}>{routing.outcome}</Tag> — {L(routing.reason)} <a href="/report-quality">{tx("ดูทะเบียนโมเดล →", "See model registry →")}</a>
-      </div>
-      <hr className="hr" style={{ margin: "28px 0 0" }} />
-      <div>
-        {steps.map((s, i) => {
-          const isDone = done || i < step;
-          const live = run && i === step;
-          return (
-            <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start", padding: "16px 0", borderBottom: "1px solid var(--color-divider)" }}>
-              <div style={{ flex: "none", width: 30, height: 30, display: "grid", placeItems: "center", fontWeight: 800, fontSize: 13, background: isDone ? "var(--color-accent)" : live ? "var(--color-accent-200)" : "transparent", color: isDone ? "var(--on-accent)" : live ? "var(--color-accent-700)" : "var(--color-neutral-600)", border: isDone ? 0 : "2px solid var(--color-divider)" }}>{isDone ? "✓" : live ? "·" : i + 1}</div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.4 }}>{s.t}</div>
-                <div className="muted small" style={{ marginTop: 3, lineHeight: 1.55 }}>{s.d}</div>
-                {live && <Sweep />}
-              </div>
-              <div className="section-tag" style={{ whiteSpace: "nowrap", paddingTop: 3 }}>{isDone ? tx("เสร็จแล้ว", "Done") : live ? tx("กำลังทำ", "Running") : tx("รอคิว", "Queued")}</div>
-            </div>
-          );
-        })}
-      </div>
-
-      {done && (
-        <div className="callout" style={{ marginTop: 28, padding: 22 }}>
-          <div className="callout-kicker">{tx("สถานะ: สร้างแล้ว — ยังไม่ใช่ “พร้อมให้ตรวจ” “อนุมัติ” หรือ “ยื่นแล้ว”", "Status: generated — not “ready for review”, “approved” or “submitted”")}</div>
-          <h3 style={{ margin: "6px 0 10px", fontSize: 24 }}>{tx("ร่าง", "Draft of")} {sel && L(sel.r.name)} {tx("พร้อมให้ตรวจแล้ว", "is ready for review")}</h3>
-          <Cells min={140} thin accent>
-            <div className="cell" style={{ padding: "12px 14px" }}><div className="label-9">{tx("บทที่เขียนแล้ว", "Chapters drafted")}</div><div className="stat-value stat-value-sm">{sel?.r.chapters.length || 6} / {sel?.r.chapters.length || 6}</div></div>
-            <div className="cell" style={{ padding: "12px 14px" }}><div className="label-9">{tx("ข้อเท็จจริงที่มีแหล่งอ้างอิง", "Sourced facts")}</div><div className="stat-value stat-value-sm">{data.facts.sourced}</div></div>
-            <div className="cell" style={{ padding: "12px 14px" }}><div className="label-9">{tx("ตารางและกราฟ", "Tables & charts")}</div><div className="stat-value stat-value-sm">17</div></div>
-            <div className="cell" style={{ padding: "12px 14px" }}><div className="label-9">{tx("ประเด็นค้าง", "Open issues")}</div><div className="stat-value stat-value-sm ink-bad">{snap.preflight.blockers + snap.preflight.observations}</div></div>
-          </Cells>
-          <div style={{ fontSize: 13, lineHeight: 1.7, marginTop: 14, color: "var(--color-accent-900)" }}>{tx(`AI ไม่ได้เติมตัวเลขใด ๆ ที่หาแหล่งอ้างอิงไม่ได้ — ช่องที่ยังไม่มีหลักฐานถูกทำเครื่องหมายไว้ว่า “ยังไม่ยุติ” ทั้งหมด ${data.facts.total - data.facts.sourced} จุด และจะไม่หายไปเองจนกว่าจะมีคนปิด`, `The AI filled no number it could not source — ${data.facts.total - data.facts.sourced} slots are marked "unresolved" and will not disappear until a person closes them.`)}</div>
-          <div className="row" style={{ marginTop: 16 }}>
-            <Link href="/studio" className="btn btn-primary">{tx("เปิดร่างในสตูดิโอ →", "Open in Studio →")}</Link>
-            <Link href="/preflight" className="btn btn-secondary" style={{ background: "var(--color-bg)" }}>{tx("ดูผลตรวจก่อนยื่น", "See preflight")}</Link>
-            <a href="/report-quality" className="btn btn-secondary" style={{ background: "var(--color-bg)" }}>{tx("ตรวจประตูคุณภาพ 9 ประตู", "Check the 9 quality gates")}</a>
-            <button className="btn btn-secondary" style={{ background: "var(--color-bg)" }}>{tx("ดาวน์โหลดฉบับร่าง (ตรา DRAFT)", "Download draft (DRAFT-marked)")}</button>
+      {run && (
+        <>
+          <div className={`note ${run.state === "completed" ? "note-ok" : run.blockedSites[siteId] ? "note-bad" : "note-warn"}`} style={{ marginTop: 18 }}>
+            <b>{run.blockedSites[siteId] ? tx("ไม่สร้างรายงาน CoP — ", "No CoP report — ") + L(run.blockedSites[siteId]) : run.state === "completed" ? tx("ร่างเสร็จและผ่านการอนุมัติครบ", "Draft complete and fully approved") : tx("สร้างร่างแล้ว — ยังไม่ใช่ “อนุมัติ” หรือ “ยื่นแล้ว”", "Draft generated — not “approved” or “submitted”")}</b>
+            <span className="muted"> · {run.id}{ms ? ` · ${ms} ms` : ""} · {tx("ชุดกฎ", "rules")} {run.rulesetVersion}</span>
           </div>
-        </div>
+
+          <Cells min={150} style={{ marginTop: 14 }}>
+            <div className="cell"><div className="label">{tx("งานที่ AI ทำ", "Tasks done by AI")}</div><div className="stat-value stat-value-sm">{run.tasks.filter((x) => x.status === "done").length}/{run.tasks.length}</div></div>
+            <div className="cell"><div className="label">{tx("บทที่ถูกกั้น (ไม่มีหลักฐาน)", "Blocked sections (no evidence)")}</div><div className={`stat-value stat-value-sm ${blocked ? "ink-bad" : ""}`}>{blocked}</div></div>
+            <div className="cell"><div className="label">{tx("ข้อค้นพบ", "Findings")}</div><div className="stat-value stat-value-sm">{run.findings.length}</div></div>
+            <div className="cell"><div className="label">{tx("รอคุณ", "Waiting for you")}</div><div className="stat-value stat-value-sm">{gates.length + open.length}</div></div>
+          </Cells>
+          {qa && <div className={`note ${(qa.data as { passed?: boolean })?.passed ? "note-ok" : "note-bad"}`} style={{ marginTop: 12 }}><b>QA</b> · {L(qa.summary)}</div>}
+
+          {report && (
+            <section className="oneclick-report">
+              <div className="row row-center" style={{ justifyContent: "space-between", gap: 10 }}>
+                <h3 style={{ margin: 0, fontSize: 20 }}>{L(report.title)}</h3>
+                <span className="muted tiny">v{report.version} · sha256 {report.hash?.slice(0, 12)}…</span>
+              </div>
+              {report.sections?.map((s) => (
+                <div key={s.id} className={`oneclick-sec ${s.status}`}>
+                  <div className="row row-center" style={{ justifyContent: "space-between", gap: 8 }}><b>{L(s.title)}</b>{s.status === "blocked" ? <Tag k="bad">{tx("ยังไม่มีหลักฐาน", "No evidence yet")}</Tag> : <Tag k="ok">{tx("มีแหล่งอ้างอิง", "Sourced")}</Tag>}</div>
+                  <div style={{ marginTop: 4 }}>{L(s.text)}</div>
+                  {s.sources.length > 0 && <div className="muted tiny" style={{ marginTop: 4 }}>{tx("แหล่ง", "Sources")}: {s.sources.join(", ")}</div>}
+                </div>
+              ))}
+              {report.rows && (
+                <div className="table-wrap" style={{ marginTop: 10 }}>
+                  <table className="table"><thead><tr>{Object.keys(report.rows[0] ?? {}).map((k) => <th key={k}>{k}</th>)}</tr></thead><tbody>{report.rows.map((r, i) => <tr key={i}>{Object.values(r).map((v, j) => <td key={j} className="small">{String(v)}</td>)}</tr>)}</tbody></table>
+                </div>
+              )}
+              {draft && (
+                <AiWriter d={draft} siteName={L(site.name)} onAccept={(sections, model) => updateRun((r) => {
+                  const nd = { ...draft, sections, version: r.deliverables.filter((x) => x.id === "report" && x.site === draft.site).length + 1, hash: "" };
+                  nd.hash = sha256(JSON.stringify(nd));
+                  r.deliverables.push(nd);
+                  const prev = r.audit.at(-1)?.hash ?? "GENESIS";
+                  const at = new Date().toISOString();
+                  const seq = r.audit.length + 1;
+                  const detail = `AI-written sections by ${model}, each passed the report guard · ${nd.hash}`;
+                  r.audit.push({ seq, at, actor: USER.initials, action: "deliverable", object: `${draft.site}:report@v${nd.version}`, detail, prev, hash: sha256([prev, seq, at, USER.initials, "", "deliverable", `${draft.site}:report@v${nd.version}`, detail].join("|")) });
+                })} />
+              )}
+            </section>
+          )}
+
+          {(gates.length > 0 || open.length > 0) && (
+            <div className="oneclick-next">
+              <div className="label">{tx("สิ่งที่ต้องให้คนทำก่อนยื่น", "What a person must do before filing")}</div>
+              <ul className="why-list">
+                {gates.map((g) => <li key={g.key}>{L(f.tasks.find((x) => x.id === g.taskId)!.title)}</li>)}
+                {open.slice(0, 8).map((h) => <li key={h.id}>{L(h.title)}</li>)}
+                {open.length > 8 && <li>… +{open.length - 8}</li>}
+              </ul>
+              <div className="row" style={{ gap: 8, marginTop: 8 }}>
+                <Link href="/agi#control" className="btn btn-primary btn-sm">{tx("อนุมัติและทำต่อในศูนย์ควบคุม →", "Approve and continue in Mission Control →")}</Link>
+                <Link href="/studio" className="btn btn-secondary btn-sm btn-plain">{tx("เปิดสตูดิโอรายงาน", "Open Report Studio")}</Link>
+                <Link href="/preflight" className="btn btn-secondary btn-sm btn-plain">{tx("ตรวจก่อนยื่น", "Preflight")}</Link>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

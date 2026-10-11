@@ -10,6 +10,12 @@ import type { MeasureResult, ReportSection, RunnerCtx, SiteInput, SiteMeasuremen
  * that is not in the evidence (non-negotiable principle 3).
  */
 
+const TECH: Record<string, LText> = {
+  "solar-rooftop": t("โซลาร์บนหลังคา", "rooftop solar PV"), "solar-ground": t("โซลาร์ภาคพื้นดิน", "ground-mounted solar"), "solar-floating": t("โซลาร์ลอยน้ำ", "floating solar"),
+  wind: t("พลังงานลม", "wind"), biomass: t("ชีวมวล", "biomass"), biogas: t("ก๊าซชีวภาพ", "biogas"), msw: t("ขยะชุมชน", "municipal waste"), "natural-gas": t("ก๊าซธรรมชาติ", "natural gas"), coal: t("ถ่านหิน", "coal"), other: t("อื่น ๆ", "other"),
+};
+const STAGE: Record<string, LText> = { "pre-construction": t("ระยะเตรียมการก่อสร้าง", "pre-construction"), construction: t("ระยะก่อสร้าง", "construction"), operation: t("ระยะดำเนินการ", "operation"), decommissioning: t("ระยะรื้อถอน", "decommissioning") };
+
 export type RunnerKey = "applicability" | "template" | "cycle" | "obligations" | "collect" | "missing" | "request" | "consistency" | "labs" | "measures" | "exceedance" | "trend" | "draft" | "qa" | "package" | "capa" | "dispatch" | "inspection" | "permit-change" | "plan" | "consolidate" | "queue";
 
 const n = (x: number, th: string, en: string) => t(`${x} ${th}`, `${x} ${en}`);
@@ -131,7 +137,7 @@ export const RUNNERS: Record<RunnerKey, (site: SiteInput, ctx: RunnerCtx) => Tas
     const ex = s.measurements.filter((m) => m.period === String(s.year) && exceeds(m));
     const trend = ctx.prior.trend?.data as { years: number[]; missing: number[] } | undefined;
     const sections: ReportSection[] = [
-      { id: "s1", title: t("1. ข้อมูลโครงการและรอบรายงาน", "1. Project and reporting period"), text: t(`${s.name.th} · ${s.profile.technology} · ${s.profile.capacityMW} MW · ระยะ${s.profile.stage} · รอบปี ${s.year + 543}`, `${s.name.en} · ${s.profile.technology} · ${s.profile.capacityMW} MW · ${s.profile.stage} stage · year ${s.year}`), sources: ["licence"], status: "supported" },
+      { id: "s1", title: t("1. ข้อมูลโครงการและรอบรายงาน", "1. Project and reporting period"), text: t(`${s.name.th} · ${TECH[s.profile.technology].th} · กำลังผลิต ${s.profile.capacityMW} เมกะวัตต์ · ${STAGE[s.profile.stage].th} · รอบปี ${s.year + 543}`, `${s.name.en} · ${TECH[s.profile.technology].en} · ${s.profile.capacityMW} MW · ${STAGE[s.profile.stage].en} stage · year ${s.year}`), sources: ["licence"], status: "supported" },
       ...r.filter((x) => x.result !== "not-applicable").map((x, i): ReportSection => x.result === "compliant"
         ? { id: `m${i}`, title: x.title, text: t(`ดำเนินการตามมาตรการแล้ว ตามหลักฐาน ${x.evidence.join(", ")}`, `Implemented, per evidence ${x.evidence.join(", ")}`), sources: x.evidence, status: "supported" }
         : x.result === "potentially-noncompliant"
