@@ -35,6 +35,7 @@ npm run lint
 npm run build
 npm run corpus:fetch   # download in-force ERC regulation files listed in corpus/manifest.json
 npm run corpus:ingest  # extract, repair Thai text, split into clauses, index
+npm run corpus:passages # rebuild the ERC passage index Paul searches (needs corpus/text)
 npm run ingest:eval    # real ERC files through the ingestion engine: must invent 0 measurements
 ```
 
@@ -149,6 +150,13 @@ Report Engine in `src/core/report/`. It is applied first to the Lopburi 1 prelim
 against the standard’s §16 acceptance scenarios. See `docs/06-report-standard-implementation.md` for the
 section-by-section mapping and what is not built yet, and `docs/07-cop-report-references.md` for the
 official ERC form and the EGAT example report.
+
+## Paul — chat assistant
+
+The “Ask Paul” button on every screen helps people use the app, answers CoP legal questions with
+cited ERC clauses, and turns feedback into an improvement backlog (`/feedback`). Connect a model
+by setting `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in Vercel (see `.env.example`); without one Paul
+answers offline from the same grounding. See `docs/10-paul-assistant.md`.
 
 ## 24 Series Universal UX Standard
 

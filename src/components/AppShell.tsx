@@ -8,6 +8,7 @@ import { Seg, Tag } from "./ui";
 import { CopilotProvider, useCopilot } from "./ux/Copilot";
 import { ComplexityGuard } from "./ux/ComplexityGuard";
 import { NextStepBar } from "./ux/parts";
+import { Paul } from "./ux/Paul";
 import { USER } from "@/data/tenant";
 
 interface NavItem { href: string; th: string; en: string; sub?: string }
@@ -46,6 +47,7 @@ const NAV_ENGINE: NavItem[] = [
   { href: "/packs", th: "แพ็กและแอป 24", en: "Packs & 24 apps" },
   { href: "/engine", th: "เครื่องยนต์หลัก COP24", en: "COP24 Core Engine" },
   { href: "/ux-standard", th: "มาตรฐาน UX 24 Series", en: "24 UX Standard" },
+  { href: "/feedback", th: "ข้อเสนอแนะและการปรับปรุง", en: "Feedback & improvements" },
 ];
 
 /** Every menu item keeps a fixed number from its place in the full menu, so Easy mode never renumbers. */
@@ -87,7 +89,7 @@ const MoonIcon = () => (
 );
 
 export function AppShell({ children }: { children: ReactNode }) {
-  return <CopilotProvider><Shell>{children}</Shell></CopilotProvider>;
+  return <CopilotProvider><Shell>{children}</Shell><Paul /></CopilotProvider>;
 }
 
 function CopilotButton() {
