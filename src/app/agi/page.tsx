@@ -8,7 +8,7 @@ import { Cells, PageHead, SectionHead, Tag } from "@/components/ui";
 import { MissionControl } from "@/components/agi/MissionControl";
 import { MissionPreviewPanel, MODE_LABEL } from "@/components/agi/Preview";
 import { AGENTS, type AgentId } from "@/core/agi/agents";
-import { CATALOG, CATEGORIES, isAvailable, type Mode } from "@/core/agi/catalog";
+import { CATALOG, TAGS, groupCatalog, isAvailable, tagName, type GroupBy, type Mode, type TagId } from "@/core/agi/catalog";
 import { createRun, preview, runMission, startRun, type Autonomy, type MissionRun } from "@/core/agi/engine";
 import { FLAGSHIPS, flagshipById } from "@/core/agi/flagship";
 import { ROUTING } from "@/core/agi/routing";
@@ -39,6 +39,8 @@ function Agi() {
   const [active, setActive] = useState<string | null>(null);
   const [cat, setCat] = useState<"all" | "available" | "planned">("all");
   const [modeFilter, setModeFilter] = useState<"all" | Mode>("all");
+  const [groupBy, setGroupBy] = useState<GroupBy>("category");
+  const [tagFilter, setTagFilter] = useState<TagId[]>([]);
   const [team, setTeam] = useState<{ off: AgentId[]; provider: "auto" | "openai" | "anthropic"; certifier: string }>({ off: [], provider: "auto", certifier: "Qualified signatory" });
   const [trigAuto, setTrigAuto] = useState<Autonomy>("supervised");
 
@@ -71,7 +73,7 @@ function Agi() {
   const resume = (id: string) => change(id, (r) => runMission(r, env()));
   const current = runs.find((r) => r.id === active);
   const triggers = evaluateTriggers(AGI_SITES.filter((s) => !s.id.startsWith("demo")), TODAY, trigAuto, { runs });
-  const shown = CATALOG.filter((m) => (cat === "all" || (cat === "available") === isAvailable(m)) && (modeFilter === "all" || m.mode === modeFilter));
+  const shown = CATALOG.filter((m) => (cat === "all" || (cat === "available") === isAvailable(m)) && (modeFilter === "all" || m.mode === modeFilter) && (tagFilter.length === 0 || m.tags.some((x) => tagFilter.includes(x))));
 
   return (
     <div className="page page-wide">
@@ -107,30 +109,44 @@ function Agi() {
       <hr className="hr hr-section" />
       <div id="catalog" className="anchor" />
       <SectionHead title={tx("แคตตาล็อกภารกิจ 108 รายการ", "Mission catalog — 108 missions")} tag={tx(`ใช้งานได้ ${CATALOG.filter(isAvailable).length} · วางแผน ${CATALOG.filter((m) => !isAvailable(m)).length}`, `${CATALOG.filter(isAvailable).length} available · ${CATALOG.filter((m) => !isAvailable(m)).length} planned`)} note={tx("ภารกิจที่ยังไม่ได้สร้างแสดงเป็น “วางแผน” และเริ่มไม่ได้ — ไม่แสดงเป็นความสามารถที่ใช้งานได้", "Missions not built yet show as “planned” and cannot be started — they are never presented as working capabilities.")} />
-      <div className="row row-center" style={{ gap: 6, marginBottom: 10 }}>
-        {([["all", tx("ทั้งหมด", "All")], ["available", tx("ใช้งานได้", "Available")], ["planned", tx("วางแผน", "Planned")]] as const).map(([v, l]) => <button key={v} type="button" className={`chip${cat === v ? " on" : ""}`} onClick={() => setCat(v)}>{l}</button>)}
-        <span className="muted tiny" style={{ marginLeft: 8 }}>{tx("โหมด", "Mode")}</span>
-        {(["all", "S", "T", "W"] as const).map((v) => <button key={v} type="button" className={`chip${modeFilter === v ? " on" : ""}`} onClick={() => setModeFilter(v)}>{v === "all" ? tx("ทั้งหมด", "All") : MODE_LABEL[v]}</button>)}
+      <div className="agi-filters">
+        <div className="row row-center" style={{ gap: 6 }}>
+          <span className="label">{tx("จัดกลุ่มตาม", "Group by")}</span>
+          {([["category", tx("หมวด", "Category")], ["tag", tx("แท็ก", "Tag")], ["mode", tx("โหมด AI", "AI mode")], ["priority", tx("ระยะ", "Priority")], ["flagship", tx("ภารกิจหลัก", "Flagship")], ["status", tx("สถานะ", "Status")]] as [GroupBy, string][]).map(([v, l]) => <button key={v} type="button" className={`chip${groupBy === v ? " on" : ""}`} onClick={() => setGroupBy(v)}>{l}</button>)}
+        </div>
+        <div className="row row-center" style={{ gap: 6 }}>
+          <span className="label">{tx("แสดง", "Show")}</span>
+          {([["all", tx("ทั้งหมด", "All")], ["available", tx("ใช้งานได้", "Available")], ["planned", tx("วางแผน", "Planned")]] as const).map(([v, l]) => <button key={v} type="button" className={`chip${cat === v ? " on" : ""}`} onClick={() => setCat(v)}>{l}</button>)}
+          <span className="label" style={{ marginLeft: 8 }}>{tx("โหมด", "Mode")}</span>
+          {(["all", "S", "T", "W"] as const).map((v) => <button key={v} type="button" className={`chip${modeFilter === v ? " on" : ""}`} onClick={() => setModeFilter(v)}>{v === "all" ? tx("ทั้งหมด", "All") : MODE_LABEL[v]}</button>)}
+        </div>
+        <div className="row row-center" style={{ gap: 6 }}>
+          <span className="label">{tx("แท็ก", "Tags")}</span>
+          {TAGS.map((tg) => {
+            const on = tagFilter.includes(tg.id);
+            return <button key={tg.id} type="button" aria-pressed={on} className={`chip agi-tag-chip${on ? " on" : ""}`} onClick={() => setTagFilter(on ? tagFilter.filter((x) => x !== tg.id) : [...tagFilter, tg.id])}>#{L(tg.name)} <span className="muted">{CATALOG.filter((m) => m.tags.includes(tg.id)).length}</span></button>;
+          })}
+          {tagFilter.length > 0 && <button type="button" className="btn btn-ghost btn-sm" onClick={() => setTagFilter([])}>{tx("ล้างแท็ก", "Clear tags")}</button>}
+        </div>
+        <div className="muted tiny">{tx(`แสดง ${shown.length} จาก ${CATALOG.length} ภารกิจ`, `Showing ${shown.length} of ${CATALOG.length} missions`)}{groupBy === "tag" || groupBy === "flagship" ? tx(" · ภารกิจที่มีหลายแท็ก/หลายภารกิจหลักจะแสดงในทุกกลุ่มที่เกี่ยวข้อง", " · a mission with several tags or flagships appears in each of its groups") : ""}</div>
       </div>
-      {CATEGORIES.map((c) => {
-        const list = shown.filter((m) => m.category === c.id);
-        if (!list.length) return null;
-        return (
-          <section key={c.id} className="agi-cat" aria-label={L(c.name)}>
+      {groupCatalog(shown, groupBy).filter((g) => groupBy !== "tag" || tagFilter.length === 0 || tagFilter.includes(g.key as TagId)).map((g) => (
+          <section key={g.key} className="agi-cat" aria-label={L(g.name)}>
             <div className="agi-cat-head">
-              <span className="agi-cat-letter">{c.id}</span>
+              <span className="agi-cat-letter">{g.badge}</span>
               <div style={{ minWidth: 0 }}>
-                <div className="heading" style={{ fontSize: 17 }}>{L(c.name)}</div>
-                <div className="muted tiny">{L(c.objective)} · {tx(`${list.length} ภารกิจ`, `${list.length} missions`)}</div>
+                <div className="heading" style={{ fontSize: 17 }}>{L(g.name)}</div>
+                <div className="muted tiny">{g.note ? `${L(g.note)} · ` : ""}{tx(`${g.missions.length} ภารกิจ`, `${g.missions.length} missions`)}</div>
               </div>
             </div>
             {/* the 24-series modular card grid, same as the home screen tiles */}
-            <Cells min={232}>
-              {list.map((m) => {
+            <Cells min={232} style={{ gridTemplateColumns: "repeat(auto-fill,minmax(232px,1fr))" }}>
+              {g.missions.map((m) => {
                 const body = (
                   <>
                     <span className="tile-num">{m.id} · {MODE_LABEL[m.mode]}</span>
                     <span className="agi-card-title">{L(m.title)}</span>
+                    <span className="agi-card-tags">{m.tags.map((x) => <span key={x} className={`agi-tag${tagFilter.includes(x) ? " on" : ""}`}>#{L(tagName(x))}</span>)}</span>
                     <span className="muted tiny" style={{ flex: 1, lineHeight: 1.5 }}>{m.flagships.length ? tx(`ใช้ใน ${m.flagships.join(", ")}`, `Used in ${m.flagships.join(", ")}`) : tx("ภารกิจย่อยเดี่ยว", "Standalone building block")}</span>
                     <span className="agi-card-foot">
                       <Tag k={m.priority === "P0" ? "ok" : m.priority === "P1" ? "warn" : "info"}>{m.priority}</Tag>
@@ -144,8 +160,8 @@ function Agi() {
               })}
             </Cells>
           </section>
-        );
-      })}
+      ))}
+      {shown.length === 0 && <div className="dashed muted small">{tx("ไม่มีภารกิจที่ตรงกับตัวกรอง", "No missions match these filters")}</div>}
 
       <hr className="hr hr-section" />
       <div id="control">

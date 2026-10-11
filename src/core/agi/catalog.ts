@@ -12,7 +12,83 @@ export type Priority = "P0" | "P1" | "P2";
 export type CategoryId = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L";
 
 export interface Category { id: CategoryId; name: LText; objective: LText }
-export interface CatalogMission { id: string; category: CategoryId; mode: Mode; priority: Priority; title: LText; route: string | null; flagships: string[] }
+export interface CatalogMission { id: string; category: CategoryId; mode: Mode; priority: Priority; title: LText; route: string | null; flagships: string[]; tags: TagId[] }
+
+/* ───────────── grouping tags — cross-cutting topics, so missions can be grouped beyond their category ───────────── */
+
+export type TagId = "setup" | "regulatory" | "evidence" | "site" | "environment" | "testing" | "engineering" | "community" | "preliminary" | "final" | "monitoring" | "reporting" | "deadlines" | "field" | "corrective" | "regulator" | "technology" | "portfolio";
+
+export const TAGS: { id: TagId; name: LText }[] = [
+  { id: "setup", name: t("ตั้งค่าโครงการ", "Project setup") },
+  { id: "regulatory", name: t("กฎระเบียบ", "Regulatory") },
+  { id: "evidence", name: t("หลักฐานและเอกสาร", "Evidence & documents") },
+  { id: "site", name: t("พื้นที่โครงการ", "Site") },
+  { id: "environment", name: t("สิ่งแวดล้อม", "Environment") },
+  { id: "testing", name: t("ตรวจวัดและห้องปฏิบัติการ", "Testing & laboratory") },
+  { id: "engineering", name: t("วิศวกรรมและความปลอดภัย", "Engineering & safety") },
+  { id: "community", name: t("ชุมชนและผู้มีส่วนได้เสีย", "Community & stakeholders") },
+  { id: "preliminary", name: t("CoP ขั้นต้น", "Preliminary CoP") },
+  { id: "final", name: t("CoP ขั้นสุดท้าย", "Final CoP") },
+  { id: "monitoring", name: t("รายงานผลการปฏิบัติตาม", "CoP Monitoring") },
+  { id: "reporting", name: t("จัดทำรายงาน", "Report production") },
+  { id: "deadlines", name: t("กำหนดเวลาและรอบ", "Deadlines & cycles") },
+  { id: "field", name: t("งานภาคสนาม", "Field work") },
+  { id: "corrective", name: t("แก้ไขปัญหา", "Corrective action") },
+  { id: "regulator", name: t("ติดต่อหน่วยงานกำกับ", "Regulator interaction") },
+  { id: "technology", name: t("เฉพาะเทคโนโลยี", "Technology-specific") },
+  { id: "portfolio", name: t("หลายโรงไฟฟ้า", "Multi-plant") },
+];
+
+const CATEGORY_TAGS: Record<CategoryId, TagId[]> = {
+  A: ["setup", "regulatory"], B: ["regulatory"], C: ["evidence"], D: ["site", "environment"], E: ["preliminary", "reporting"], F: ["final", "reporting"],
+  G: ["field"], H: ["environment", "testing"], I: ["corrective"], J: ["monitoring", "reporting"], K: ["regulator"], L: ["portfolio"],
+};
+const KEYWORD_TAGS: [RegExp, TagId][] = [
+  [/consult|stakeholder|community|complaint/i, "community"],
+  [/lab|sampling|measurement|baseline|testing|quality|noise|air|water|exceedance|trend/i, "testing"],
+  [/engineer|design|structural|safety|credential/i, "engineering"],
+  [/report|package|annex|export|qa|template|studio/i, "reporting"],
+  [/evidence|document|data/i, "evidence"],
+  [/deadline|cycle|calendar|schedul|milestone|extension/i, "deadlines"],
+  [/solar|rooftop|floating|technology|wind/i, "technology"],
+  [/portfolio|multi-plant|bulk|executive/i, "portfolio"],
+  [/corrective|remediation|capa|incident|root cause|escalation/i, "corrective"],
+  [/regulator|erc|authority|inspection/i, "regulator"],
+  [/monitoring/i, "monitoring"],
+];
+export function tagsFor(category: CategoryId, titleEn: string): TagId[] {
+  const out = new Set<TagId>(CATEGORY_TAGS[category]);
+  for (const [re, tag] of KEYWORD_TAGS) if (re.test(titleEn)) out.add(tag);
+  return TAGS.map((x) => x.id).filter((id) => out.has(id));
+}
+export const tagName = (id: TagId) => TAGS.find((x) => x.id === id)!.name;
+
+/** How the catalog can be grouped. A mission with several tags appears under each of them. */
+export type GroupBy = "category" | "tag" | "mode" | "priority" | "flagship" | "status";
+export function groupCatalog(list: CatalogMission[], by: GroupBy): { key: string; badge: string; name: LText; note?: LText; missions: CatalogMission[] }[] {
+  const groups = new Map<string, CatalogMission[]>();
+  const add = (k: string, m: CatalogMission) => groups.set(k, [...(groups.get(k) ?? []), m]);
+  for (const m of list) {
+    if (by === "category") add(m.category, m);
+    else if (by === "tag") m.tags.forEach((x) => add(x, m));
+    else if (by === "mode") add(m.mode, m);
+    else if (by === "priority") add(m.priority, m);
+    else if (by === "flagship") (m.flagships.length ? m.flagships : ["—"]).forEach((x) => add(x, m));
+    else add(m.route !== null ? "available" : "planned", m);
+  }
+  const order: string[] = by === "category" ? CATEGORIES.map((c) => c.id) : by === "tag" ? TAGS.map((x) => x.id) : by === "mode" ? ["S", "T", "W"] : by === "priority" ? ["P0", "P1", "P2"] : by === "flagship" ? ["F01", "F02", "F03", "F04", "F05", "F06", "F07", "—"] : ["available", "planned"];
+  const MODE: Record<string, LText> = { S: t("Single Bot", "Single Bot"), T: t("ทีม AI", "AI Team"), W: t("Cooperative Swarm", "Cooperative Swarm") };
+  const PRI: Record<string, LText> = { P0: t("P0 · ใช้งานหลัก", "P0 · Core launch"), P1: t("P1 · ขยายการดำเนินงาน", "P1 · Operational expansion"), P2: t("P2 · อัตโนมัติขั้นสูง", "P2 · Advanced automation") };
+  return order.filter((k) => groups.has(k)).map((k) => {
+    const missions = groups.get(k)!;
+    if (by === "category") { const c = CATEGORIES.find((x) => x.id === k)!; return { key: k, badge: k, name: c.name, note: c.objective, missions }; }
+    if (by === "tag") return { key: k, badge: "#", name: tagName(k as TagId), missions };
+    if (by === "mode") return { key: k, badge: k, name: MODE[k], missions };
+    if (by === "priority") return { key: k, badge: k, name: PRI[k], missions };
+    if (by === "flagship") return { key: k, badge: k === "—" ? "·" : k.replace("F0", "F"), name: k === "—" ? t("ภารกิจย่อยเดี่ยว", "Standalone building blocks") : t(`ภารกิจหลัก ${k}`, `Flagship ${k}`), missions };
+    return { key: k, badge: k === "available" ? "✓" : "…", name: k === "available" ? t("ใช้งานได้", "Available") : t("วางแผน · ยังเริ่มไม่ได้", "Planned · not startable"), missions };
+  });
+}
 
 export const CATEGORIES: Category[] = [
   { id: "A", name: t("ตั้งค่าโครงการและการบังคับใช้", "Project Setup & Applicability"), objective: t("เข้าใจโครงการก่อนใช้ข้อกำหนดใด ๆ", "Understand the power project before applying any requirement") },
@@ -142,7 +218,7 @@ const ROWS: Row[] = [
   ["COP-108", "L", "W", "P2", "Executive Compliance Intelligence", "รายงานข่าวกรองการปฏิบัติตามสำหรับผู้บริหาร", null],
 ];
 
-export const CATALOG: CatalogMission[] = ROWS.map(([id, category, mode, priority, en, th, route, fl]) => ({ id, category, mode, priority, title: t(th, en), route, flagships: fl ? fl.split(",") : [] }));
+export const CATALOG: CatalogMission[] = ROWS.map(([id, category, mode, priority, en, th, route, fl]) => ({ id, category, mode, priority, title: t(th, en), route, flagships: fl ? fl.split(",") : [], tags: tagsFor(category, en) }));
 
 export const catalogById = (id: string) => CATALOG.find((m) => m.id === id);
 export const isAvailable = (m: CatalogMission) => m.route !== null;

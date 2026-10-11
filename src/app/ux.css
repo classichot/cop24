@@ -202,3 +202,10 @@
 .agi-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .agi-card-planned { cursor: default; opacity: .62; }
 .agi-card-planned:hover { background: var(--color-bg); }
+
+/* mission catalog grouping and tags */
+.agi-filters { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; padding: 12px 14px; border: 1px solid var(--color-divider); background: var(--color-surface); }
+.agi-tag-chip { font-size: 11px; padding: 3px 8px; }
+.agi-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.agi-tag { font-size: 10px; letter-spacing: .02em; padding: 1px 6px; border: 1px solid var(--color-divider); color: var(--color-neutral-600); }
+.agi-tag.on { border-color: var(--color-accent); color: var(--color-accent-700); background: var(--color-accent-100); }

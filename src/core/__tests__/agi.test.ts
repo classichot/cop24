@@ -290,3 +290,21 @@ test("REQ-UX-002 the preview shows objective, scope, mode, autonomy, inputs, pla
   assert.equal(preview("F06", [site("lopburi-1"), site("lopburi-2")]).recommended.mode, "W");
   assert.equal(flagshipById("F03")!.defaultMode, "S");
 });
+
+test("§4 grouping tags: every mission is tagged, every tag is used, and every grouping covers the whole catalog", async () => {
+  const { TAGS, groupCatalog } = await import("../agi/catalog");
+  assert.ok(CATALOG.every((m) => m.tags.length >= 1), "every mission has at least one tag");
+  for (const tg of TAGS) assert.ok(CATALOG.some((m) => m.tags.includes(tg.id)), `tag ${tg.id} is unused`);
+  const byCat = groupCatalog(CATALOG, "category");
+  assert.equal(byCat.length, 12);
+  assert.ok(byCat.every((g) => g.missions.length === 9));
+  const byStatus = groupCatalog(CATALOG, "status");
+  assert.deepEqual(byStatus.map((g) => g.missions.length), [CATALOG.filter(isAvailable).length, CATALOG.filter((m) => !isAvailable(m)).length]);
+  assert.equal(groupCatalog(CATALOG, "mode").reduce((a, g) => a + g.missions.length, 0), 108);
+  assert.equal(groupCatalog(CATALOG, "priority").reduce((a, g) => a + g.missions.length, 0), 108);
+  const byTag = groupCatalog(CATALOG, "tag");
+  const seen = new Set(byTag.flatMap((g) => g.missions.map((m) => m.id)));
+  assert.equal(seen.size, 108, "grouping by tag still reaches every mission");
+  assert.ok(byTag.find((g) => g.key === "monitoring")!.missions.some((m) => m.id === "COP-086"), "the one-click monitoring report sits under #CoP Monitoring");
+  assert.ok(groupCatalog(CATALOG, "flagship").find((g) => g.key === "F01")!.missions.length > 10);
+});
