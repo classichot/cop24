@@ -3,6 +3,8 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import type { LayerMark, Status } from "@/core/types";
+import type { GlossaryId, ResultKind } from "@/core/ux/guidance";
+import { ExplainThis, ResultInterpreter } from "./ux/parts";
 
 /* Small presentational primitives that reproduce the prototype's repeated patterns. */
 
@@ -29,11 +31,17 @@ export const Glyph = ({ k, children }: { k: Status; children?: ReactNode }) => (
 
 export const Kicker = ({ children }: { children: ReactNode }) => <div className="kicker">{children}</div>;
 
-export const PageHead = ({ kicker, title, lead, xl, children }: { kicker: ReactNode; title: ReactNode; lead?: ReactNode; xl?: boolean; children?: ReactNode }) => (
+/**
+ * Page heading. `explain` adds ⓘ Explain This for the screen's professional terms (§8) and
+ * `interpret` adds the AI Result Interpreter for the screen's headline result (§12).
+ */
+export const PageHead = ({ kicker, title, lead, xl, children, explain, interpret }: { kicker: ReactNode; title: ReactNode; lead?: ReactNode; xl?: boolean; children?: ReactNode; explain?: GlossaryId[]; interpret?: ResultKind }) => (
   <>
     <Kicker>{kicker}</Kicker>
     <h1 className={`title${xl ? " title-xl" : ""}`}>{title}</h1>
     {lead && <p className="text-muted lead">{lead}</p>}
+    {explain && explain.length > 0 && <div className="row" style={{ gap: 6, marginTop: 4 }}>{explain.map((id) => <ExplainThis key={id} id={id} />)}</div>}
+    {interpret && <div style={{ marginTop: 14, maxWidth: 760 }}><ResultInterpreter kind={interpret} compact /></div>}
     {children}
   </>
 );

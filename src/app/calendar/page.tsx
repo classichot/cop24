@@ -21,7 +21,7 @@ export default function CalendarPage() {
 
   return (
     <div className="page page-wide">
-      <PageHead kicker={tx("ปฏิทินการปฏิบัติตาม / COMPLIANCE CALENDAR", "Compliance Calendar")} title={tx("ทุกกำหนดเวลาของทุกโดเมน บนเส้นเวลาเดียว", "Every deadline in every domain, on one timeline")} lead={tx("Workflow & Execution Engine แปลงทุกข้อผูกพันที่มีความถี่เป็นเหตุการณ์ที่มีวันที่ ผู้รับผิดชอบ และหลักฐานที่ต้องเก็บ — ภาษี CoP PDPA แรงงาน 56-1 อยู่บนปฏิทินเดียวกัน ไม่ใช่ 5 สเปรดชีต", "The Workflow & Execution Engine turns every recurring obligation into a dated event with an owner and required evidence — tax, CoP, PDPA, labour and 56-1 share one calendar, not five spreadsheets.")} />
+      <PageHead explain={["obligation"]} kicker={tx("ปฏิทินการปฏิบัติตาม / COMPLIANCE CALENDAR", "Compliance Calendar")} title={tx("ทุกกำหนดเวลาของทุกโดเมน บนเส้นเวลาเดียว", "Every deadline in every domain, on one timeline")} lead={tx("Workflow & Execution Engine แปลงทุกข้อผูกพันที่มีความถี่เป็นเหตุการณ์ที่มีวันที่ ผู้รับผิดชอบ และหลักฐานที่ต้องเก็บ — ภาษี CoP PDPA แรงงาน 56-1 อยู่บนปฏิทินเดียวกัน ไม่ใช่ 5 สเปรดชีต", "The Workflow & Execution Engine turns every recurring obligation into a dated event with an owner and required evidence — tax, CoP, PDPA, labour and 56-1 share one calendar, not five spreadsheets.")} />
 
       <div className="panel" style={{ marginTop: 22, overflowX: "auto" }}>
         <div className="label" style={{ letterSpacing: ".12em", marginBottom: 12 }}>{tx("12 เดือนข้างหน้า", "Next 12 months")} · {L(entity.name)}</div>

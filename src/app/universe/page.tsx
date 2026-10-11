@@ -23,7 +23,7 @@ export default function UniversePage() {
 
   return (
     <div className="page page-wide">
-      <PageHead kicker={tx("จักรวาลการปฏิบัติตาม / COMPLIANCE UNIVERSE", "Compliance Universe")} title={tx("ทุกกฎหมายที่บังคับใช้กับทั้งกลุ่ม ในแผนที่เดียว", "Every law that binds the group, on one map")} lead={tx("13 โดเมน × ทุกหน่วยงาน Applicability Engine ตัดสินแต่ละช่องว่ามีชุดกฎใดบังคับใช้ และ Gap Engine ระบายสีตามช่องว่างที่เปิดอยู่ — นี่คือสิ่งที่ ESG24 เห็นเฉพาะคอลัมน์ ESG ส่วน COP24 เห็นทั้งแผ่น", "13 domains × every entity. The Applicability Engine decides which packs bind each cell; the Gap Engine colours it by open gaps. ESG24 sees only the ESG column; COP24 sees the whole sheet.")} />
+      <PageHead explain={["applicability","obligation"]} kicker={tx("จักรวาลการปฏิบัติตาม / COMPLIANCE UNIVERSE", "Compliance Universe")} title={tx("ทุกกฎหมายที่บังคับใช้กับทั้งกลุ่ม ในแผนที่เดียว", "Every law that binds the group, on one map")} lead={tx("13 โดเมน × ทุกหน่วยงาน Applicability Engine ตัดสินแต่ละช่องว่ามีชุดกฎใดบังคับใช้ และ Gap Engine ระบายสีตามช่องว่างที่เปิดอยู่ — นี่คือสิ่งที่ ESG24 เห็นเฉพาะคอลัมน์ ESG ส่วน COP24 เห็นทั้งแผ่น", "13 domains × every entity. The Applicability Engine decides which packs bind each cell; the Gap Engine colours it by open gaps. ESG24 sees only the ESG column; COP24 sees the whole sheet.")} />
 
       <Cells min={170} style={{ marginTop: 22 }}>
         <Stat label={tx("โดเมนที่ครอบคลุม", "Domains covered")} value={DOMAINS.length} size="md" />

@@ -23,7 +23,7 @@ function Register() {
 
   return (
     <div className="page page-wide">
-      <PageHead kicker={tx("ทะเบียนข้อผูกพัน / OBLIGATION REGISTER", "Obligation Register")} title={tx("หนึ่งแถวต่อหนึ่งหน้าที่ มีเจ้าของ ความถี่ หลักฐาน และสถานะ", "One row per duty, with an owner, frequency, evidence and status")} lead={tx("Regulation / Obligation Engine สร้างทะเบียนนี้จากชุดกฎที่ Applicability Engine ตัดสินว่าบังคับใช้ — ไม่ใช่สเปรดชีตที่ใครพิมพ์เอง สถานะทุกแถวมาจาก Evidence Engine", "The Regulation / Obligation Engine builds this register from the packs the Applicability Engine says bind — nobody types it in. Every row's status comes from the Evidence Engine.")} />
+      <PageHead explain={["obligation","applicability"]} kicker={tx("ทะเบียนข้อผูกพัน / OBLIGATION REGISTER", "Obligation Register")} title={tx("หนึ่งแถวต่อหนึ่งหน้าที่ มีเจ้าของ ความถี่ หลักฐาน และสถานะ", "One row per duty, with an owner, frequency, evidence and status")} lead={tx("Regulation / Obligation Engine สร้างทะเบียนนี้จากชุดกฎที่ Applicability Engine ตัดสินว่าบังคับใช้ — ไม่ใช่สเปรดชีตที่ใครพิมพ์เอง สถานะทุกแถวมาจาก Evidence Engine", "The Regulation / Obligation Engine builds this register from the packs the Applicability Engine says bind — nobody types it in. Every row's status comes from the Evidence Engine.")} />
 
       <div className="row row-center" style={{ gap: 12, marginTop: 22 }}>
         <select className="input" value={entity} onChange={(e) => setEntity(e.target.value)} style={{ maxWidth: 240 }}><option value="all">{tx("ทุกหน่วยงาน", "All entities")}</option>{data.entities.map((e) => <option key={e.id} value={e.id}>{L(e.name)}</option>)}</select>

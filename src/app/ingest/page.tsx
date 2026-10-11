@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "@/state/AppState";
 import { Cells, PageHead, Seg, Stat, Tag } from "@/components/ui";
+import { AdvancedSettings } from "@/components/ux/parts";
 import { acceptLink, addSource, analyze, approveRequest, authorize, cancel, draftRequest, emptyState, ingest, pause, planMission, readiness, reextract, resume, reviewField, revoke, runMission, toReportInput, trace, type MissionEnv } from "@/core/ingest";
 import { EVIDENCE_TYPES, RULESET_VERSION, STANDARDS_VERSION } from "@/core/ingest/rules";
 import { CLASSIFIER_VERSION } from "@/core/ingest/classify";
@@ -46,6 +47,12 @@ export default function IngestPage() {
   const [autoOcr, setAutoOcr] = useState(true);
   const [tab, setTab] = useState<Tab>("checklist");
   const [instruction, setInstruction] = useState("");
+  // a goal handed over by the 24 Copilot ("Do it for me") pre-fills the hand-off instruction
+  useEffect(() => {
+    queueMicrotask(() => {
+      try { const g = new URLSearchParams(window.location.search).get("goal"); if (g) setInstruction(g); } catch {}
+    });
+  }, []);
   const [authDraft, setAuthDraft] = useState<{ sources: string[]; recipients: string[]; send: "never" | "each-approval" | "pre-approved-internal"; limit: number } | null>(null);
   const returnedInbox = useRef<ParsedDocument[]>([]);
   const parsedCache = useRef<Map<string, InputFile>>(new Map());
@@ -157,7 +164,7 @@ export default function IngestPage() {
 
   return (
     <div className="page page-wide">
-      <PageHead kicker={tx("เตรียมข้อมูล / SMART DATA INGESTION", "Data preparation / Smart Data Ingestion")} title={tx("อัปโหลดครั้งเดียว AI ทำงานต่อ คนดูแลเฉพาะข้อยกเว้น", "Upload once. AI does the work. People handle exceptions.")} lead={tx("ไม่ต้องตั้งชื่อ แยกหมวด หรือกรอกแบบฟอร์ม — COP24 อ่านไฟล์ทั้งกอง จัดหมวด สกัดค่า ตรวจความถูกต้อง จับคู่กับข้อกำหนด กกพ. และบอกเฉพาะสิ่งที่ขาดหรือขัดแย้ง ไฟล์ถูกอ่านในเบราว์เซอร์ของคุณ ไม่ถูกส่งออกไปที่ใด", "No naming, sorting or form-filling. COP24 reads the whole pile, classifies, extracts, validates, maps to ERC requirements and tells you only what is missing or conflicting. Files are read in your browser and are not sent anywhere.")} />
+      <PageHead explain={["mission-authorisation","lab-accreditation","noise-baseline"]} kicker={tx("เตรียมข้อมูล / SMART DATA INGESTION", "Data preparation / Smart Data Ingestion")} title={tx("อัปโหลดครั้งเดียว AI ทำงานต่อ คนดูแลเฉพาะข้อยกเว้น", "Upload once. AI does the work. People handle exceptions.")} lead={tx("ไม่ต้องตั้งชื่อ แยกหมวด หรือกรอกแบบฟอร์ม — COP24 อ่านไฟล์ทั้งกอง จัดหมวด สกัดค่า ตรวจความถูกต้อง จับคู่กับข้อกำหนด กกพ. และบอกเฉพาะสิ่งที่ขาดหรือขัดแย้ง ไฟล์ถูกอ่านในเบราว์เซอร์ของคุณ ไม่ถูกส่งออกไปที่ใด", "No naming, sorting or form-filling. COP24 reads the whole pile, classifies, extracts, validates, maps to ERC requirements and tells you only what is missing or conflicting. Files are read in your browser and are not sent anywhere.")} />
 
       <div className="row row-center" style={{ gap: 12, marginTop: 18 }}>
         <span className="label">{tx("โรงไฟฟ้า", "Plant")}</span>
@@ -184,7 +191,7 @@ export default function IngestPage() {
             <div style={{ marginTop: 14, borderTop: "1px solid var(--color-divider)", paddingTop: 10 }}>
               <div className="small" style={{ fontWeight: 600 }}>{staged.length} {tx("รายการพร้อมนำเข้า", "item(s) ready")}</div>
               <div className="muted tiny" style={{ maxHeight: 70, overflow: "auto", lineHeight: 1.6 }}>{staged.slice(0, 30).map((f) => f.path).join(" · ")}</div>
-              <label className="small" style={{ display: "flex", gap: 6, alignItems: "center", marginTop: 8 }}><input type="checkbox" checked={autoOcr} onChange={(e) => setAutoOcr(e.target.checked)} />{tx("ทำ OCR ไทย+อังกฤษอัตโนมัติสำหรับหน้าที่เป็นภาพสแกน", "Auto Thai+English OCR for scanned pages")}</label>
+              <div style={{ marginTop: 8 }}><AdvancedSettings summary={autoOcr ? tx("ค่าแนะนำ: OCR อัตโนมัติ", "Recommended: auto OCR") : tx("OCR ปิดอยู่", "OCR off")}><label className="small" style={{ display: "flex", gap: 6, alignItems: "center" }}><input type="checkbox" checked={autoOcr} onChange={(e) => setAutoOcr(e.target.checked)} />{tx("ทำ OCR ไทย+อังกฤษอัตโนมัติสำหรับหน้าที่เป็นภาพสแกน", "Auto Thai+English OCR for scanned pages")}</label><span className="muted tiny">{tx(`ตัวจำแนก ${CLASSIFIER_VERSION} · ตัวสกัด ${EXTRACTOR_VERSION} · กฎ ${RULESET_VERSION}`, `Classifier ${CLASSIFIER_VERSION} · extractor ${EXTRACTOR_VERSION} · rules ${RULESET_VERSION}`)}</span></AdvancedSettings></div>
               <div className="row" style={{ marginTop: 10 }}>
                 <button className="btn btn-primary" disabled={busy} onClick={startImport}>{busy ? tx("กำลังประมวลผล…", "Processing…") : tx("เริ่มประมวลผล", "Start processing")}</button>
                 <button className="btn btn-secondary" onClick={() => setStaged([])}>{tx("ล้าง", "Clear")}</button>

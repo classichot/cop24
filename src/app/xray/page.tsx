@@ -25,7 +25,7 @@ export default function XrayPage() {
 
   return (
     <div className="page page-mid">
-      <PageHead kicker={tx("เอกซเรย์รายงานเดิม / COMPLIANCE X-RAY", "Compliance X-Ray")} title={tx("รายงานที่ที่ปรึกษาทำไว้ ใช้ยื่นได้จริงไหม", "Is the consultant's report actually fileable?")} lead={tx("อัปโหลดรายงานที่มีอยู่ — CoP, 56-1, Local File, นโยบาย PDPA — COP24 จะเทียบกับชุดกฎที่บังคับใช้จริง แล้วคืนผลเป็นช่องว่างรายบท ข้อความที่ไม่มีหลักฐานรองรับ และข้อมูลที่ขัดแย้งกันเอง", "Upload any existing report — CoP, 56-1, local file, PDPA policy — and COP24 compares it with the pack that actually binds, returning chapter gaps, unsupported statements and internal contradictions.")} />
+      <PageHead explain={["cop"]} kicker={tx("เอกซเรย์รายงานเดิม / COMPLIANCE X-RAY", "Compliance X-Ray")} title={tx("รายงานที่ที่ปรึกษาทำไว้ ใช้ยื่นได้จริงไหม", "Is the consultant's report actually fileable?")} lead={tx("อัปโหลดรายงานที่มีอยู่ — CoP, 56-1, Local File, นโยบาย PDPA — COP24 จะเทียบกับชุดกฎที่บังคับใช้จริง แล้วคืนผลเป็นช่องว่างรายบท ข้อความที่ไม่มีหลักฐานรองรับ และข้อมูลที่ขัดแย้งกันเอง", "Upload any existing report — CoP, 56-1, local file, PDPA policy — and COP24 compares it with the pack that actually binds, returning chapter gaps, unsupported statements and internal contradictions.")} />
 
       <div className="dashed" style={{ padding: 26, marginTop: 22, display: "flex", gap: 18, flexWrap: "wrap", alignItems: "center", textAlign: "left" }}>
         <div style={{ flex: "1 1 300px", minWidth: 0 }}>

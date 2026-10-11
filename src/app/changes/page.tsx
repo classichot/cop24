@@ -11,7 +11,7 @@ export default function ChangesPage() {
   const impacts = snap.impacts;
   return (
     <div className="page page-mid">
-      <PageHead kicker={tx("ติดตามกฎที่เปลี่ยน / REGULATORY CHANGE MONITOR", "Regulatory Change Monitor")} title={tx("กฎเปลี่ยน → ข้อผูกพันเปลี่ยน → บทที่ต้องแก้ → ใครต้องทำ", "A rule changes → obligations change → chapters to fix → who must act")} lead={tx("Regulatory Change Engine รับประกาศจากทุกหน่วยงานกำกับ แล้วกระจายผลกระทบลงทะเบียนข้อผูกพัน รายงานที่กำลังร่าง และหน่วยงานที่เกี่ยวข้อง — ESG24 เห็นเฉพาะประกาศของ ก.ล.ต. และ อบก. COP24 เห็นทั้งหมด", "The Regulatory Change Engine ingests notices from every regulator and propagates impact into the Obligation Register, in-flight reports and affected entities. ESG24 sees only SEC and TGO notices; COP24 sees them all.")} />
+      <PageHead explain={["reg-change"]} kicker={tx("ติดตามกฎที่เปลี่ยน / REGULATORY CHANGE MONITOR", "Regulatory Change Monitor")} title={tx("กฎเปลี่ยน → ข้อผูกพันเปลี่ยน → บทที่ต้องแก้ → ใครต้องทำ", "A rule changes → obligations change → chapters to fix → who must act")} lead={tx("Regulatory Change Engine รับประกาศจากทุกหน่วยงานกำกับ แล้วกระจายผลกระทบลงทะเบียนข้อผูกพัน รายงานที่กำลังร่าง และหน่วยงานที่เกี่ยวข้อง — ESG24 เห็นเฉพาะประกาศของ ก.ล.ต. และ อบก. COP24 เห็นทั้งหมด", "The Regulatory Change Engine ingests notices from every regulator and propagates impact into the Obligation Register, in-flight reports and affected entities. ESG24 sees only SEC and TGO notices; COP24 sees them all.")} />
 
       <Cells min={170} style={{ marginTop: 22 }}>
         <Stat label={tx("การเปลี่ยนแปลงที่ติดตาม", "Changes tracked")} value={impacts.length} size="md" />

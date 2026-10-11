@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Chakra_Petch } from "next/font/google";
 import "./globals.css";
+import "./ux.css";
 import { AppProvider } from "@/state/AppState";
 import { THEME_KEY } from "@/state/theme";
 import { AppShell } from "@/components/AppShell";

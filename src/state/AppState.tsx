@@ -7,9 +7,10 @@ import { fmtDate } from "@/core/dates";
 import type { Lang, LText } from "@/core/types";
 import { ALL_PACKS } from "@/packs";
 import { THEME_KEY, type Theme } from "./theme";
+import type { UxRole } from "@/core/ux/context";
 import { ENTITIES, EVIDENCE, CONTROLS, CONTROL_TESTS, REG_CHANGES, REPORT_DRAFT, REPORT_CONFLICTS, REPORT_FACTS, EXTRA_EVENTS, MANUAL_GAPS } from "@/data/tenant";
 
-export type Role = "owner" | "consultant" | "exec";
+export type Role = UxRole;
 export type Mode = "easy" | "professional" | "agi";
 export type { Theme } from "./theme";
 

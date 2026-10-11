@@ -12,7 +12,7 @@ export default function AuditPage() {
   const rows = AUDIT.filter((a) => kind === "all" || a.kind === kind);
   return (
     <div className="page page-mid">
-      <PageHead kicker={tx("ร่องรอยการตรวจสอบ / AUDIT TRAIL", "Audit Trail")} title={tx("ทุกสิ่งที่ AI หรือคนทำ ถูกบันทึกพร้อมเครื่องยนต์ที่ทำ", "Everything AI or a person did, recorded with the engine that did it")} lead={tx("ร่องรอยนี้คือสิ่งที่ผู้ตรวจสอบภายนอกและหน่วยงานกำกับจะขอดู: ใครร่าง ใครอนุมัติ ชุดกฎเวอร์ชันใดที่ตรึงไว้ และ AI ปฏิเสธจะทำอะไรบ้าง — รูปแบบเดียวกันทุกแอป 24", "This is what an external auditor or regulator asks to see: who drafted, who approved, which rulepack version was pinned and what the AI refused to do — one format across every 24 app.")} />
+      <PageHead explain={["rulepack"]} kicker={tx("ร่องรอยการตรวจสอบ / AUDIT TRAIL", "Audit Trail")} title={tx("ทุกสิ่งที่ AI หรือคนทำ ถูกบันทึกพร้อมเครื่องยนต์ที่ทำ", "Everything AI or a person did, recorded with the engine that did it")} lead={tx("ร่องรอยนี้คือสิ่งที่ผู้ตรวจสอบภายนอกและหน่วยงานกำกับจะขอดู: ใครร่าง ใครอนุมัติ ชุดกฎเวอร์ชันใดที่ตรึงไว้ และ AI ปฏิเสธจะทำอะไรบ้าง — รูปแบบเดียวกันทุกแอป 24", "This is what an external auditor or regulator asks to see: who drafted, who approved, which rulepack version was pinned and what the AI refused to do — one format across every 24 app.")} />
 
       <div className="row row-center" style={{ marginTop: 22 }}>
         <Seg<"all" | AuditEvent["kind"]> name="kind" value={kind} onChange={setKind} options={[{ v: "all", label: tx("ทั้งหมด", "All") }, { v: "ai", label: tx("เอเจนต์ AI", "AI agents") }, { v: "human", label: tx("มนุษย์", "Humans") }, { v: "system", label: tx("ระบบ", "System") }]} />

@@ -13,7 +13,7 @@ export default function PreflightPage() {
 
   return (
     <div className="page page-mid">
-      <PageHead kicker={tx("ตรวจก่อนยื่น / PREFLIGHT VALIDATOR", "Preflight Validator")} title={tx("ผลตรวจ 9 ชั้น", "Nine-layer check")} lead={tx("ผ่านการตรวจอัตโนมัติไม่เท่ากับได้รับความเห็นชอบจากหน่วยงานกำกับ — ผลนี้บอกได้แค่ว่ารายงานไม่มีข้อบกพร่องที่ตรวจพบได้ด้วยเครื่อง", "Passing automated checks is not regulatory approval — it only says the report has no defect a machine can detect.")} />
+      <PageHead explain={["preflight","gate"]} interpret="gate" kicker={tx("ตรวจก่อนยื่น / PREFLIGHT VALIDATOR", "Preflight Validator")} title={tx("ผลตรวจ 9 ชั้น", "Nine-layer check")} lead={tx("ผ่านการตรวจอัตโนมัติไม่เท่ากับได้รับความเห็นชอบจากหน่วยงานกำกับ — ผลนี้บอกได้แค่ว่ารายงานไม่มีข้อบกพร่องที่ตรวจพบได้ด้วยเครื่อง", "Passing automated checks is not regulatory approval — it only says the report has no defect a machine can detect.")} />
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 0, border: "2px solid var(--color-divider)", marginTop: 22 }}>
         <div className="cell" style={{ flex: "1 1 220px", padding: 20 }}>

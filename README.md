@@ -67,6 +67,10 @@ src/core/ingest/   Smart Data Ingestion & AI Handoff Engine (COP24-DI-001): clas
                    normalise Thai/English evidence, regulation-driven checklist, validation, missing
                    register, evidence requests, checkpointed AI missions, document control, audit,
                    handoff to the Report Engine
+src/core/ux/       24 Series Universal UX Standard: goal understanding, mission catalog, journeys,
+                   next step per screen, Explain This, result interpretation, Complexity Guard,
+                   acceptance register
+src/components/ux/ 24 Core UX Components: Copilot, Mission Card, Guided Journey, Assist level, …
 src/lib/ingest/    Browser side: PDF/OCR/Word/Excel/image/ZIP parsing and IndexedDB persistence
 src/core/corpus*.ts Legal corpus types + Thai PDF text repair and clause chunking
 src/packs/report/  Report packs (ERC CoP Solar Farm form V1.0/2565 requirement matrix)
@@ -85,10 +89,13 @@ docs/              Concept, architecture, features and wow features, design syst
 
 | Route | Capability | Engine |
 | --- | --- | --- |
-| `/` | Home / ASK 24 — goal in plain language, missions by role, attention list, Next Best Action | Agent, all |
+| `/` | Home / ASK 24 — 24 Copilot, recommended actions, My missions, attention required, management snapshot | Agent, all |
+| `/missions` | My missions — guided journey per mission; Do it myself / Guide me / Do it for me; why AI chose it | Agent |
+| `/my-work` | My work — only decisions, approvals, missing data and exceptions | Workflow |
+| `/outputs` | Reports & outputs — every deliverable with plain-language status | Reporting |
+| `/ux-standard` | 24 UX Standard — acceptance register (7 tests × every screen) and the core UX components | all |
 | `/ingest` | Data Preparation — **Import Everything** (files, folders, ZIP; no naming or tagging) and **Hand Off to AI** (instruction → authorised mission); checklist, side-by-side review, missing evidence and requests, findings, mission log, project profile, audit | Evidence, Document, Agent |
 | `/start` | Easy Start — explainable applicability across every domain at once | Applicability |
-| `/missions` | AGI Mission Mode — Regulation / Document / Report / QA agents with guardrails and QA veto | Agent |
 | `/evidence` | Document Control Center — 3-layer evidence, AI-drafted evidence requests | Evidence, Document |
 | `/factory` | One-Click Report Factory — any pack's report template, same pipeline | Reporting |
 | `/calendar` | Compliance Calendar — one timeline for tax, CoP, PDPA, labour, 56-1; measure-to-evidence register; Smart Carry Forward | Workflow |
@@ -142,6 +149,14 @@ Report Engine in `src/core/report/`. It is applied first to the Lopburi 1 prelim
 against the standard’s §16 acceptance scenarios. See `docs/06-report-standard-implementation.md` for the
 section-by-section mapping and what is not built yet, and `docs/07-cop-report-references.md` for the
 official ERC form and the EGAT example report.
+
+## 24 Series Universal UX Standard
+
+Every screen follows the standard: a 24 Copilot (header, Ctrl+K, home), intent-first navigation, a
+next step on every screen, Explain This for professional terms, interpreted results, a Complexity
+Guard and four roles including Contributor. Each screen is registered with its capability and
+experience layers and the seven acceptance tests; `npm test` fails if a screen is missing. See
+`docs/09-universal-ux-standard.md`.
 
 ## Smart Data Ingestion & AI Handoff
 

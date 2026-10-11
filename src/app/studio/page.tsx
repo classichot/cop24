@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useApp } from "@/state/AppState";
 import { Glyph, Tag, layerMark } from "@/components/ui";
+import { ExplainThis } from "@/components/ux/parts";
 import { obligationById } from "@/packs";
 import { assessReport } from "@/core/report/assess";
 import { checkRewrite } from "@/core/report/semantic";
@@ -33,6 +34,8 @@ export default function StudioPage() {
         <span className="muted" style={{ fontSize: 13 }}>{L(data.entities.find((e) => e.id === report.entityId)!.name)} · {tx("รายงาน CoP ขั้นต้น", "Preliminary CoP report")} · {tx("ฉบับร่าง", "Draft")} {report.version} · rulepack {report.rulepackVersion}</span>
         {!evidenceGuard && <Tag k="warn">{tx("Evidence Guard ปิดอยู่", "Evidence Guard off")}</Tag>}
         <Tag k="bad">DRAFT</Tag>
+        <ExplainThis id="evidence-guard" />
+        <ExplainThis id="claim-ledger" />
         <Link href="/report-quality" className="btn btn-ghost btn-sm">{tx(`ประตูคุณภาพ ${quality.gates.filter((g) => g.result === "pass").length}/${quality.gates.length} →`, `Quality gates ${quality.gates.filter((g) => g.result === "pass").length}/${quality.gates.length} →`)}</Link>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 0, border: "2px solid var(--color-divider)" }}>

@@ -42,7 +42,7 @@ export default function FactoryPage() {
 
   return (
     <div className="page page-mid">
-      <PageHead kicker={tx("สร้างรายงานอัตโนมัติ / ONE-CLICK REPORT FACTORY", "One-Click Report Factory")} title={tx("กดครั้งเดียว ได้ร่างรายงานทั้งฉบับ", "One click, a complete draft")} lead={tx("Reporting Engine อ่านเอกสารทั้งหมดที่มี เทียบกับชุดกฎที่บังคับใช้ เขียนทุกบท แล้วส่งคืนเป็นร่างพร้อมรายการข้อยกเว้นให้คนตรวจ — ใช้เครื่องยนต์เดียวกันไม่ว่าจะเป็นรายงาน CoP, 56-1 One Report หรือ Local File", "The Reporting Engine reads every document, matches the binding pack, writes every chapter and returns a draft with an exception list for humans — the same engine whether it is a CoP report, a 56-1 One Report or a TP local file.")} />
+      <PageHead explain={["cop","evidence-guard"]} kicker={tx("สร้างรายงานอัตโนมัติ / ONE-CLICK REPORT FACTORY", "One-Click Report Factory")} title={tx("กดครั้งเดียว ได้ร่างรายงานทั้งฉบับ", "One click, a complete draft")} lead={tx("Reporting Engine อ่านเอกสารทั้งหมดที่มี เทียบกับชุดกฎที่บังคับใช้ เขียนทุกบท แล้วส่งคืนเป็นร่างพร้อมรายการข้อยกเว้นให้คนตรวจ — ใช้เครื่องยนต์เดียวกันไม่ว่าจะเป็นรายงาน CoP, 56-1 One Report หรือ Local File", "The Reporting Engine reads every document, matches the binding pack, writes every chapter and returns a draft with an exception list for humans — the same engine whether it is a CoP report, a 56-1 One Report or a TP local file.")} />
 
       <Cells min={190} style={{ marginTop: 22 }}>
         <div className="cell" style={{ padding: "14px 16px" }}><div className="label-9">{tx("หน่วยงาน", "Entity")}</div><div style={{ fontSize: 14, fontWeight: 600, marginTop: 3 }}>{L(entity.name)}</div></div>

@@ -5,17 +5,25 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useApp, type Mode, type Role, type Theme } from "@/state/AppState";
 import { Seg, Tag } from "./ui";
+import { CopilotProvider, useCopilot } from "./ux/Copilot";
+import { ComplexityGuard } from "./ux/ComplexityGuard";
+import { NextStepBar } from "./ux/parts";
 import { USER } from "@/data/tenant";
 
 interface NavItem { href: string; th: string; en: string; sub?: string }
 
-const NAV_MAIN: NavItem[] = [
-  { href: "/", th: "หน้าหลัก · ถาม 24", en: "Home · ASK 24" },
-  { href: "/ingest", th: "เตรียมข้อมูล · นำเข้าครั้งเดียว", en: "Data preparation" },
+/** §18 primary navigation — what normal users need. Ask 24 opens the Copilot. */
+const NAV_PRIMARY: NavItem[] = [
+  { href: "/", th: "หน้าหลัก", en: "Home" },
+  { href: "#ask", th: "ถาม 24 · Copilot", en: "Ask 24 · Copilot" },
   { href: "/missions", th: "ภารกิจของฉัน", en: "My missions" },
-  { href: "/start", th: "เริ่มต้นใช้งาน", en: "Easy Start" },
+  { href: "/my-work", th: "งานของฉัน", en: "My work" },
+  { href: "/outputs", th: "รายงานและผลลัพธ์", en: "Reports & outputs" },
 ];
+/** All modules — the complete professional application, grouped. */
 const NAV_WORK: NavItem[] = [
+  { href: "/ingest", th: "เตรียมข้อมูล · นำเข้าครั้งเดียว", en: "Data preparation" },
+  { href: "/start", th: "เริ่มต้นใช้งาน", en: "Easy Start" },
   { href: "/evidence", th: "ศูนย์ควบคุมเอกสาร", en: "Document Control" },
   { href: "/factory", th: "สร้างรายงานอัตโนมัติ", en: "Report Factory" },
   { href: "/calendar", th: "ปฏิทินการปฏิบัติตาม", en: "Compliance Calendar" },
@@ -37,15 +45,20 @@ const NAV_ENGINE: NavItem[] = [
   { href: "/audit", th: "ร่องรอยการตรวจสอบ", en: "Audit Trail" },
   { href: "/packs", th: "แพ็กและแอป 24", en: "Packs & 24 apps" },
   { href: "/engine", th: "เครื่องยนต์หลัก COP24", en: "COP24 Core Engine" },
+  { href: "/ux-standard", th: "มาตรฐาน UX 24 Series", en: "24 UX Standard" },
 ];
 
 function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
   const path = usePathname();
   const { L } = useApp();
+  const copilot = useCopilot();
   return (
     <>
       <div className="nav-group">{title}</div>
       {items.map((it) => {
+        if (it.href === "#ask") {
+          return <button key={it.href} type="button" className="nav-btn nav-ask" onClick={() => copilot.open()}>{L({ th: it.th, en: it.en })} <span className="kbd-hint">Ctrl K</span></button>;
+        }
         const active = it.href === "/" ? path === "/" : path.startsWith(it.href);
         return (
           <Link key={it.href} href={it.href} className={`nav-btn${active ? " active" : ""}`} aria-current={active ? "page" : undefined}>
@@ -70,6 +83,20 @@ const MoonIcon = () => (
 );
 
 export function AppShell({ children }: { children: ReactNode }) {
+  return <CopilotProvider><Shell>{children}</Shell></CopilotProvider>;
+}
+
+function CopilotButton() {
+  const { tx } = useApp();
+  const copilot = useCopilot();
+  return (
+    <button type="button" className="btn btn-primary copilot-trigger" onClick={() => copilot.open()} title={tx("เปิด 24 Copilot (Ctrl+K)", "Open 24 Copilot (Ctrl+K)")}>
+      <span aria-hidden="true">✦</span> 24 Copilot <span className="kbd-hint">Ctrl K</span>
+    </button>
+  );
+}
+
+function Shell({ children }: { children: ReactNode }) {
   const { lang, setLang, role, setRole, mode, setMode, theme, setTheme, showAll, setShowAll, entityId, setEntityId, data, L, tx, snap } = useApp();
   const advancedOpen = mode !== "easy" || showAll;
   const entity = data.entities.find((e) => e.id === entityId) ?? data.entities[0];
@@ -83,12 +110,14 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Link href="/" className="brand-mark">COP24</Link>
           <div className="brand-sub">{tx("Compliance ERP · เครื่องยนต์ร่วมของ 24 Series", "Compliance ERP · the 24 Series engine")}</div>
         </div>
+        <CopilotButton />
         <div className="hdr-group">
           <span className="hdr-label">{tx("บทบาท", "Role")}</span>
           <Seg<Role> name="role" value={role} onChange={setRole} options={[
             { v: "owner", label: tx("เจ้าของงาน", "Owner") },
             { v: "consultant", label: tx("ที่ปรึกษา", "Advisor") },
             { v: "exec", label: tx("ผู้บริหาร", "Executive") },
+            { v: "contributor", label: tx("ผู้ให้ข้อมูล", "Contributor") },
           ]} />
         </div>
         <div className="hdr-group">
@@ -104,8 +133,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
         <div className="hdr-group theme-toggle" title={tx("สลับโหมดสว่าง / มืด", "Switch light / dark mode")}>
           <Seg<Theme> name="theme" value={theme} onChange={setTheme} options={[
-            { v: "light", label: <><SunIcon />{tx("สว่าง", "Light")}</> },
-            { v: "dark", label: <><MoonIcon />{tx("มืด", "Dark")}</> },
+            { v: "light", label: <><SunIcon /><span className="sr-only">{tx("สว่าง", "Light")}</span></> },
+            { v: "dark", label: <><MoonIcon /><span className="sr-only">{tx("มืด", "Dark")}</span></> },
           ]} />
         </div>
         <div className="hdr-user">
@@ -119,10 +148,11 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <div className="app-body">
         <nav className="sidenav">
-          <NavGroup title={tx("หลัก", "Main")} items={NAV_MAIN} />
-          <NavGroup title={tx("งานของฉัน", "My work")} items={NAV_WORK} />
+          <NavGroup title={tx("หลัก", "Main")} items={NAV_PRIMARY} />
           {advancedOpen ? (
             <>
+              <div className="nav-group nav-all">{tx("ทุกโมดูล", "All modules")}{mode === "easy" && <button type="button" className="btn btn-ghost btn-sm" style={{ marginLeft: 6, padding: "0 4px", fontSize: 10 }} onClick={() => setShowAll(false)}>{tx("ซ่อน", "hide")}</button>}</div>
+              <NavGroup title={tx("งานและข้อมูล", "Work & data")} items={NAV_WORK} />
               <NavGroup title={tx("รายงานและการตรวจสอบ", "Reports & assurance")} items={NAV_REPORT} />
               <NavGroup title={tx("เครื่องยนต์การปฏิบัติตาม", "Compliance engine")} items={NAV_ENGINE} />
             </>
@@ -144,7 +174,11 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
           </div>
         </nav>
-        <main className="main">{children}</main>
+        <main className="main">
+          <ComplexityGuard />
+          <NextStepBar />
+          {children}
+        </main>
       </div>
 
       <footer className="app-footer">

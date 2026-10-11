@@ -20,7 +20,7 @@ export default function EvidencePage() {
 
   return (
     <div className="page page-wide">
-      <PageHead kicker={tx("ศูนย์ควบคุมเอกสาร / DOCUMENT CONTROL CENTER", "Document Control Center")} title={tx("ความพร้อมของหลักฐาน", "Evidence readiness")} lead={tx("การมีไฟล์อยู่ไม่เท่ากับการปฏิบัติตามข้อกำหนด Evidence Engine แยกการประเมินเป็นสามชั้น และจะไม่นับเอกสารที่อัปโหลดเข้ามาว่าเป็นหลักฐานที่ใช้ได้โดยอัตโนมัติ", "Having a file is not compliance. The Evidence Engine scores every item on three layers and never counts an upload as acceptable evidence automatically.")} />
+      <PageHead explain={["evidence-layers","readiness","evidence-guard"]} interpret="readiness" kicker={tx("ศูนย์ควบคุมเอกสาร / DOCUMENT CONTROL CENTER", "Document Control Center")} title={tx("ความพร้อมของหลักฐาน", "Evidence readiness")} lead={tx("การมีไฟล์อยู่ไม่เท่ากับการปฏิบัติตามข้อกำหนด Evidence Engine แยกการประเมินเป็นสามชั้น และจะไม่นับเอกสารที่อัปโหลดเข้ามาว่าเป็นหลักฐานที่ใช้ได้โดยอัตโนมัติ", "Having a file is not compliance. The Evidence Engine scores every item on three layers and never counts an upload as acceptable evidence automatically.")} />
 
       <Cells min={200} style={{ marginTop: 22 }}>
         <div className="cell" style={{ padding: 20 }}>

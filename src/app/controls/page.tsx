@@ -8,7 +8,7 @@ export default function ControlsPage() {
   const s = snap.controlStats;
   return (
     <div className="page page-wide">
-      <PageHead kicker={tx("ทดสอบการควบคุม / CONTROL TESTING", "Control Testing")} title={tx("ข้อผูกพันถูกปฏิบัติเพราะมีการควบคุม ไม่ใช่เพราะมีคนจำได้", "Obligations are met because a control runs, not because someone remembered")} lead={tx("Control / Test Engine ผูกการควบคุมเข้ากับข้อผูกพัน แล้วบันทึกผลทดสอบว่าการควบคุมทำงานจริงหรือไม่ — ประสิทธิผลคำนวณจากผลทดสอบล่าสุดเสมอ ไม่มีใครตั้งค่าเองได้ และการควบคุมที่ล้มเหลวจะเปิดช่องว่างโดยอัตโนมัติ", "The Control / Test Engine binds controls to obligations and records whether each control actually operated. Effectiveness is always derived from the latest test — nobody can set it by hand — and a failed control opens a gap automatically.")} />
+      <PageHead explain={["control-test"]} interpret="controls" kicker={tx("ทดสอบการควบคุม / CONTROL TESTING", "Control Testing")} title={tx("ข้อผูกพันถูกปฏิบัติเพราะมีการควบคุม ไม่ใช่เพราะมีคนจำได้", "Obligations are met because a control runs, not because someone remembered")} lead={tx("Control / Test Engine ผูกการควบคุมเข้ากับข้อผูกพัน แล้วบันทึกผลทดสอบว่าการควบคุมทำงานจริงหรือไม่ — ประสิทธิผลคำนวณจากผลทดสอบล่าสุดเสมอ ไม่มีใครตั้งค่าเองได้ และการควบคุมที่ล้มเหลวจะเปิดช่องว่างโดยอัตโนมัติ", "The Control / Test Engine binds controls to obligations and records whether each control actually operated. Effectiveness is always derived from the latest test — nobody can set it by hand — and a failed control opens a gap automatically.")} />
 
       <Cells min={150} style={{ marginTop: 22 }}>
         <Stat label={tx("การควบคุมทั้งหมด", "Controls")} value={s.total} size="md" sub={`${s.automated} ${tx("อัตโนมัติ", "automated")}`} />

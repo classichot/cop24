@@ -13,7 +13,7 @@ export default function PortfolioPage() {
 
   return (
     <div className="page page-wide">
-      <PageHead kicker={tx("พอร์ตโฟลิโอ / PORTFOLIO & ADVISOR CENTER", "Portfolio & Advisor Center")} title={tx("หลายหน่วยงาน หลายลูกค้า หน้าจอเดียว", "Many entities, many clients, one screen")} lead={tx("สำหรับที่ปรึกษาและเจ้าของพอร์ต: เรียงตามความเสี่ยงที่จะยื่นไม่ทันหรือยื่นแล้วถูกตีกลับ ไม่ใช่เรียงตามตัวอักษร — และใช้ได้กับทุกโดเมนที่ COP24 ดูแล", "For advisors and portfolio owners: sorted by the risk of missing a deadline or being rejected, not alphabetically — across every domain COP24 covers.")} />
+      <PageHead explain={["material-gap"]} kicker={tx("พอร์ตโฟลิโอ / PORTFOLIO & ADVISOR CENTER", "Portfolio & Advisor Center")} title={tx("หลายหน่วยงาน หลายลูกค้า หน้าจอเดียว", "Many entities, many clients, one screen")} lead={tx("สำหรับที่ปรึกษาและเจ้าของพอร์ต: เรียงตามความเสี่ยงที่จะยื่นไม่ทันหรือยื่นแล้วถูกตีกลับ ไม่ใช่เรียงตามตัวอักษร — และใช้ได้กับทุกโดเมนที่ COP24 ดูแล", "For advisors and portfolio owners: sorted by the risk of missing a deadline or being rejected, not alphabetically — across every domain COP24 covers.")} />
 
       <Cells min={170} style={{ marginTop: 22 }}>
         <Stat label={tx("หน่วยงานในพอร์ต", "Entities in portfolio")} value={14} size="md" />

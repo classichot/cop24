@@ -18,7 +18,7 @@ export default function GapsPage() {
 
   return (
     <div className="page page-wide">
-      <PageHead kicker={tx("ช่องว่างและการแก้ไข / GAP & REMEDIATION", "Gap & Remediation")} title={tx("ช่องว่างถูกค้นพบ ไม่ได้ถูกพิมพ์ — และไม่หายไปเองจนกว่าจะมีคนปิด", "Gaps are derived, not typed — and never vanish until a person closes them")} lead={tx("ทุกช่องว่างมาจากเครื่องยนต์ใดเครื่องยนต์หนึ่ง: หลักฐานที่ไม่ผ่านชั้นใดชั้นหนึ่ง การควบคุมที่ล้มเหลว กฎที่เปลี่ยน หรือการตรวจก่อนยื่น แต่ละรายการมีสาเหตุ แนวทางแก้ เจ้าของ และกำหนดเสร็จ", "Every gap comes from an engine: evidence failing a layer, a failed control, a regulatory change or a preflight check. Each carries a cause, a remediation, an owner and a due date.")} />
+      <PageHead explain={["material-gap"]} interpret="gaps" kicker={tx("ช่องว่างและการแก้ไข / GAP & REMEDIATION", "Gap & Remediation")} title={tx("ช่องว่างถูกค้นพบ ไม่ได้ถูกพิมพ์ — และไม่หายไปเองจนกว่าจะมีคนปิด", "Gaps are derived, not typed — and never vanish until a person closes them")} lead={tx("ทุกช่องว่างมาจากเครื่องยนต์ใดเครื่องยนต์หนึ่ง: หลักฐานที่ไม่ผ่านชั้นใดชั้นหนึ่ง การควบคุมที่ล้มเหลว กฎที่เปลี่ยน หรือการตรวจก่อนยื่น แต่ละรายการมีสาเหตุ แนวทางแก้ เจ้าของ และกำหนดเสร็จ", "Every gap comes from an engine: evidence failing a layer, a failed control, a regulatory change or a preflight check. Each carries a cause, a remediation, an owner and a due date.")} />
 
       <Cells min={150} style={{ marginTop: 22 }}>
         <Stat label={tx("เปิดอยู่", "Open")} value={open.length} size="md" />

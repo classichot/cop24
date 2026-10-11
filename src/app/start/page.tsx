@@ -20,7 +20,7 @@ export default function EasyStartPage() {
 
   return (
     <div className="page page-narrow">
-      <PageHead kicker={tx("เริ่มต้นใช้งาน / EASY START", "Getting started / EASY START")} title={tx("เล่าเรื่ององค์กรให้ฟัง แล้วเราจะบอกว่ากฎหมายอะไรบังคับใช้", "Tell us about the organisation and we'll say which rules bind")} lead={tx("คุณไม่ต้องรู้ว่าเข้าข่าย CoP, 56-1, PDPA, ราคาโอน หรือ Pillar Two — ตอบไม่กี่ข้อหรืออัปโหลดใบอนุญาต Applicability Engine จะวินิจฉัยทุกโดเมนพร้อมกันและอธิบายเหตุผล", "You don't need to know whether CoP, 56-1, PDPA, transfer pricing or Pillar Two applies — answer a few questions or upload a licence and the Applicability Engine diagnoses every domain at once, with reasons.")} />
+      <PageHead explain={["applicability"]} kicker={tx("เริ่มต้นใช้งาน / EASY START", "Getting started / EASY START")} title={tx("เล่าเรื่ององค์กรให้ฟัง แล้วเราจะบอกว่ากฎหมายอะไรบังคับใช้", "Tell us about the organisation and we'll say which rules bind")} lead={tx("คุณไม่ต้องรู้ว่าเข้าข่าย CoP, 56-1, PDPA, ราคาโอน หรือ Pillar Two — ตอบไม่กี่ข้อหรืออัปโหลดใบอนุญาต Applicability Engine จะวินิจฉัยทุกโดเมนพร้อมกันและอธิบายเหตุผล", "You don't need to know whether CoP, 56-1, PDPA, transfer pricing or Pillar Two applies — answer a few questions or upload a licence and the Applicability Engine diagnoses every domain at once, with reasons.")} />
       <hr className="hr" style={{ margin: "26px 0" }} />
 
       <div className="stack">
