@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import { appHelp, detectMode, feedbackOffline, legalOffline, systemPrompt, triageFeedback, citation, type ChatMessage, type Lang, type PaulAction, type PaulMode } from "@/core/paul/paul";
 import { preferredSources, searchPassages, type Hit, type PassageIndex } from "@/core/paul/retrieve";
 import type { UxContext } from "@/core/ux/context";
+import { requireAuth } from "@/lib/auth/token";
 
 /**
  * POST /api/paul — Paul's reply as newline-delimited JSON:
@@ -42,6 +43,8 @@ function provider(): { name: Provider; model: string } {
 interface Body { messages: ChatMessage[]; mode?: PaulMode; lang?: Lang; route?: string; ctx: UxContext }
 
 export async function POST(req: Request) {
+  const denied = await requireAuth(req);
+  if (denied) return denied;
   let body: Body;
   try { body = (await req.json()) as Body; } catch { return Response.json({ error: "invalid JSON" }, { status: 400 }); }
   const messages = (body.messages ?? []).filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string").slice(-16).map((m) => ({ role: m.role, content: m.content.slice(0, 4000) }));

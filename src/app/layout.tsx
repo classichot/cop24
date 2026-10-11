@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Archivo, Chakra_Petch } from "next/font/google";
 import "./globals.css";
 import "./ux.css";
@@ -28,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="th" className={`${archivo.variable} ${chakra.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <Script id="cop24-theme" strategy="beforeInteractive">{THEME_SCRIPT}</Script>
       </head>
       <body>
         <AppProvider>

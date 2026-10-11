@@ -1,5 +1,6 @@
 import { gradeSection, sectionPrompt, type BenchCase } from "@/core/report/benchmark";
 import { configuredReportModel, generate, reportRouting } from "@/lib/llm/server";
+import { requireAuth } from "@/lib/auth/token";
 
 /**
  * POST /api/report/draft — AI-written report sections for an authority report.
@@ -18,6 +19,8 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const denied = await requireAuth(req);
+  if (denied) return denied;
   let body: { sections?: BenchCase[] };
   try { body = await req.json(); } catch { return Response.json({ error: "invalid JSON" }, { status: 400 }); }
   const sections = (body.sections ?? []).slice(0, 12);

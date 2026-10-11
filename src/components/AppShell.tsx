@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { currentSession, serverAuth, signOut, type Session } from "@/lib/access";
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { useApp, type Mode, type Role, type Theme } from "@/state/AppState";
 import { Seg, Tag } from "./ui";
@@ -51,6 +52,7 @@ const NAV_ENGINE: NavItem[] = [
   { href: "/engine", th: "เครื่องยนต์หลัก COP24", en: "COP24 Core Engine" },
   { href: "/ux-standard", th: "มาตรฐาน UX 24 Series", en: "24 UX Standard" },
   { href: "/feedback", th: "ข้อเสนอแนะและการปรับปรุง", en: "Feedback & improvements" },
+  { href: "/host-desk", th: "โต๊ะผู้ดูแลเดโม", en: "Host desk" },
 ];
 
 /** Every menu item keeps a fixed number from its place in the full menu, so Easy mode never renumbers. */
@@ -91,8 +93,27 @@ const MoonIcon = () => (
   </svg>
 );
 
+/** Pages that render without the app chrome and without sign-in. */
+const PUBLIC_PAGES = ["/login"];
+
 export function AppShell({ children }: { children: ReactNode }) {
-  return <CopilotProvider><Shell>{children}</Shell><Paul /></CopilotProvider>;
+  const path = usePathname();
+  const router = useRouter();
+  const [session, setSession] = useState<Session | null | undefined>(undefined);
+  const isPublic = PUBLIC_PAGES.includes(path);
+  useEffect(() => {
+    queueMicrotask(() => {
+      const s = currentSession();
+      setSession(s);
+      if (!s && !isPublic) router.replace(`/login?next=${encodeURIComponent(path + location.search)}`);
+      // once real auth is switched on, a demo-era session without a signed token must sign in again
+      if (s && !s.token && !isPublic) serverAuth().then((c) => { if (c.configured) { signOut(); setSession(null); router.replace("/login"); } });
+    });
+  }, [path, isPublic, router]);
+  if (isPublic) return <>{children}</>;
+  // the sign-in gate: nothing of the workspace renders until a session exists
+  if (!session) return <div className="gate-wait" aria-busy="true"><span className="brand-square" aria-hidden="true" /> COP24</div>;
+  return <CopilotProvider><Shell session={session} onSignOut={() => { signOut(); setSession(null); router.replace("/login"); }}>{children}</Shell><Paul /></CopilotProvider>;
 }
 
 function CopilotButton() {
@@ -136,7 +157,7 @@ function useAdjustableNav() {
   return { width, collapsed, toggle, reset, nudge, handle: { onPointerDown, onPointerMove, onPointerUp, onPointerCancel: onPointerUp } };
 }
 
-function Shell({ children }: { children: ReactNode }) {
+function Shell({ children, session, onSignOut }: { children: ReactNode; session: Session; onSignOut: () => void }) {
   const { lang, setLang, role, setRole, mode, setMode, theme, setTheme, showAll, setShowAll, entityId, setEntityId, data, L, tx, snap } = useApp();
   const advancedOpen = mode !== "easy" || showAll;
   const entity = data.entities.find((e) => e.id === entityId) ?? data.entities[0];
@@ -180,11 +201,12 @@ function Shell({ children }: { children: ReactNode }) {
           ]} />
         </div>
         <div className="hdr-user">
-          <div className="avatar">{USER.initials}</div>
+          <div className="avatar">{(session.name || L(USER.name)).split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase()}</div>
           <div style={{ fontSize: 12, lineHeight: 1.3 }}>
-            <div style={{ fontWeight: 600 }}>{L(USER.name)}</div>
-            <div className="muted tiny">{L(USER.org)}</div>
+            <div style={{ fontWeight: 600 }}>{session.name || L(USER.name)}</div>
+            <div className="muted tiny">{session.demo ? tx(`เดโม ${session.demo.id} · ถึง ${session.expires.slice(0, 10)}`, `Demo ${session.demo.id} · until ${session.expires.slice(0, 10)}`) : session.email}</div>
           </div>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={onSignOut} title={tx("ออกจากระบบ", "Sign out")}>{tx("ออก", "Sign out")}</button>
         </div>
       </header>
 

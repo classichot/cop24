@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useApp } from "@/state/AppState";
 import type { PaulAction, PaulMode, Triage } from "@/core/paul/paul";
 import { addFeedback, updateFeedback } from "@/lib/feedback";
+import { authHeaders } from "@/lib/access";
 import { uxSignal, useUx } from "./useUx";
 
 /* ═══════════════ Paul — the COP24 chat assistant ═══════════════
@@ -69,7 +70,7 @@ export function Paul() {
     setBusy(true);
     let meta: Partial<Msg> = {};
     try {
-      const res = await fetch("/api/paul", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ messages: history.map((m) => ({ role: m.role, content: m.content })), mode: pick === "auto" ? undefined : pick, lang, route: path, ctx }) });
+      const res = await fetch("/api/paul", { method: "POST", headers: { "content-type": "application/json", ...authHeaders() }, body: JSON.stringify({ messages: history.map((m) => ({ role: m.role, content: m.content })), mode: pick === "auto" ? undefined : pick, lang, route: path, ctx }) });
       if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
       const reader = res.body.getReader();
       const dec = new TextDecoder();
@@ -100,7 +101,7 @@ export function Paul() {
       addFeedback({ id, at: new Date().toISOString(), text: q, route: path, role, triage: meta.triage, forwarded: false, status: "open" });
       patchLast((m) => ({ ...m, feedbackId: id }));
       try {
-        const r = await fetch("/api/paul/feedback", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text: q, route: path, lang, role }) });
+        const r = await fetch("/api/paul/feedback", { method: "POST", headers: { "content-type": "application/json", ...authHeaders() }, body: JSON.stringify({ text: q, route: path, lang, role }) });
         const j = (await r.json()) as { forwarded: boolean; url?: string };
         updateFeedback(id, { forwarded: j.forwarded, url: j.url });
         patchLast((m) => ({ ...m, forwarded: { ok: j.forwarded, url: j.url } }));

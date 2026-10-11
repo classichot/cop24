@@ -1,4 +1,5 @@
 import { triageFeedback } from "@/core/paul/paul";
+import { requireAuth } from "@/lib/auth/token";
 
 /**
  * POST /api/paul/feedback — forwards a feedback item to the team's GitHub issues so it can be
@@ -12,6 +13,8 @@ export const dynamic = "force-dynamic";
 interface Body { text: string; route?: string; lang?: "th" | "en"; role?: string; conversation?: string }
 
 export async function POST(req: Request) {
+  const denied = await requireAuth(req);
+  if (denied) return denied;
   let body: Body;
   try { body = (await req.json()) as Body; } catch { return Response.json({ error: "invalid JSON" }, { status: 400 }); }
   const text = String(body.text ?? "").trim().slice(0, 4000);
