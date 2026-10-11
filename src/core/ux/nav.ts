@@ -3,9 +3,9 @@
  * when it tells people where to click — a test keeps it identical to the menu in AppShell.
  */
 export const NAV_ORDER = [
-  "/", "#ask", "/missions", "/my-work", "/outputs", "/agi", "/factory",
+  "/", "#ask", "/missions", "/my-work", "/outputs", "/agi", "/factory", "/journey",
   "/ingest", "/start", "/evidence", "/calendar", "/gaps",
   "/studio", "/preflight", "/report-quality", "/xray", "/portfolio",
-  "/universe", "/obligations", "/corpus", "/controls", "/changes", "/audit", "/packs", "/engine", "/ux-standard", "/feedback", "/host-desk",
+  "/universe", "/obligations", "/corpus", "/controls", "/changes", "/audit", "/packs", "/engine", "/ux-standard", "/feedback", "/host-desk", "/manual",
 ];
 export const navNumber = (href: string) => { const i = NAV_ORDER.indexOf(href); return i < 0 ? "" : String(i + 1).padStart(2, "0"); };

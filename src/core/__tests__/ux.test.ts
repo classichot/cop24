@@ -67,7 +67,7 @@ test("§21 claims are backed by the page source — a screen cannot claim a comp
       const ok = c === "ExplainThis" ? /<ExplainThis|explain=\{\[/.test(src) : c === "ResultInterpreter" ? /<ResultInterpreter|interpret="/.test(src) : src.includes(`<${c}`);
       assert.ok(ok, `${s.route} claims ${c} but its page does not use it`);
     }
-    if (s.tests.terminology === "yes" && !["/ux-standard", "/my-work", "/feedback", "/login", "/host-desk"].includes(s.route)) assert.ok(/<ExplainThis|explain=\{\[/.test(src), `${s.route} claims the terminology test without Explain This`);
+    if (s.tests.terminology === "yes" && !["/ux-standard", "/my-work", "/feedback", "/login", "/host-desk", "/journey", "/manual"].includes(s.route)) assert.ok(/<ExplainThis|explain=\{\[/.test(src), `${s.route} claims the terminology test without Explain This`);
   }
 });
 

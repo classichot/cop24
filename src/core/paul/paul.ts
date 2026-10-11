@@ -4,6 +4,7 @@ import type { UxContext } from "../ux/context";
 import { GLOSSARY_IDS, explain } from "../ux/guidance";
 import { understand } from "../ux/intent";
 import { navNumber } from "../ux/nav";
+import { APP_JOURNEY } from "../ux/app-journey";
 import type { Hit } from "./retrieve";
 
 /**
@@ -87,6 +88,16 @@ export function appHelp(question: string, ctx: UxContext, lang: Lang): { text: s
     lines.push("", `**${L(screen.name)}** — ${L(screen.experience)}`);
     actions.push({ label: L(screen.name), href: screen.route });
   }
+  // "where do I start / what's next / where does it end" → the app journey; "show me / manual" → demo mode
+  if (/\b(start|begin|first|next|finish|journey|order|step)\b|เริ่ม|ต่อไป|ถัดไป|จบ|ขั้นตอน|เส้นทาง|ลำดับ/i.test(question)) {
+    lines.push(lang === "th" ? "เส้นทางการใช้งาน — เริ่มจากบนลงล่าง:" : "The app journey — top to bottom:");
+    APP_JOURNEY.forEach((st, i) => lines.push(`${i + 1}. ${st.kind === "start" ? (lang === "th" ? "**เริ่ม** " : "**START** ") : st.kind === "finish" ? (lang === "th" ? "**จบ** " : "**FINISH** ") : ""}${navNumber(st.route)} — ${L(st.stage)}: ${L(st.doHere)}`));
+    actions.push({ label: lang === "th" ? "เปิดเส้นทางการใช้งาน" : "Open the app journey", href: "/journey" });
+  }
+  if (/\b(demo|tour|manual|show me|tutorial)\b|เดโม|ทัวร์|คู่มือ|สาธิต/i.test(question)) {
+    lines.push("", lang === "th" ? "กด **▶ เดโม** ด้านบนเพื่อดูทัวร์นำชมที่พาไปทุกหน้าและสาธิตให้ หรือเปิด **คู่มือผู้ใช้** ที่มีปุ่ม “ดูให้ฉันดู” ทุกหัวข้อ" : "Press **▶ Demo** at the top for a guided tour that walks through every page and demonstrates it, or open the **User manual**, where every section has a “Show me” button.");
+    actions.push({ label: lang === "th" ? "คู่มือผู้ใช้" : "User manual", href: "/manual" });
+  }
   if (!lines.length) {
     lines.push(lang === "th"
       ? "บอกผมได้เลยว่าอยากทำอะไรให้สำเร็จ เช่น “เตรียมรายงาน CoP ขั้นต้น” “ขาดเอกสารอะไร” หรือ “กำหนดยื่นครั้งถัดไปเมื่อไร” — หรือกด 24 Copilot (Ctrl+K) เพื่อให้วางแผนให้ทั้งภารกิจ"
@@ -106,6 +117,7 @@ export function appKnowledge(ctx: UxContext, lang: Lang): string {
   const missions = MISSIONS.map((m) => { const v = viewMission(m, ctx); return `- ${L(v.title)} [${m.id}] → ${m.module}; status ${v.status}; next: ${v.nextStep ? L(v.nextStep.label) : "done"}`; }).join("\n");
   return [
     `Active entity: ${L(ctx.entityName)} · role: ${ctx.role} · evidence readiness ${ctx.readiness}% (${ctx.evidenceProven}/${ctx.evidenceRequired}) · open gaps ${ctx.openGaps} (${ctx.materialGaps} material) · release gate ${ctx.gate}/4 ${L(ctx.gateLabel)} · conflicts ${ctx.conflicts}${ctx.nextDeadline ? ` · next deadline ${L(ctx.nextDeadline.label)} in ${ctx.nextDeadline.days} days` : ""}`,
+    `App journey (start → finish): ${APP_JOURNEY.map((st) => `${navNumber(st.route)} ${L(st.stage)}`).join(" → ")}. The left menu marks these START, 2–7, FINISH; /journey shows the map. “▶ Demo” in the header starts a guided demo tour; /manual is the user manual.`,
     "Global: 24 Copilot button in the header and Ctrl+K plans any goal; a “Next” strip on every screen says what to do next; ⓘ buttons explain terms; header switches role (Owner/Advisor/Executive/Contributor), mode (Easy/Pro/AGI), language and light/dark theme. Easy mode hides expert modules under “All modules ▾”.",
     `Screens:\n${screens}`,
     `Missions:\n${missions}`,
@@ -137,7 +149,7 @@ export function systemPrompt(mode: PaulMode, ctx: UxContext, lang: Lang, hits: H
   const language = lang === "th" ? "Reply in Thai unless the user writes in English." : "Reply in English unless the user writes in Thai.";
   const persona = `You are Paul, the assistant inside COP24 — a Thai compliance platform that prepares Energy Regulatory Commission (ERC) Code of Practice (CoP) reports for power plants. ${language} Be concise and practical: short paragraphs or numbered steps, no filler.`;
   if (mode === "help") return [persona,
-    "Job: help the user use COP24. Answer only from the app description below. Name screens by their menu number and name (e.g. “06 Data preparation”) and mention the 24 Copilot when a goal spans several screens. If something does not exist in the app, say so plainly rather than inventing a feature.",
+    `Job: help the user use COP24. Answer only from the app description below. Name screens by their menu number and name (e.g. “${navNumber("/ingest")} Data preparation”) and mention the 24 Copilot when a goal spans several screens. If something does not exist in the app, say so plainly rather than inventing a feature.`,
     appKnowledge(ctx, lang)].join("\n\n");
   if (mode === "legal") return [persona,
     "Job: act as a legal consultant for CoP projects, grounded strictly in the ERC passages below. Rules:",

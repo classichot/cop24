@@ -160,6 +160,16 @@ Bot / AI Team / Cooperative Swarm, Draft / Supervised / Autopilot, a Mission Pre
 gates, a cost governor, triggers and a SHA-256 hash-chained audit trail. The engine is in
 `src/core/agi/`; see `docs/11-agi-mode-mission-catalog.md`.
 
+## App journey, demo mode and user manual
+
+`/journey` maps the one path through COP24 for a CoP report: the start menu (01 Home), each next
+menu in order, and the finish menu (05 Reports & outputs). The left menu marks those items START ·
+2–7 · FINISH, and every page on the path shows the menu before it and the menu after it. **▶ Demo**
+in the header (or **Watch the demo** on the sign-in page) runs a guided tour across the real pages
+that spotlights each control and performs the key actions itself. `/manual` is the bilingual,
+printable user manual; every section has a **Show me** button into the demo. `npm run manual:md`
+exports it to `docs/12-user-manual.md`.
+
 ## Paul — chat assistant
 
 The “Ask Paul” button on every screen helps people use the app, answers CoP legal questions with

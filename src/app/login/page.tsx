@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useApp } from "@/state/AppState";
 import { HostDesk } from "@/components/auth/HostDesk";
 import { AiReadyBadge } from "@/components/ux/AiStatus";
+import { startDemo } from "@/components/ux/DemoTour";
 import { LOGIN_ROLES } from "@/data/login-roles";
 import { allowedRoles, currentSession, fmtDate, gateFromUrl, saveSession, serverAuth, signIn, type Gate, type Role } from "@/lib/access";
 
@@ -46,7 +47,9 @@ export default function LoginPage() {
   const allowed = guest ? allowedRoles(guest.mode) : LOGIN_ROLES.map((r) => r.id);
   const r = LOGIN_ROLES.find((x) => x.id === role)!;
 
-  const enter = (token?: string) => {
+  const enter = (token?: string, demo = false) => {
+    // "Watch the demo" signs in the same way, then demo mode takes over from the home page
+    if (demo) startDemo();
     saveSession({ email: email || guest?.email || r.persona.email, role, name: guest?.guest || r.persona.name, expires: guest?.expires ?? sessionExpiry(), token, demo: guest ? { id: guest.id, guest: guest.guest, org: guest.org } : undefined });
     setRole(role);
     router.replace(next);
@@ -107,13 +110,14 @@ export default function LoginPage() {
           <form className="login-form" onSubmit={async (e) => {
             e.preventDefault();
             setError("");
-            if (guest) return enter(gate?.signed ? gate.token : undefined);
-            if (!server) return enter();
+            const demo = (e.nativeEvent as SubmitEvent).submitter?.getAttribute("data-demo") === "1";
+            if (guest) return enter(gate?.signed ? gate.token : undefined, demo);
+            if (!server) return enter(undefined, demo);
             setBusy(true);
             const res = await signIn(email || r.persona.email, password, role);
             setBusy(false);
             if (res.ok === false) { setError(res.reason === "wrong_password" ? tx("อีเมลและรหัสผ่านไม่ตรงกัน", "That email and password do not match.") : res.reason === "rate_limited" ? (res.message ?? tx("ลองมากเกินไป รอ 1 นาที", "Too many attempts — wait a minute.")) : tx("ติดต่อบริการเข้าสู่ระบบไม่ได้", "The sign-in service cannot be reached.")); return; }
-            enter(res.token);
+            enter(res.token, demo);
           }}>
             <div className="field" style={{ flex: 1, minWidth: 220, margin: 0 }}>
               <label>{tx("อีเมล", "Email")}</label>
@@ -126,6 +130,7 @@ export default function LoginPage() {
               </div>
             )}
             <button className="btn btn-primary" type="submit" disabled={busy} style={{ minHeight: 36 }}>{busy ? tx("กำลังเข้าสู่ระบบ…", "Signing in…") : guest ? tx(`เข้าเดโมในชื่อ ${guest.guest} · ${L(r.name)}`, `Enter demo as ${guest.guest} · ${L(r.name)}`) : tx(`เข้าสู่ระบบในบทบาท ${L(r.name)}`, `Sign in as ${L(r.name)}`)}</button>
+            <button className="btn btn-secondary btn-plain login-demo" type="submit" data-demo="1" disabled={busy} style={{ minHeight: 36 }} title={tx("เข้าสู่ระบบแล้วให้ทัวร์นำชมพาดูทุกขั้นตอน", "Sign in, then a guided tour walks you through every step")}>▶ {tx("ดูเดโมนำชม", "Watch the demo")}</button>
             {error && <div className="ink-bad small" style={{ width: "100%" }}>{error}</div>}
             <div className="muted tiny" style={{ width: "100%" }}>{guest ? tx(`ลิงก์เดโม ${guest.id} · หมดอายุ ${fmtDate(guest.expires)} · คุณใช้งานในชื่อ ${r.persona.name}`, `Demo link ${guest.id} · expires ${fmtDate(guest.expires)} · you work as ${r.persona.name}, ${r.persona.role}.`) : server ? tx(`รหัสผ่านตรวจโดยเซิร์ฟเวอร์ COP24 · คุณใช้งานในชื่อ ${r.persona.name}`, `Password checked by the COP24 server · you work as ${r.persona.name}, ${r.persona.role}.`) : tx(`สภาพแวดล้อมเดโม — ยังไม่มีการยืนยันตัวตนจริง คุณเข้าใช้ในชื่อ ${r.persona.name}`, `Demo environment — no real authentication yet. You sign in as ${r.persona.name}, ${r.persona.role}.`)}</div>
           </form>

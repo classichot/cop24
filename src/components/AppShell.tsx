@@ -12,6 +12,8 @@ import { NextStepBar } from "./ux/parts";
 import { PageTools } from "./ux/PageTools";
 import { Paul } from "./ux/Paul";
 import { AiReadyBadge, useAiStatus } from "./ux/AiStatus";
+import { DemoTour, startDemo } from "./ux/DemoTour";
+import { APP_JOURNEY, helperOf, journeyIndex, journeyMarker, journeyStage } from "@/core/ux/app-journey";
 import { USER } from "@/data/tenant";
 
 interface NavItem { href: string; th: string; en: string; sub?: string }
@@ -27,6 +29,8 @@ const NAV_PRIMARY: NavItem[] = [
   { href: "/agi", th: "AGI · แคตตาล็อกภารกิจ 108", en: "AGI · Mission catalog (108)" },
   // report generation is a primary job, so it stays visible in Easy mode
   { href: "/factory", th: "สร้างรายงาน", en: "Report generation" },
+  // the start-to-finish map of the app, so a new user always knows which menu comes next
+  { href: "/journey", th: "เส้นทางการใช้งาน", en: "App journey" },
 ];
 /** All modules — the complete professional application, grouped. */
 const NAV_WORK: NavItem[] = [
@@ -55,11 +59,15 @@ const NAV_ENGINE: NavItem[] = [
   { href: "/ux-standard", th: "มาตรฐาน UX 24 Series", en: "24 UX Standard" },
   { href: "/feedback", th: "ข้อเสนอแนะและการปรับปรุง", en: "Feedback & improvements" },
   { href: "/host-desk", th: "โต๊ะผู้ดูแลเดโม", en: "Host desk" },
+  { href: "/manual", th: "คู่มือผู้ใช้", en: "User manual" },
 ];
 
 /** Every menu item keeps a fixed number from its place in the full menu, so Easy mode never renumbers. */
 const NAV_ORDER = [...NAV_PRIMARY, ...NAV_WORK, ...NAV_REPORT, ...NAV_ENGINE].map((it) => it.href);
 const navNum = (href: string) => String(NAV_ORDER.indexOf(href) + 1).padStart(2, "0");
+const NAV_ALL = [...NAV_PRIMARY, ...NAV_WORK, ...NAV_REPORT, ...NAV_ENGINE];
+/** A menu item as the left menu shows it — number and name — for pages that point to other menus. */
+export const menuItem = (href: string) => { const it = NAV_ALL.find((x) => x.href === href); return it ? { num: navNum(href), th: it.th, en: it.en } : null; };
 
 /**
  * Which menu items use, or would need, the LLM. "live": the screen calls the connected model
@@ -87,6 +95,59 @@ function NavAi({ href }: { href: string }) {
   return <span className={`nav-ai nav-ai-${a.kind}${on ? " on" : ""}`} title={title} aria-label={title}>AI</span>;
 }
 
+/** The app-journey marker on a menu item: START, its step number, or FINISH. */
+function NavJourney({ href }: { href: string }) {
+  const { L, tx } = useApp();
+  const m = journeyMarker(href);
+  if (!m) return null;
+  const s = journeyStage(href);
+  const label = s.kind === "start" ? tx("เริ่ม", "START") : s.kind === "finish" ? tx("จบ", "FINISH") : m;
+  const title = tx("เส้นทางการใช้งาน", "App journey") + " · " + (s.kind === "start" ? tx("เมนูเริ่มต้น", "start menu") : s.kind === "finish" ? tx("เมนูสุดท้าย", "finish menu") : tx(`ขั้นที่ ${m} จาก ${APP_JOURNEY.length}`, `step ${m} of ${APP_JOURNEY.length}`)) + " — " + L(s.stage);
+  return <span className={`nav-jr nav-jr-${s.kind}`} title={title} aria-label={title}>{label}</span>;
+}
+
+/** Where this page sits on the app journey: the menu before it, this one, and the menu after it. */
+function JourneyStrip() {
+  const path = usePathname();
+  const { L, tx } = useApp();
+  const i = journeyIndex(path);
+  const helper = i < 0 ? helperOf(path) : undefined;
+  if (i < 0 && !helper) return null;
+  const name = (href: string) => { const m = menuItem(href); return m ? `${m.num} ${L(m)}` : href; };
+  if (helper) {
+    const hi = journeyIndex(helper.route);
+    return (
+      <div className="jstrip">
+        <Link href="/journey" className="jstrip-k">{tx("เส้นทาง", "Journey")}</Link>
+        <span className="jstrip-t">{tx(`เมนูนี้ช่วยขั้นที่ ${hi + 1}: `, `This menu supports step ${hi + 1}: `)}<b>{L(helper.stage)}</b></span>
+        <Link href={helper.route} className="jstrip-go">{tx("กลับสู่เส้นทาง", "Back to the journey")}: {name(helper.route)} →</Link>
+      </div>
+    );
+  }
+  const s = APP_JOURNEY[i];
+  const prev = APP_JOURNEY[i - 1], next = APP_JOURNEY[i + 1];
+  return (
+    <div className={`jstrip jstrip-${s.kind}`}>
+      <Link href="/journey" className="jstrip-k">{tx("เส้นทาง", "Journey")}</Link>
+      <span className={`nav-jr nav-jr-${s.kind}`}>{s.kind === "start" ? tx("เมนูเริ่มต้น", "START MENU") : s.kind === "finish" ? tx("เมนูสุดท้าย", "FINISH MENU") : tx(`ขั้น ${i + 1}/${APP_JOURNEY.length}`, `STEP ${i + 1}/${APP_JOURNEY.length}`)}</span>
+      <span className="jstrip-t"><b>{L(s.stage)}</b> · <span className="muted">{tx("ไปต่อเมื่อ", "Move on when")}: {L(s.doneWhen)}</span></span>
+      {prev && <Link href={prev.route} className="jstrip-prev">← {name(prev.route)}</Link>}
+      {next ? <Link href={next.route} className="jstrip-go">{tx("ต่อไป", "Next")}: {name(next.route)} →</Link> : <span className="jstrip-end">✓ {tx("ปลายทางของเส้นทาง", "End of the journey")}</span>}
+    </div>
+  );
+}
+
+/** Header entry to demo mode and the user manual. */
+function DemoButtons() {
+  const { tx } = useApp();
+  return (
+    <div className="hdr-group demo-btns">
+      <button type="button" className="btn btn-ghost btn-sm demo-start" onClick={() => startDemo()} title={tx("ทัวร์นำชมที่พาไปทุกหน้าและสาธิตให้", "A guided tour that walks through the app and demonstrates it")}>▶ {tx("เดโม", "Demo")}</button>
+      <Link href="/manual" className="btn btn-ghost btn-sm">{tx("คู่มือ", "Manual")}</Link>
+    </div>
+  );
+}
+
 function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
   const path = usePathname();
   const { L } = useApp();
@@ -101,7 +162,7 @@ function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
         const active = it.href === "/" ? path === "/" : path.startsWith(it.href);
         return (
           <Link key={it.href} href={it.href} className={`nav-btn${active ? " active" : ""}`} aria-current={active ? "page" : undefined} title={L({ th: it.th, en: it.en })}>
-            <span className="nav-line"><span className="nav-num">{navNum(it.href)}</span><span className="nav-label">{L({ th: it.th, en: it.en })}</span><NavAi href={it.href} /></span>
+            <span className="nav-line"><span className="nav-num">{navNum(it.href)}</span><span className="nav-label">{L({ th: it.th, en: it.en })}</span><NavJourney href={it.href} /><NavAi href={it.href} /></span>
           </Link>
         );
       })}
@@ -141,7 +202,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   if (isPublic) return <>{children}</>;
   // the sign-in gate: nothing of the workspace renders until a session exists
   if (!session) return <div className="gate-wait" aria-busy="true"><span className="brand-square" aria-hidden="true" /> COP24</div>;
-  return <CopilotProvider><Shell session={session} onSignOut={() => { signOut(); setSession(null); router.replace("/login"); }}>{children}</Shell><Paul /></CopilotProvider>;
+  return <CopilotProvider><Shell session={session} onSignOut={() => { signOut(); setSession(null); router.replace("/login"); }}>{children}</Shell><Paul /><DemoTour /></CopilotProvider>;
 }
 
 function CopilotButton() {
@@ -202,6 +263,7 @@ function Shell({ children, session, onSignOut }: { children: ReactNode; session:
           <div className="brand-sub">{tx("Compliance ERP · เครื่องยนต์ร่วมของ 24 Series", "Compliance ERP · the 24 Series engine")}</div>
         </div>
         <CopilotButton />
+        <DemoButtons />
         <div className="hdr-group">
           <span className="hdr-label">{tx("บทบาท", "Role")}</span>
           <Seg<Role> name="role" value={role} onChange={setRole} options={[
@@ -286,6 +348,7 @@ function Shell({ children, session, onSignOut }: { children: ReactNode; session:
         <main className="main">
           <ComplexityGuard />
           <PageTools />
+          <JourneyStrip />
           <NextStepBar />
           {children}
         </main>

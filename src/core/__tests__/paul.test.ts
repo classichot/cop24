@@ -67,6 +67,11 @@ test("help: Paul answers from the app itself and links to the right screen", () 
   const sys = systemPrompt("help", ctx, "en", []);
   assert.match(sys, /Data preparation/);
   assert.match(sys, /do not exist|does not exist|say so plainly/i, "Paul must not invent features");
+  assert.match(sys, /App journey \(start → finish\): 01 /, "Paul knows the start-to-finish path");
+  const j = appHelp("where do I start and which menu is the finish?", ctx, "en");
+  assert.match(j.text, /\*\*START\*\* 01[\s\S]*\*\*FINISH\*\* 05/);
+  assert.ok(j.actions.some((x) => x.href === "/journey"));
+  assert.ok(appHelp("is there a demo or a manual?", ctx, "en").actions.some((x) => x.href === "/manual"));
 });
 
 test("feedback: triaged into category, severity, screen and the related UX test", () => {

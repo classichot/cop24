@@ -35,6 +35,8 @@ export const PLAYBOOKS: Record<string, Playbook> = {
   "/engine": { steps: [t("ดูเครื่องยนต์ 9 ตัวและตัวชี้วัดสด", "Review the nine engines and live metrics"), t("ตามการไหลของข้อมูลจากสแนปช็อต", "Follow the data flow from the snapshot")] },
   "/ux-standard": { steps: [t("ดูผลการทดสอบ 7 ข้อของทุกหน้าจอ", "Review the seven tests for every screen"), t("เปิดหน้าจอที่มีผล “บางส่วน” เพื่อปรับปรุง", "Open screens marked partial to improve them")] },
   "/feedback": { steps: [t("บอก Paul ว่าอะไรควรปรับปรุง (3 · ข้อเสนอแนะ)", "Tell Paul what should improve (3 · Feedback)"), t("ดูรายการปรับปรุงที่เรียงตามผลกระทบ", "Review the backlog ranked by impact"), t("ทำเครื่องหมายเมื่อปรับปรุงแล้ว", "Mark items improved when done")] },
+  "/journey": { steps: [t("เริ่มที่เมนูที่มีป้าย “เริ่ม”", "Begin at the menu marked START"), t("ทำตามที่ระบุใน “ทำอะไรที่นี่” จนถึงเงื่อนไข “ไปขั้นถัดไปเมื่อ”", "Do what “What you do here” says until “Move on when” is met"), t("ทำเครื่องหมายว่าเสร็จ แล้วกดไปเมนูถัดไป", "Tick the stage done and go to the next menu"), t("จบที่เมนูที่มีป้าย “จบ” — ลงนามและยื่น", "Finish at the menu marked FINISH — sign and file")], tips: [t("ทุกหน้าบนเส้นทางมีแถบบอกเมนูก่อนหน้าและเมนูถัดไป", "Every page on the path has a strip showing the previous and next menu")] },
+  "/manual": { steps: [t("เลือกหัวข้อจากสารบัญ", "Pick a section from the contents"), t("กด “ดูให้ฉันดู” ให้โหมดเดโมพาไปที่หน้าจอนั้น", "Press “Show me” and demo mode takes you to that screen"), t("กดพิมพ์เพื่อบันทึกเป็น PDF", "Press Print to save it as a PDF")] },
   "/host-desk": { steps: [t("ปลดล็อกด้วย PIN ผู้ดูแล", "Unlock with the host PIN"), t("กรอกชื่อผู้เข้าชม บทบาท และจำนวนวัน (สูงสุด 45)", "Enter the guest, roles and days (max 45)"), t("สร้างลิงก์ แล้วส่งทางอีเมลหรือ LINE", "Mint the link and send it by email or LINE"), t("เพิกถอนลิงก์เมื่อไม่ใช้แล้ว", "Revoke links that are no longer needed")] },
 };
 
@@ -46,5 +48,5 @@ export const ROUTE_TERMS: Record<string, GlossaryId[]> = {
   "/studio": ["evidence-guard", "claim-ledger"], "/preflight": ["preflight", "gate"], "/report-quality": ["claim-ledger", "gate"], "/xray": ["cop"],
   "/portfolio": ["material-gap"], "/universe": ["applicability", "obligation"], "/obligations": ["obligation", "applicability"], "/corpus": ["rulepack", "applicability"],
   "/controls": ["control-test"], "/changes": ["reg-change"], "/audit": ["rulepack"], "/packs": ["rulepack"], "/engine": ["applicability", "evidence-layers", "rulepack"],
-  "/ux-standard": [], "/feedback": [], "/host-desk": [],
+  "/ux-standard": [], "/feedback": [], "/host-desk": [], "/journey": [], "/manual": [],
 };

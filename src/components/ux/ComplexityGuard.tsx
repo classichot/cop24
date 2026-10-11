@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { demoActive } from "./DemoTour";
 import { useApp } from "@/state/AppState";
 import { detectStruggle, SIGNAL_LABEL, type GuardEvent, type GuardResult } from "@/core/ux/guard";
 import { useUx } from "./useUx";
@@ -30,7 +31,8 @@ export function ComplexityGuard() {
       let snoozed = 0;
       try { snoozed = Number(sessionStorage.getItem(SNOOZE) ?? 0); } catch {}
       const now = Date.now();
-      if (now < snoozed) { setResult(null); return; }
+      // the demo hops between pages on purpose; that is not someone struggling
+      if (now < snoozed || demoActive()) { setResult(null); return; }
       setResult(detectStruggle(load(), now, lastActivity.current || now));
     };
     const push = (e: GuardEvent) => { save([...load(), e]); evaluate(); };
@@ -38,7 +40,7 @@ export function ComplexityGuard() {
     let last = 0;
     const onActive = () => { const n = Date.now(); if (n - last > 2000) { last = n; lastActivity.current = n; } };
     lastActivity.current = Date.now();
-    push({ kind: "visit", route: path, at: Date.now() });
+    if (demoActive()) evaluate(); else push({ kind: "visit", route: path, at: Date.now() });
     window.addEventListener("cop24:ux", onSignal);
     window.addEventListener("pointermove", onActive);
     window.addEventListener("keydown", onActive);
