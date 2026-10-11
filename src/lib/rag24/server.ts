@@ -1,4 +1,6 @@
 import { Rag24Integration, type IntegrationResult, type IntegrationStage, type IntegrationWorkflow } from "./sdk/index";
+import { AGI_SITES } from "@/data/agi-sites";
+import { ENTITIES } from "@/data/tenant";
 
 /**
  * COP24 ↔ RAG24 — server side only. RAG24 supplies approved, permission-checked evidence; COP24 keeps
@@ -51,13 +53,17 @@ function adapter(): Rag24Integration | null {
   return INST.rag;
 }
 
+const entityMap = (): Record<string, string> => { try { return JSON.parse(process.env.RAG24_ENTITY_MAP ?? "{}") as Record<string, string>; } catch { return {}; } };
+
 /** The RAG24 entity grant for a COP24 entity: RAG24_ENTITY_MAP when set, else the same id. */
 export function rag24Entity(entityId: string): string {
-  try {
-    const map = JSON.parse(process.env.RAG24_ENTITY_MAP ?? "{}") as Record<string, string>;
-    if (typeof map[entityId] === "string" && map[entityId]) return map[entityId];
-  } catch {}
-  return entityId;
+  const map = entityMap();
+  return typeof map[entityId] === "string" && map[entityId] ? map[entityId] : entityId;
+}
+
+/** The plants this COP24 workspace holds (entities and mission sites), plus any mapped ids. */
+function workspaceEntities(): Set<string> {
+  return new Set([...ENTITIES.map((e) => e.id), ...AGI_SITES.map((s) => s.id), ...Object.keys(entityMap())]);
 }
 
 export type Rag24Status = IntegrationResult["status"] | "not_configured";
@@ -75,6 +81,9 @@ export async function rag24Evidence(workflow: IntegrationWorkflow, entityId: str
   if (!c.configured) return { status: "not_configured", reason: "rag24_not_configured", stage: "disabled", passages: [], warnings: [] };
   const rag = adapter();
   if (!rag) return { status: "disabled", reason: "integration_disabled", stage: c.stage, passages: [], warnings: [] };
+  // only this workspace's plants: an unknown entity would be refused by RAG24 and count toward the
+  // circuit breaker, pausing the connection for every user of this instance
+  if (!workspaceEntities().has(entityId)) return { status: "disabled", reason: "entity_not_in_workspace", stage: c.stage, passages: [], warnings: [] };
   const today = new Date().toISOString().slice(0, 10);
   const r = await rag.evidence(workflow, {
     entity_id: rag24Entity(entityId),

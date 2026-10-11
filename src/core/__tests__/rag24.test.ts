@@ -70,6 +70,17 @@ test("search pilot: approved passages come back with provenance; the entity come
   assert.equal(await rag24Reachable(), true);
 });
 
+test("only this workspace's plants are sent, so unknown ids cannot trip the circuit breaker for everyone", async () => {
+  const before = seen.length;
+  for (let i = 0; i < 5; i++) {
+    const r = await rag24Evidence("search", "someone-elses-plant", "รายงาน");
+    assert.equal(r.reason, "entity_not_in_workspace");
+  }
+  assert.equal(seen.length, before, "nothing reached RAG24");
+  assert.equal((await rag24Evidence("search", "lopburi-2", "รายงาน")).status, "evidence_available", "real plants still work");
+  assert.equal((await rag24Evidence("search", "demo-biomass", "รายงาน")).status, "evidence_available", "mission sites count as plants");
+});
+
 test("search pilot never runs report workflows", async () => {
   const before = seen.length;
   const r = await rag24Evidence("report_generation", "lopburi-1", "รายงานผลการปฏิบัติตาม");
