@@ -179,6 +179,11 @@ cites RAG24 passages beside COP24's own corpus, and report drafting attaches RAG
 It is off unless `RAG24_URL`, `RAG24_SERVICE_KEY` and `RAG24_STAGE` are set (see `.env.example`);
 when RAG24 is off or down COP24 behaves exactly as before.
 
+With `RAG24_STAGE=workflows` (RAG24 hosted with durable storage, see RAG24's `deploy/render/README.md`),
+Report generation, Report Studio and Preflight show RAG24's evidence package for the plant (ready or blocked,
+and what is missing), and the Legal Corpus page can verify a regulatory statement against approved
+sources. A supported statement is still not approval: interpretation, certification and filing stay with people.
+
 ## Paul — chat assistant
 
 The “Ask Paul” button on every screen helps people use the app, answers CoP legal questions with

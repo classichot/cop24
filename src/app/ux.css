@@ -389,3 +389,4 @@
 .rag-down { color: var(--st-bad); border-color: var(--st-bad); background: var(--st-bad-bg); }
 @keyframes rag-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent-2) 60%, transparent); } 50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-accent-2) 0%, transparent); } }
 @media (prefers-reduced-motion: reduce) { .rag-on { animation: none; } }
+.rag24-flow { margin-top: 14px; padding: 12px 14px; border: 2px solid var(--color-divider); border-left: 5px solid var(--color-accent-2); background: var(--color-surface); }

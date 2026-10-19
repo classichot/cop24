@@ -13,6 +13,7 @@ import { join, resolve } from "node:path";
 const ROOT = resolve(import.meta.dirname, "../../..");
 const seen: { path: string; auth?: string; body: Record<string, unknown> }[] = [];
 let reply: "evidence" | "empty" | "error" = "evidence";
+let pkgReady = true, claimOk = true;
 
 const passage = (day = "2022-01-01") => ({
   id: "cit_1", source_id: "src_1", title: "ระเบียบ กกพ. ว่าด้วยประมวลหลักการปฏิบัติ พ.ศ. 2565", issuer: "ERC", text: "ผู้รับใบอนุญาตต้องจัดทำรายงานผลการปฏิบัติตามมาตรการ…",
@@ -26,16 +27,30 @@ const server = createServer(async (req, res) => {
   seen.push({ path: req.url ?? "", auth: req.headers.authorization, body: await body(req) });
   if (req.url === "/health/ready") { res.writeHead(200, { "content-type": "application/json" }); res.end("{}"); return; }
   if (reply === "error") { res.writeHead(503, { "content-type": "application/json" }); res.end(JSON.stringify({ error: "disabled" })); return; }
+  const last = seen.at(-1)!.body;
+  if (req.url === "/rag/v1/evidence-packages") {
+    // an evidence package echoes the request context, as RAG24 does; readiness follows the test switch
+    const retrieval = { strategy: "lexical", warnings: [], retrieved_at: "2026-10-19T00:00:00Z", as_of: "2026-10-19", search_mode: "hybrid", semantic_enabled: false, authorized_sources_searched: 30 };
+    res.writeHead(201, { "content-type": "application/json" });
+    res.end(JSON.stringify({ id: "pkg_1", retrieval, context: last.context, authorization_context: {}, query: last.query, evidence: [passage()], snapshot_hash: "h", readiness: pkgReady ? "ready" : "blocked", checklist: [], missing_evidence: pkgReady ? [] : [{ category: "monitoring", label: "Noise monitoring results", critical: true, resolution: "", status: "missing", source_ids: [] }], conflicts: [], assumptions: [], structured_results: [], created_at: "2026-10-19T00:00:00Z" }));
+    return;
+  }
+  if (req.url === "/rag/v1/claims/verify") {
+    const claims = (last.claims as { text: string; category: string }[]).map((c) => ({ ...c, status: claimOk ? "verified" : "unsupported", reason: "" }));
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(JSON.stringify({ package_id: last.package_id, finalization_allowed: claimOk, claims, readiness: "ready", snapshot_ready: claimOk, package_action: null }));
+    return;
+  }
   res.writeHead(200, { "content-type": "application/json" });
   res.end(JSON.stringify({ id: "ret_1", evidence: reply === "empty" ? [] : [passage()], strategy: "lexical", warnings: [], retrieved_at: "2026-10-12T00:00:00Z", as_of: "2026-10-12", search_mode: "hybrid", semantic_enabled: false, authorized_sources_searched: 30 }));
 });
 let url = "";
 type Rag24Module = typeof import("../../lib/rag24/server");
-let rag24Config: Rag24Module["rag24Config"], rag24Entity: Rag24Module["rag24Entity"], rag24Evidence: Rag24Module["rag24Evidence"], rag24Reachable: Rag24Module["rag24Reachable"];
+let rag24Config: Rag24Module["rag24Config"], rag24Entity: Rag24Module["rag24Entity"], rag24Evidence: Rag24Module["rag24Evidence"], rag24Reachable: Rag24Module["rag24Reachable"], rag24CheckClaim: Rag24Module["rag24CheckClaim"];
 before(async () => {
   await new Promise<void>((ok) => server.listen(0, "127.0.0.1", ok));
   url = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
-  ({ rag24Config, rag24Entity, rag24Evidence, rag24Reachable } = await import("../../lib/rag24/server"));
+  ({ rag24Config, rag24Entity, rag24Evidence, rag24Reachable, rag24CheckClaim } = await import("../../lib/rag24/server"));
 });
 after(() => server.close());
 
@@ -120,4 +135,56 @@ test("the RAG24 badge sits beside AI READY and only shows when connected", () =>
   const badge = readFileSync(join(ROOT, "src/components/ux/Rag24Status.tsx"), "utf8");
   assert.match(badge, /if \(!s \|\| !s\.configured \|\| s\.stage === "disabled"\) return null;/, "hidden unless configured and switched on");
   assert.ok(!badge.includes("process.env"), "status comes from /api/rag24, never server configuration");
+});
+
+test("workflows stage: report workflows get RAG24 evidence packages with readiness and what is missing", async () => {
+  env({ RAG24_URL: url, RAG24_SERVICE_KEY: "rag24_svc_test", RAG24_STAGE: "workflows", RAG24_ENTITY_MAP: undefined });
+  pkgReady = false;
+  const blocked = await rag24Evidence("report_generation", "lopburi-1", "รายงานผลการปฏิบัติตาม", { year: 2026 });
+  assert.equal(blocked.status, "missing_evidence");
+  assert.equal(blocked.readiness, "blocked");
+  assert.deepEqual(blocked.missing, ["Noise monitoring results"]);
+  assert.equal(blocked.packageId, "pkg_1");
+  const call = seen.filter((x) => x.path === "/rag/v1/evidence-packages").at(-1)!;
+  assert.equal((call.body.context as Record<string, unknown>).task_id, "report_generation");
+  pkgReady = true;
+  for (const wf of ["report_generation", "studio", "report_review", "regulatory_check"] as const) {
+    const r = await rag24Evidence(wf, "lopburi-2", "การรับฟังความคิดเห็น", { year: 2026 });
+    assert.equal(r.status, "evidence_available", wf);
+    assert.equal(r.readiness, "ready", wf);
+  }
+});
+
+test("claim checks: supported only when RAG24 verifies the statement; never in the search pilot", async () => {
+  env({ RAG24_STAGE: "workflows" });
+  pkgReady = true; claimOk = true;
+  const ok = await rag24CheckClaim("lopburi-1", "ผู้รับใบอนุญาตต้องจัดทำรายงานผลการปฏิบัติตามมาตรการ", { year: 2026 });
+  assert.equal(ok.supported, true);
+  assert.equal(ok.reason, "evidence_supported_human_approval_required", "even supported claims still need a person");
+  const sent = seen.filter((x) => x.path === "/rag/v1/claims/verify").at(-1)!.body as { claims: { category: string; citation_ids: string[] }[] };
+  assert.equal(sent.claims[0].category, "regulatory");
+  assert.deepEqual(sent.claims[0].citation_ids, ["cit_1"]);
+  claimOk = false;
+  assert.equal((await rag24CheckClaim("lopburi-1", "ต้องยื่นรายงานทุกสัปดาห์ตามระเบียบ กกพ.", { year: 2026 })).supported, false);
+  claimOk = true;
+  pkgReady = false;
+  assert.equal((await rag24CheckClaim("lopburi-1", "ผู้รับใบอนุญาตต้องจัดทำรายงาน", { year: 2026 })).supported, false, "an incomplete package never supports a claim");
+  pkgReady = true;
+  env({ RAG24_STAGE: "search_pilot" });
+  const before = seen.length;
+  const pilot = await rag24CheckClaim("lopburi-1", "ผู้รับใบอนุญาตต้องจัดทำรายงานผลการปฏิบัติตามมาตรการ", { year: 2026 });
+  assert.equal(pilot.supported, false);
+  assert.equal(pilot.reason, "workflow_not_enabled");
+  assert.equal(seen.length, before, "the search pilot makes no workflow calls");
+});
+
+test("workflow screens appear only in the workflows stage and the API allow-lists workflows", () => {
+  const comp = readFileSync(join(ROOT, "src/components/Rag24Workflow.tsx"), "utf8");
+  assert.ok(comp.includes(`st.stage !== "workflows") return null;`), "hidden unless the connection is in the workflows stage");
+  for (const [page, wf] of [["src/app/factory/page.tsx", "report_generation"], ["src/app/studio/page.tsx", "studio"], ["src/app/preflight/page.tsx", "report_review"]]) {
+    assert.match(readFileSync(join(ROOT, page), "utf8"), new RegExp(`<Rag24Workflow[^>]*workflow="${wf}"`), `${page} shows RAG24 ${wf}`);
+  }
+  const route = readFileSync(join(ROOT, "src/app/api/rag24/route.ts"), "utf8");
+  assert.ok(route.includes("(RAG24_WORKFLOWS as readonly string[]).includes"), "the API only accepts COP24's workflows");
+  assert.match(readFileSync(join(ROOT, "src/app/api/rag24/verify/route.ts"), "utf8"), /requireAuth/);
 });

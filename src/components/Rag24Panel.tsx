@@ -8,6 +8,7 @@ import { useRag24Status } from "./ux/Rag24Status";
 
 interface Passage { id: string; title: string; issuer: string; text: string; cite: string; url: string | null; effectiveFrom: string; effectiveTo: string | null }
 interface Result { status: string; reason: string; passages: Passage[]; warnings: string[]; retrievedAt?: string }
+interface Check { status: string; supported: boolean; reason: string; passages: Passage[] }
 
 /**
  * RAG24 shared evidence — the search pilot. Results sit beside COP24's own corpus and never replace
@@ -19,6 +20,17 @@ export function Rag24Panel() {
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState(false);
   const [res, setRes] = useState<Result | null>(null);
+  const [claim, setClaim] = useState("");
+  const [checking, setChecking] = useState(false);
+  const [check, setCheck] = useState<Check | null>(null);
+  const verify = async () => {
+    if (claim.trim().length < 10) return;
+    setChecking(true);
+    try {
+      const r = await fetch("/api/rag24/verify", { method: "POST", headers: { "content-type": "application/json", ...authHeaders() }, body: JSON.stringify({ claim, entityId }) });
+      setCheck(await r.json());
+    } catch { setCheck({ status: "unavailable", supported: false, reason: "network", passages: [] }); } finally { setChecking(false); }
+  };
   const entity = data.entities.find((e) => e.id === entityId);
 
   const search = async () => {
@@ -55,6 +67,23 @@ export function Rag24Panel() {
         </form>
       ) : (
         <div className="note" style={{ margin: 0 }}>{!st?.configured ? tx("ยังไม่ได้ตั้งค่า RAG24_URL และ RAG24_SERVICE_KEY บนเซิร์ฟเวอร์ — COP24 ใช้คลังกฎหมายของตัวเองตามปกติ", "RAG24_URL and RAG24_SERVICE_KEY are not set on the server — COP24 uses its own corpus as usual.") : tx("RAG24_STAGE เป็น disabled — เปิดเป็น search_pilot เมื่อพร้อม", "RAG24_STAGE is disabled — set it to search_pilot when ready.")}</div>
+      )}
+      {st?.stage === "workflows" && (
+        <div className="rag24-verify">
+          <div className="label" style={{ margin: "14px 0 6px" }}>{tx("ตรวจข้อความกฎระเบียบ", "Verify a regulatory statement")}</div>
+          <form className="row" style={{ gap: 8 }} onSubmit={(e) => { e.preventDefault(); void verify(); }}>
+            <input className="input" style={{ flex: 1, minWidth: 200 }} value={claim} onChange={(e) => setClaim(e.target.value)} placeholder={tx("วางประโยคจากรายงาน เช่น ข้อกำหนดที่อ้างถึงระเบียบ กกพ.", "Paste a sentence from the report that states an ERC requirement")} aria-label={tx("ข้อความที่จะตรวจ", "Statement to verify")} />
+            <button className="btn btn-secondary btn-plain" disabled={checking || claim.trim().length < 10}>{checking ? tx("กำลังตรวจ…", "Verifying…") : tx("ตรวจกับแหล่งที่อนุมัติ", "Verify against approved sources")}</button>
+          </form>
+          {check && (
+            <div className={`note ${check.supported ? "note-ok" : check.status === "unavailable" ? "note-bad" : "note-warn"}`} style={{ marginTop: 8 }}>
+              {check.supported
+                ? tx("ข้อความนี้ตรงกับแหล่งกฎระเบียบที่อนุมัติแล้ว — ยังต้องให้ผู้มีคุณวุฒิยืนยันการตีความและการบังคับใช้", "This statement matches approved regulatory sources — a qualified person still confirms interpretation and applicability")
+                : check.status === "unavailable" ? tx("RAG24 ไม่พร้อมใช้งานขณะนี้", "RAG24 is unavailable right now")
+                  : tx("ยืนยันไม่ได้จากแหล่งที่อนุมัติแล้ว — อย่าเขียนเป็นข้อกำหนดจนกว่าจะมีแหล่งรองรับ", "Not verified by approved sources — don't state it as a requirement until a source supports it")}
+            </div>
+          )}
+        </div>
       )}
       {res && (
         <div style={{ marginTop: 12 }}>

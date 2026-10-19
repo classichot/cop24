@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { Rag24Workflow } from "@/components/Rag24Workflow";
 import { useApp } from "@/state/AppState";
 import { Mark, PageHead, Tag } from "@/components/ui";
 
 export default function PreflightPage() {
-  const { L, tx, snap } = useApp();
+  const { L, tx, snap, data } = useApp();
   const [open, setOpen] = useState<string>("doc");
   const pf = snap.preflight;
   const gates = [tx("ร่างโดย AI แล้ว", "AI drafted"), tx("หลักฐานครบ", "Evidence complete"), tx("พร้อมรับรอง", "Ready to certify"), tx("อนุมัติให้ยื่น", "Approved to file")];
@@ -32,6 +33,8 @@ export default function PreflightPage() {
           </div>
         </div>
       </div>
+
+      <Rag24Workflow workflow="report_review" entityId={data.report.entityId} title={tx("ตรวจทานรายงานกับหลักฐานที่อนุมัติแล้ว", "Review the report against approved evidence")} query={tx("ตรวจความครบถ้วนของรายงานประมวลหลักการปฏิบัติ (CoP) ก่อนยื่นต่อสำนักงาน กกพ.", "CoP report completeness review before filing with the ERC")} />
 
       <div style={{ marginTop: 24, borderTop: "2px solid var(--color-divider)" }}>
         {pf.layers.map((l, i) => (

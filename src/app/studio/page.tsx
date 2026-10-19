@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { Rag24Workflow } from "@/components/Rag24Workflow";
 import { useApp } from "@/state/AppState";
 import { Glyph, Tag, layerMark } from "@/components/ui";
 import { ExplainThis } from "@/components/ux/parts";
@@ -139,6 +140,8 @@ export default function StudioPage() {
               <Link href="/obligations" className="btn btn-ghost btn-sm" style={{ marginTop: 6 }}>ⓘ {tx("อธิบายข้อกำหนดนี้", "Explain this obligation")}</Link>
             </div>
           )}
+
+          <Rag24Workflow key={cur.id} workflow="studio" entityId={report.entityId} title={tx("หลักฐานกฎระเบียบของบทนี้", "Regulatory evidence for this chapter")} query={`${L(cur.title)}${ob ? ` · ${L(ob.obligation.summary)}` : ""}`} />
 
           <div className="label" style={{ margin: "18px 0 10px", letterSpacing: ".12em" }}>{tx("หลักฐานที่ผูกกับบทนี้", "Evidence bound to this chapter")}</div>
           {evidence.map((e) => {

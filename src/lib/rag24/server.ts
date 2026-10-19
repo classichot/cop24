@@ -76,36 +76,69 @@ const where = (loc: Record<string, string | number>) => Object.entries(loc).filt
  * Evidence for one COP24 workflow. `search` runs in the search pilot; report workflows need the
  * `workflows` stage. The entity comes from the signed-in workspace's active entity, never a free-text field.
  */
-export async function rag24Evidence(workflow: IntegrationWorkflow, entityId: string, query: string, opts: { year?: number; asOf?: string } = {}): Promise<Rag24Evidence> {
+/** COP24's workflows, as RAG24 names them. Search runs in the search pilot; the rest need "workflows". */
+export const RAG24_WORKFLOWS = ["search", "regulatory_check", "report_generation", "studio", "report_review"] as const;
+export type Cop24Workflow = (typeof RAG24_WORKFLOWS)[number];
+
+type Ready = { rag: Rag24Integration; stage: Rag24Stage; context: { entity_id: string; reporting_period: number; jurisdiction: string; as_of: string } };
+type NotReady = { status: Rag24Status; reason: string; stage: Rag24Stage };
+
+/** Configuration, switch and workspace checks shared by every call; the context comes from the server. */
+function prepare(entityId: string, opts: { year?: number; asOf?: string }): Ready | NotReady {
   const c = rag24Config();
-  if (!c.configured) return { status: "not_configured", reason: "rag24_not_configured", stage: "disabled", passages: [], warnings: [] };
+  if (!c.configured) return { status: "not_configured", reason: "rag24_not_configured", stage: "disabled" };
   const rag = adapter();
-  if (!rag) return { status: "disabled", reason: "integration_disabled", stage: c.stage, passages: [], warnings: [] };
+  if (!rag) return { status: "disabled", reason: "integration_disabled", stage: c.stage };
   // only this workspace's plants: an unknown entity would be refused by RAG24 and count toward the
   // circuit breaker, pausing the connection for every user of this instance
-  if (!workspaceEntities().has(entityId)) return { status: "disabled", reason: "entity_not_in_workspace", stage: c.stage, passages: [], warnings: [] };
+  if (!workspaceEntities().has(entityId)) return { status: "disabled", reason: "entity_not_in_workspace", stage: c.stage };
   const today = new Date().toISOString().slice(0, 10);
-  const r = await rag.evidence(workflow, {
-    entity_id: rag24Entity(entityId),
-    reporting_period: opts.year ?? Number(today.slice(0, 4)),
-    jurisdiction: "TH",
-    as_of: opts.asOf ?? today,
-  }, query.slice(0, 1000));
+  return { rag, stage: c.stage, context: { entity_id: rag24Entity(entityId), reporting_period: opts.year ?? Number(today.slice(0, 4)), jurisdiction: "TH", as_of: opts.asOf ?? today } };
+}
+
+const toPassages = (r: IntegrationResult): Rag24Passage[] => r.evidence.slice(0, 6).map((e) => ({
+  id: e.id, sourceId: e.source_id, title: e.title, issuer: e.issuer, text: e.text.slice(0, 1200),
+  cite: [e.title, where(e.location), `v${e.source_version}`].filter(Boolean).join(" · "),
+  url: e.source_url, version: e.source_version, effectiveFrom: e.effective_from, effectiveTo: e.effective_to,
+}));
+
+/**
+ * Evidence for one COP24 workflow. `search` runs in the search pilot; report workflows need the
+ * `workflows` stage and return RAG24's evidence package (readiness and what is missing). The entity comes
+ * from the signed-in workspace's active entity, never a free-text field.
+ */
+export async function rag24Evidence(workflow: IntegrationWorkflow, entityId: string, query: string, opts: { year?: number; asOf?: string } = {}): Promise<Rag24Evidence> {
+  const p = prepare(entityId, opts);
+  if (!("rag" in p)) return { ...p, passages: [], warnings: [] };
+  const r = await p.rag.evidence(workflow, p.context, query.slice(0, 1000));
   return {
     status: r.status,
     reason: r.reason,
-    stage: c.stage,
+    stage: p.stage,
     warnings: r.warnings,
     readiness: r.package?.readiness,
     missing: r.package?.missing_evidence.map((m) => m.label),
     packageId: r.package?.id,
     retrievedAt: r.retrieval?.retrieved_at,
-    passages: r.evidence.slice(0, 6).map((e) => ({
-      id: e.id, sourceId: e.source_id, title: e.title, issuer: e.issuer, text: e.text.slice(0, 1200),
-      cite: [e.title, where(e.location), `v${e.source_version}`].filter(Boolean).join(" · "),
-      url: e.source_url, version: e.source_version, effectiveFrom: e.effective_from, effectiveTo: e.effective_to,
-    })),
+    passages: toPassages(r),
   };
+}
+
+export interface Rag24ClaimCheck { status: Rag24Status; supported: boolean; reason: string; stage: Rag24Stage; passages: Rag24Passage[] }
+
+/**
+ * Is a regulatory statement supported, word for word, by approved sources? RAG24 builds an evidence
+ * package for the statement and verifies it against the package's passages (workflows stage only).
+ * Even "supported" is never approval: interpretation and legal applicability stay with a person.
+ */
+export async function rag24CheckClaim(entityId: string, claim: string, opts: { year?: number; asOf?: string } = {}): Promise<Rag24ClaimCheck> {
+  const p = prepare(entityId, opts);
+  if (!("rag" in p)) return { ...p, supported: false, passages: [] };
+  const text = claim.trim().slice(0, 2000);
+  const r = await p.rag.evidence("regulatory_check", p.context, text);
+  if (r.status !== "evidence_available") return { status: r.status, supported: false, reason: r.reason, stage: p.stage, passages: toPassages(r) };
+  const v = await p.rag.verifyAuthority(r, [{ text, category: "regulatory", citation_ids: r.evidence.slice(0, 30).map((e) => e.id) }]);
+  return { status: r.status, supported: v.authority_supported, reason: v.reason, stage: p.stage, passages: toPassages(r) };
 }
 
 /** Is the RAG24 service up? Uses the unauthenticated readiness probe, so it never spends the key. */

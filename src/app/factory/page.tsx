@@ -11,6 +11,7 @@ import { sha256 } from "@/core/agi/sha256";
 import { TODAY } from "@/core/dates";
 import { AGI_SITES } from "@/data/agi-sites";
 import { USER } from "@/data/tenant";
+import { Rag24Workflow } from "@/components/Rag24Workflow";
 
 /** One-click report generation (REQ-REPORT-001 Path A) on the real mission engine. */
 const RUNS = "cop24.agi.runs.v1";
@@ -92,6 +93,7 @@ export default function FactoryPage() {
             <div className="cell"><div className="label">{tx("รอคุณ", "Waiting for you")}</div><div className="stat-value stat-value-sm">{gates.length + open.length}</div></div>
           </Cells>
           {qa && <div className={`note ${(qa.data as { passed?: boolean })?.passed ? "note-ok" : "note-bad"}`} style={{ marginTop: 12 }}><b>QA</b> · {L(qa.summary)}</div>}
+          <Rag24Workflow key={run.id} workflow="report_generation" entityId={siteId} title={tx("หลักฐานสำหรับรายงานนี้", "Evidence for this report")} query={`${tx(REPORTS.find((r) => r.fid === fid)!.th, REPORTS.find((r) => r.fid === fid)!.en)} · ${L(f.goal)} · ${L(site.name)}`} />
 
           {report && (
             <section className="oneclick-report">
